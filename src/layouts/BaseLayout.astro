@@ -7,8 +7,14 @@ interface Props {
   title: string;
   description?: string;
   noindex?: boolean;
+  home?: boolean;
 }
-const { title, description = site.description, noindex = false } = Astro.props;
+const {
+  title,
+  description = site.description,
+  noindex = false,
+  home = false,
+} = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 ---
 
@@ -23,7 +29,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     {noindex && <meta name="robots" content="noindex" />}
   </head>
-  <body>
+  <body class:list={{ 'home-page': home }}>
     <a class="skip-link" href="#main">
       Skip to content
     </a>

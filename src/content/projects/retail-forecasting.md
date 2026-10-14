@@ -8,8 +8,8 @@ technologies: ['Python', 'Time series', 'Data analysis']
 editorialStatus: 'draft'
 poster:
   {
-    'src': '/media/project-placeholder.svg',
-    'alt': 'Illustrative abstract curves; not experimental results.',
+    'src': '/media/retail-forecasting.svg',
+    'alt': 'Illustrative seasonal series and forecast interval; not actual forecasts.',
   }
 accent: '#b9958b'
 ---

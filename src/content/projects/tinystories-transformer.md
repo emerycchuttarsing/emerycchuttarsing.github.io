@@ -8,8 +8,8 @@ technologies: ['Python', 'PyTorch', 'BPE']
 editorialStatus: 'draft'
 poster:
   {
-    'src': '/media/project-placeholder.svg',
-    'alt': 'Illustrative abstract curves; not experimental results.',
+    'src': '/media/tinystories-transformer.svg',
+    'alt': 'Illustrative tokens and attention matrix; not measured model attention.',
   }
 accent: '#a698bd'
 ---

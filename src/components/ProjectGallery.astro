@@ -1,0 +1,73 @@
+---
+import { projectPath, type Project } from '../lib/projects';
+interface Props {
+  projects: Project[];
+}
+const { projects } = Astro.props;
+---
+
+<section
+  class="project-gallery"
+  id="projects"
+  aria-labelledby="projects-title"
+  data-gallery
+>
+  <div class="gallery-content wrap">
+    <header class="gallery-heading">
+      <div>
+        <p class="eyebrow">01 / Research & engineering</p>
+        <h2 id="projects-title">
+          Selected <em>work.</em>
+        </h2>
+      </div>
+      <div class="gallery-intro">
+        <p>
+          Seven explorations.
+          <br />
+          From mathematical ideas to working systems.
+        </p>
+        <a href="/projects/">
+          View project index <span aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </header>
+    <ol class="gallery-grid">
+      {projects.map((project) => (
+        <li
+          data-project-id={project.id}
+          data-featured={String(project.data.featured)}
+          style={`--project-accent: ${project.data.accent}`}
+        >
+          <a class="gallery-project" href={projectPath(project.id)}>
+            <div class="panel-anchor" data-panel={project.id}>
+              <img
+                class="panel-poster"
+                src={project.data.poster.src}
+                alt={project.data.poster.alt}
+                width="960"
+                height="600"
+                loading="eager"
+              />
+            </div>
+            <div class="panel-caption">
+              <p class="eyebrow">
+                <span>{String(project.data.order).padStart(2, '0')}</span> /{' '}
+                {project.data.categories[0]}
+              </p>
+              <h3>
+                {project.data.title}
+                <span class="project-arrow" aria-hidden="true">
+                  ↗
+                </span>
+              </h3>
+            </div>
+          </a>
+        </li>
+      ))}
+    </ol>
+    <div class="gallery-bottom">
+      <span class="eyebrow">03 featured studies / 04 further explorations</span>
+      <span class="eyebrow">Ideas, made tangible.</span>
+    </div>
+  </div>
+</section>

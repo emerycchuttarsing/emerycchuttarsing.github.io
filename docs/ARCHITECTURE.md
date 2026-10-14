@@ -3,13 +3,12 @@
 ## Décisions du jalon 1
 
 Astro génère un site statique pour `https://emerycchuttarsing.github.io/`, à la
-racine du domaine. TypeScript utilise le mode strictest. Three.js est installé
-pour la scène prévue aux prochains jalons. Node est fixé par `.nvmrc` et les
+racine du domaine. TypeScript utilise le mode strictest. Three.js fournit désormais la scène commune de l’accueil. Node est fixé par `.nvmrc` et les
 versions des dépendances sont enregistrées dans `package-lock.json`.
 
 Le navigateur reçoit du HTML pour les titres, textes et liens. La navigation
-entre pages utilise des liens natifs. La future scène reste limitée à l'accueil
-et sera chargée côté navigateur. Aucun serveur applicatif n'est nécessaire à ce stade.
+entre pages utilise des liens natifs. La scène reste limitée à l’accueil
+et est chargée par import dynamique côté navigateur. Aucun serveur applicatif n'est nécessaire à ce stade.
 
 ## Contenu et génération
 
@@ -21,7 +20,7 @@ l'ordre, les trois phares, les corps de texte et les médias locaux.
 
 L'accueil et l'index utilisent la même liste. `getStaticPaths()` génère les sept
 études à partir de cette collection. `toSceneProject()` transforme ces données
-en une vue sérialisable pour la future scène, sans fichiers privés ni accès disque.
+en une vue sérialisable pour la scène, sans fichiers privés ni accès disque.
 
 Les brouillons sont visibles et identifiés. Les liens facultatifs absents ne
 créent pas de boutons actifs. Les corps actuels reprennent les méthodes du brief ;
@@ -29,16 +28,38 @@ ils ne revendiquent pas de performances numériques non vérifiées.
 
 ## Traduction des analyses REA
 
-- Ing Tian : terrain mathématique à porter en points Three.js.
+- Ing Tian : terrain mathématique échantillonné en points Three.js.
 - Mirage : scène commune, profondeur des panneaux, poses et fondus distincts.
 - Sept projets : trois phares, quatre secondaires, tous accessibles en HTML.
 - États prévus : hero, reveal, overview, selected, fallback.
 - Vidéos : poster immédiat, deux lectures sur ordinateur, une sur configuration contrainte.
 - Cycle de vie : pause hors champ, respect du mouvement réduit et libération explicite des ressources.
 
-Les fichiers `src/scene/types.ts` et `config.ts` décrivent ces besoins. Ils ne
-constituent pas encore un moteur 3D ou une machine à états exécutée. Les poses,
-durées et budgets sont des points de départ à vérifier pendant les essais visuels.
+## Réalisation du jalon 2
+
+L’accueil assemble `Hero`, `ProjectGallery`, `AboutTeaser` et `PortfolioScene`.
+Une scène transparente fixe partage terrain, caméra et sept panneaux. Le passage
+`hero` → `overview` se fait au franchissement du milieu de l’écran par la galerie.
+Les poses sont fixes ; le défilement reste natif. Les panneaux sont des boîtes
+fines éclairées, avec un poster sur la face avant et un cadre métallique.
+Leurs positions sont calculées à partir des rectangles HTML de la grille.
+
+À partir de 1100 × 800, la grille de douze colonnes réserve quatre colonnes à
+chaque phare et trois à chaque secondaire. En dessous de ce seuil, les panneaux
+restent des images HTML : deux colonnes dès 640 px, une en dessous. Les titres,
+liens et focus clavier restent toujours en HTML. Les textes et URLs proviennent
+de la même collection qu’au jalon 1.
+
+Les rendus sont déclenchés par les changements, sans boucle permanente. Le
+cycle de vie couvre les chargements tardifs, les redimensionnements hors champ,
+la préférence de mouvement réduit, les retours navigateur et les pertes de
+contexte WebGL. Les ressources GPU sont libérées à la sortie de l’accueil.
+
+Les styles sont répartis entre `tokens.css`, `global.css` (navigation et gabarits
+éditoriaux), `home.css` (accueil et galerie), et le style propre à l’index.
+Les posters sont sept SVG originaux et illustratifs. Les études restent des
+brouillons : les figures expérimentales et résultats seront repris au jalon 3.
+Les types `reveal` et `selected`, durées et budgets vidéo préparent le jalon 4.
 
 ## Vérification et hébergement
 

@@ -1,0 +1,364 @@
+{
+  "checkedAt": "2026-10-14T05:33:50.907Z",
+  "browser": "155.0.8059.79",
+  "viewports": [
+    {
+      "width": 1440,
+      "height": 900,
+      "overflow": false,
+      "panels": [
+        {
+          "id": "rl-path-signatures",
+          "top": 211.546875,
+          "bottom": 539.9375
+        },
+        {
+          "id": "signature-deep-hedging",
+          "top": 211.546875,
+          "bottom": 539.9375
+        },
+        {
+          "id": "music-recommendation",
+          "top": 211.546875,
+          "bottom": 539.9375
+        },
+        {
+          "id": "tinystories-transformer",
+          "top": 571.9375,
+          "bottom": 827.84375
+        },
+        {
+          "id": "link-prediction",
+          "top": 571.9375,
+          "bottom": 827.84375
+        },
+        {
+          "id": "visual-learning",
+          "top": 571.9375,
+          "bottom": 827.84375
+        },
+        {
+          "id": "retail-forecasting",
+          "top": 571.9375,
+          "bottom": 827.84375
+        }
+      ],
+      "canvasCount": 1,
+      "flags": {
+        "terrainReady": "true",
+        "panelsReady": "true"
+      },
+      "posterOpacity": "0"
+    },
+    {
+      "width": 1280,
+      "height": 800,
+      "overflow": false,
+      "panels": [
+        {
+          "id": "rl-path-signatures",
+          "top": 202.203125,
+          "bottom": 513.34375
+        },
+        {
+          "id": "signature-deep-hedging",
+          "top": 202.203125,
+          "bottom": 513.34375
+        },
+        {
+          "id": "music-recommendation",
+          "top": 202.203125,
+          "bottom": 513.34375
+        },
+        {
+          "id": "tinystories-transformer",
+          "top": 545.34375,
+          "bottom": 788.296875
+        },
+        {
+          "id": "link-prediction",
+          "top": 545.34375,
+          "bottom": 788.296875
+        },
+        {
+          "id": "visual-learning",
+          "top": 545.34375,
+          "bottom": 788.296875
+        },
+        {
+          "id": "retail-forecasting",
+          "top": 545.34375,
+          "bottom": 788.296875
+        }
+      ],
+      "canvasCount": 1,
+      "flags": {
+        "terrainReady": "true",
+        "panelsReady": "true"
+      },
+      "posterOpacity": "0"
+    },
+    {
+      "width": 768,
+      "height": 1024,
+      "overflow": false,
+      "panels": [
+        {
+          "id": "rl-path-signatures",
+          "top": 188.03125,
+          "bottom": 484.109375
+        },
+        {
+          "id": "signature-deep-hedging",
+          "top": 188.03125,
+          "bottom": 484.109375
+        },
+        {
+          "id": "music-recommendation",
+          "top": 524.109375,
+          "bottom": 820.1875
+        },
+        {
+          "id": "tinystories-transformer",
+          "top": 524.109375,
+          "bottom": 820.1875
+        },
+        {
+          "id": "link-prediction",
+          "top": 860.1875,
+          "bottom": 1122.34375
+        },
+        {
+          "id": "visual-learning",
+          "top": 860.1875,
+          "bottom": 1122.34375
+        },
+        {
+          "id": "retail-forecasting",
+          "top": 1162.34375,
+          "bottom": 1424.5
+        }
+      ],
+      "canvasCount": 1,
+      "flags": {
+        "terrainReady": "true",
+        "panelsReady": "false"
+      },
+      "posterOpacity": "1"
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "overflow": false,
+      "panels": [
+        {
+          "id": "rl-path-signatures",
+          "top": 271.21875,
+          "bottom": 577.75
+        },
+        {
+          "id": "signature-deep-hedging",
+          "top": 617.75,
+          "bottom": 895.15625
+        },
+        {
+          "id": "music-recommendation",
+          "top": 935.15625,
+          "bottom": 1241.6875
+        },
+        {
+          "id": "tinystories-transformer",
+          "top": 1281.6875,
+          "bottom": 1588.21875
+        },
+        {
+          "id": "link-prediction",
+          "top": 1628.21875,
+          "bottom": 1905.625
+        },
+        {
+          "id": "visual-learning",
+          "top": 1945.625,
+          "bottom": 2252.15625
+        },
+        {
+          "id": "retail-forecasting",
+          "top": 2292.15625,
+          "bottom": 2569.5625
+        }
+      ],
+      "canvasCount": 1,
+      "flags": {
+        "terrainReady": "true",
+        "panelsReady": "false"
+      },
+      "posterOpacity": "1"
+    }
+  ],
+  "fallbacks": [
+    {
+      "kind": "no-js",
+      "width": 1440,
+      "height": 900,
+      "overflow": false,
+      "panels": [
+        {
+          "id": "rl-path-signatures",
+          "top": 211.546875,
+          "bottom": 539.9375
+        },
+        {
+          "id": "signature-deep-hedging",
+          "top": 211.546875,
+          "bottom": 539.9375
+        },
+        {
+          "id": "music-recommendation",
+          "top": 211.546875,
+          "bottom": 539.9375
+        },
+        {
+          "id": "tinystories-transformer",
+          "top": 571.9375,
+          "bottom": 827.84375
+        },
+        {
+          "id": "link-prediction",
+          "top": 571.9375,
+          "bottom": 827.84375
+        },
+        {
+          "id": "visual-learning",
+          "top": 571.9375,
+          "bottom": 827.84375
+        },
+        {
+          "id": "retail-forecasting",
+          "top": 571.9375,
+          "bottom": 827.84375
+        }
+      ],
+      "canvasCount": 0,
+      "flags": {},
+      "posterOpacity": "1",
+      "scripts": []
+    },
+    {
+      "kind": "reduced-motion",
+      "width": 1440,
+      "height": 900,
+      "overflow": false,
+      "panels": [
+        {
+          "id": "rl-path-signatures",
+          "top": 211.546875,
+          "bottom": 539.9375
+        },
+        {
+          "id": "signature-deep-hedging",
+          "top": 211.546875,
+          "bottom": 539.9375
+        },
+        {
+          "id": "music-recommendation",
+          "top": 211.546875,
+          "bottom": 539.9375
+        },
+        {
+          "id": "tinystories-transformer",
+          "top": 571.9375,
+          "bottom": 827.84375
+        },
+        {
+          "id": "link-prediction",
+          "top": 571.9375,
+          "bottom": 827.84375
+        },
+        {
+          "id": "visual-learning",
+          "top": 571.9375,
+          "bottom": 827.84375
+        },
+        {
+          "id": "retail-forecasting",
+          "top": 571.9375,
+          "bottom": 827.84375
+        }
+      ],
+      "canvasCount": 0,
+      "flags": {},
+      "posterOpacity": "1",
+      "scripts": [
+        "http://127.0.0.1:4321/_astro/PortfolioScene.astro_astro_type_script_index_0_lang.C1qPUL14.js"
+      ]
+    },
+    {
+      "kind": "no-webgl",
+      "width": 1440,
+      "height": 900,
+      "overflow": false,
+      "panels": [
+        {
+          "id": "rl-path-signatures",
+          "top": 211.546875,
+          "bottom": 539.9375
+        },
+        {
+          "id": "signature-deep-hedging",
+          "top": 211.546875,
+          "bottom": 539.9375
+        },
+        {
+          "id": "music-recommendation",
+          "top": 211.546875,
+          "bottom": 539.9375
+        },
+        {
+          "id": "tinystories-transformer",
+          "top": 571.9375,
+          "bottom": 827.84375
+        },
+        {
+          "id": "link-prediction",
+          "top": 571.9375,
+          "bottom": 827.84375
+        },
+        {
+          "id": "visual-learning",
+          "top": 571.9375,
+          "bottom": 827.84375
+        },
+        {
+          "id": "retail-forecasting",
+          "top": 571.9375,
+          "bottom": 827.84375
+        }
+      ],
+      "canvasCount": 0,
+      "flags": {},
+      "posterOpacity": "1",
+      "scripts": [
+        "http://127.0.0.1:4321/_astro/PortfolioScene.astro_astro_type_script_index_0_lang.C1qPUL14.js",
+        "http://127.0.0.1:4321/_astro/renderer.Fjx7qvsZ.js"
+      ]
+    }
+  ],
+  "navigation": {
+    "keyboardProjects": 7,
+    "openedReloadedAndReturned": [
+      "rl-path-signatures",
+      "signature-deep-hedging",
+      "music-recommendation",
+      "tinystories-transformer",
+      "link-prediction",
+      "visual-learning",
+      "retail-forecasting"
+    ],
+    "canvasAfterRepeatedNavigation": 1,
+    "idleRafRequests": 0,
+    "resize": true,
+    "motionPreferenceChange": true,
+    "contextLoss": true
+  },
+  "errors": []
+}

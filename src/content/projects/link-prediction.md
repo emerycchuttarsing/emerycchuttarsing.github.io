@@ -8,8 +8,8 @@ technologies: ['Python', 'NumPy', 'Optimization']
 editorialStatus: 'draft'
 poster:
   {
-    'src': '/media/project-placeholder.svg',
-    'alt': 'Illustrative abstract curves; not experimental results.',
+    'src': '/media/link-prediction.svg',
+    'alt': 'Illustrative graph communities and a predicted connection; not experimental results.',
   }
 accent: '#b39a79'
 ---

@@ -32,6 +32,23 @@ export interface SceneConfig {
     'desktop' | 'compact',
     Record<'hero' | 'overview', CameraPose>
   >;
+  terrain: {
+    columns: number;
+    rows: number;
+    width: number;
+    depth: number;
+    pointSize: number;
+    heroOpacity: number;
+    overviewOpacity: number;
+  };
+  panels: {
+    minWidth: number;
+    minHeight: number;
+    scale: number;
+    thickness: number;
+    tilt: number;
+  };
+  lighting: { ambient: number; key: number; rim: number };
   media: { desktopPlayingLimit: number; constrainedPlayingLimit: number };
   quality: { maxPixelRatio: number; targetFps: number };
   timing: { cameraDurationMs: number; revealDurationMs: number };

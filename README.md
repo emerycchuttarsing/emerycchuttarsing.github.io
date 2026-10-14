@@ -2,7 +2,8 @@
 
 Portfolio en anglais consacré à la finance quantitative, au machine learning et
 à l'ingénierie. Le développement suit [cinq jalons](docs/MILESTONES.md), avec un
-commit à chaque point de contrôle. Le jalon 1 installe les fondations fonctionnelles.
+commit à chaque point de contrôle. Les jalons 1 et 2 sont réalisés : fondations fonctionnelles, direction visuelle
+et première scène 3D.
 
 ## Démarrer localement
 
@@ -39,8 +40,8 @@ préserver leur contenu d'origine.
 - `/404.html` : page d'erreur.
 
 Les textes anglais sont des brouillons. Les résultats chiffrés, médias définitifs,
-CV et coordonnées seront intégrés après vérification. Le socle HTML est minimal ;
-la composition visuelle et le moteur 3D appartiennent aux prochains jalons.
+CV et coordonnées seront intégrés après vérification. L’accueil combine un terrain de points et sept panneaux dans une scène 3D.
+Les transitions animées, la sélection et les vidéos relèvent du jalon 4.
 
 ## Modifier les contenus
 
@@ -52,12 +53,38 @@ la composition visuelle et le moteur 3D appartiennent aux prochains jalons.
 | Posters et futures vidéos                           | `public/media/`, puis référence dans le frontmatter                       |
 | Futur CV                                            | Ajouter un PDF dans `public/resume/`, puis renseigner `site.links.resume` |
 | Couleurs, polices, espacements                      | `src/styles/tokens.css`                                                   |
-| Futurs réglages caméra, médias et mouvement         | `src/scene/config.ts`                                                     |
+| Réglages caméra, terrain, panneaux et éclairage     | `src/scene/config.ts`                                                     |
 
 Un identifiant correspond au nom du fichier Markdown : le changer modifie l'URL.
 Les champs de lien absents sont omis dans l'interface. Les chemins de médias sont
 relatifs à la racine du site, par exemple `/media/project-placeholder.svg`.
 Ne placer dans `public/` que des fichiers à rendre accessibles aux visiteurs.
+
+## Validation visuelle et navigateur
+
+La [recette du jalon 2](docs/validation/jalon-2/README.md) contient les captures
+et résultats. La galerie montre les sept projets ensemble sur grand écran ;
+sous 1100 px de largeur ou 800 px de hauteur, elle utilise des posters HTML.
+Les quatre tailles contrôlées sont 1440 × 900, 1280 × 800, 768 × 1024 et 390 × 844.
+
+Le contrôle complémentaire `scripts/check-browser.mjs` nécessite Chrome et un
+module Playwright dans l’outillage de test (distinct des dépendances du site).
+Lancer l’aperçu du build, puis :
+
+```bash
+# Si Playwright est déjà disponible dans node_modules :
+node scripts/check-browser.mjs
+
+# Sinon, indiquer l’entrée ESM de l’installation Playwright de l’outillage :
+PLAYWRIGHT_MODULE=/chemin/vers/playwright/index.mjs node scripts/check-browser.mjs
+```
+
+`PORTFOLIO_BASE_URL` peut remplacer l’URL locale et `PORTFOLIO_SCREENSHOTS` le
+répertoire de sortie, par défaut `test-results/jalon-2` (ignoré par Git).
+Ce contrôle couvre cadrage, débordements, navigation clavier, rechargement et
+retour pour les sept études, replis sans JavaScript/WebGL, mouvement réduit,
+perte du contexte, redimensionnement et absence de rendus continus au repos.
+Il complète `npm run verify`, qui reste le contrôle de CI sans navigateur.
 
 ## Publication GitHub Pages
 
@@ -73,7 +100,7 @@ Pour la livraison finale :
 
 Le workflow valide puis publie uniquement `dist/`. Les modifications locales et
 les commits de jalon ne déclenchent pas une publication. Aucun déploiement distant
-n'a été effectué pendant le jalon 1.
+n’a été effectué pendant les jalons 1 et 2.
 
 ## Préparation conservée
 

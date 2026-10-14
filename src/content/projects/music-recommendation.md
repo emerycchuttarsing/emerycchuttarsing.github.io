@@ -8,8 +8,8 @@ technologies: ['Python', 'ALS', 'SASRec', 'Streamlit']
 editorialStatus: 'draft'
 poster:
   {
-    'src': '/media/project-placeholder.svg',
-    'alt': 'Illustrative abstract curves; not experimental results.',
+    'src': '/media/music-recommendation.svg',
+    'alt': 'Illustrative music recommendation network and sound wave; not experimental results.',
   }
 accent: '#96b495'
 ---

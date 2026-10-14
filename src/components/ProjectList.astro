@@ -10,21 +10,94 @@ const { projects } = Astro.props;
   {projects.map((project) => (
     <li
       data-project-id={project.id}
-      data-featured={project.data.featured ? 'true' : 'false'}
+      data-featured={String(project.data.featured)}
     >
+      <a
+        href={projectPath(project.id)}
+        class="index-poster"
+        tabindex="-1"
+        aria-hidden="true"
+      >
+        <img
+          src={project.data.poster.src}
+          alt=""
+          width="960"
+          height="600"
+          loading="lazy"
+        />
+      </a>
       <article>
         <p class="eyebrow">
-          {String(project.data.order).padStart(2, '0')} ·{' '}
+          {String(project.data.order).padStart(2, '0')} /{' '}
           {project.data.featured
-            ? 'Featured project'
+            ? 'Featured research'
             : project.data.categories[0]}
         </p>
-        <h3>
-          <a href={projectPath(project.id)}>{project.data.title}</a>
-        </h3>
-        <p>{project.data.summary}</p>
+        <h2>
+          <a href={projectPath(project.id)}>
+            {project.data.title}
+            <span aria-hidden="true">↗</span>
+          </a>
+        </h2>
+        <p class="index-summary">{project.data.summary}</p>
         <p class="project-tags">{project.data.technologies.join(' · ')}</p>
       </article>
     </li>
   ))}
 </ol>
+<style>
+  .project-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .project-list li {
+    display: grid;
+    grid-template-columns: 1fr 1.7fr;
+    align-items: center;
+    gap: 4rem;
+    padding-block: 2.5rem;
+    border-top: 1px solid var(--color-line);
+  }
+  .index-poster {
+    display: block;
+    overflow: hidden;
+    background: var(--color-graphite);
+  }
+  .index-poster img {
+    width: 100%;
+    height: auto;
+  }
+  .project-list h2 {
+    font-size: clamp(1.7rem, 2.6vw, 2.7rem);
+    line-height: 1.2;
+    letter-spacing: -0.025em;
+    margin: 1rem 0 1.3rem;
+  }
+  .project-list h2 a {
+    text-decoration: none;
+  }
+  .project-list h2 a:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+  }
+  .project-list h2 span {
+    display: inline-block;
+    font: 1.2rem var(--font-body);
+    margin-left: 1rem;
+  }
+  .index-summary {
+    font-size: 0.85rem;
+    color: var(--color-muted);
+    max-width: 65ch;
+  }
+  .project-tags {
+    margin-bottom: 0;
+  }
+  @media (max-width: 700px) {
+    .project-list li {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+  }
+</style>

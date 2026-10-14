@@ -20,33 +20,60 @@ const links = [
 ---
 
 <BaseLayout title={project.data.title} description={project.data.summary}>
-  <article class="case-study">
+  <article class="case-study editorial-page wrap">
     <a class="back-link" href="/projects/">
       ← All projects
     </a>
     <header class="page-heading">
-      <p class="eyebrow">{project.data.categories.join(' / ')}</p>
+      <p class="eyebrow">
+        Study {String(project.data.order).padStart(2, '0')} /{' '}
+        {project.data.categories.join(' / ')}
+      </p>
       <h1>{project.data.title}</h1>
       <p class="lead">{project.data.summary}</p>
       <p class="project-tags">{project.data.technologies.join(' · ')}</p>
     </header>
-    {project.data.editorialStatus === 'draft' && (
-      <p class="editorial-note">
-        Draft case study. Results and supporting figures are being prepared.
-      </p>
-    )}
-    <div class="prose">
-      <Content />
+    <figure class="case-poster">
+      <img
+        src={project.data.poster.src}
+        alt={project.data.poster.alt}
+        width="960"
+        height="600"
+      />
+      <figcaption>
+        Conceptual illustration / experimental figures to follow.
+      </figcaption>
+    </figure>
+    <div class="case-body">
+      <aside>
+        <p class="eyebrow">Research notes</p>
+        <p class="project-tags">{project.data.categories.join(' / ')}</p>
+      </aside>
+      <div>
+        {project.data.editorialStatus === 'draft' && (
+          <p class="editorial-note">
+            Draft case study. Results and supporting figures are being prepared.
+          </p>
+        )}
+        <div class="prose">
+          <Content />
+        </div>
+        {links.length > 0 && (
+          <nav class="actions" aria-label="Project resources">
+            {links.map(({ label, href }) => (
+              <a class="text-link" href={href}>
+                {label}
+                <span aria-hidden="true">↗</span>
+              </a>
+            ))}
+          </nav>
+        )}
+      </div>
     </div>
-    {links.length > 0 && (
-      <nav class="actions" aria-label="Project resources">
-        {links.map(({ label, href }) => (
-          <a href={href}>{label}</a>
-        ))}
-      </nav>
-    )}
-    <p>
-      <a href="/#projects">Back to the project collection</a>
-    </p>
+    <div class="case-ending">
+      <a class="text-link" href="/#projects">
+        Back to the project collection <span aria-hidden="true">↗</span>
+      </a>
+    </div>
   </article>
 </BaseLayout>

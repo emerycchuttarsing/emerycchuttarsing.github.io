@@ -8,8 +8,8 @@ technologies: ['Python', 'PyTorch', 'Path signatures']
 editorialStatus: 'draft'
 poster:
   {
-    'src': '/media/project-placeholder.svg',
-    'alt': 'Illustrative abstract curves; not experimental results.',
+    'src': '/media/rl-path-signatures.svg',
+    'alt': 'Illustrative market paths and path representations; not experimental results.',
   }
 accent: '#8ba6b4'
 ---

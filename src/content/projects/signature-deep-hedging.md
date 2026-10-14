@@ -8,8 +8,8 @@ technologies: ['Python', 'PyTorch', 'Path signatures']
 editorialStatus: 'draft'
 poster:
   {
-    'src': '/media/project-placeholder.svg',
-    'alt': 'Illustrative abstract curves; not experimental results.',
+    'src': '/media/signature-deep-hedging.svg',
+    'alt': 'Illustrative wireframe hedging surface; not experimental results.',
   }
 accent: '#c9ae7a'
 ---

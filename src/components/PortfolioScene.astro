@@ -1,0 +1,18 @@
+---
+import type { SceneProject } from '../scene/types';
+interface Props {
+  projects: SceneProject[];
+}
+const { projects } = Astro.props;
+---
+
+<div
+  class="scene-stage"
+  data-scene-root
+  data-projects={JSON.stringify(projects)}
+  aria-hidden="true"
+></div>
+<script>
+  import { mountPortfolioScene } from '../scene/mount';
+  mountPortfolioScene();
+</script>

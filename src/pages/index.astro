@@ -1,29 +1,21 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import ProjectList from '../components/ProjectList.astro';
+import Hero from '../components/Hero.astro';
+import ProjectGallery from '../components/ProjectGallery.astro';
+import AboutTeaser from '../components/AboutTeaser.astro';
+import PortfolioScene from '../components/PortfolioScene.astro';
 import { site } from '../data/site';
-import { getProjects } from '../lib/projects';
+import { getProjects, toSceneProject } from '../lib/projects';
+import '../styles/home.css';
 const projects = await getProjects();
 ---
 
-<BaseLayout title={site.headline}>
-  <section class="intro" aria-labelledby="intro-title">
-    <p class="eyebrow">{site.headline}</p>
-    <h1 id="intro-title">{site.name}</h1>
-    <p class="lead">
-      Models, methods, and systems at the intersection of finance and machine
-      learning.
-    </p>
-    <div class="actions">
-      <a href="#projects">
-        Explore my work <span aria-hidden="true">↓</span>
-      </a>
-      <a href="/about/">About me</a>
-    </div>
-  </section>
-  <section id="projects" aria-labelledby="projects-title">
-    <p class="eyebrow">Research & engineering</p>
-    <h2 id="projects-title">Projects</h2>
-    <ProjectList projects={projects} />
-  </section>
+<BaseLayout title={site.headline} home>
+  <PortfolioScene projects={projects.map(toSceneProject)} />
+  <Hero />
+  <div class="atmosphere" aria-hidden="true">
+    <span>From possibilities to practice</span>
+  </div>
+  <ProjectGallery projects={projects} />
+  <AboutTeaser />
 </BaseLayout>

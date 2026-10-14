@@ -7,20 +7,87 @@ import { site } from '../data/site';
   title="About"
   description={`About ${site.name}: quantitative finance, machine learning and engineering.`}
 >
-  <article class="prose">
-    <div class="page-heading">
-      <p class="eyebrow">Background</p>
-      <h1>About me</h1>
+  <article class="editorial-page wrap">
+    <div class="about-layout">
+      <div>
+        <p class="eyebrow">02 / The person behind the models</p>
+        <h1>
+          A curious mind.
+          <br />
+          <em>A rigorous approach.</em>
+        </h1>
+        <p class="lead">{site.biography}</p>
+        <a class="text-link" href={site.links.github}>
+          Find me on GitHub <span aria-hidden="true">↗</span>
+        </a>
+      </div>
+      <div class="about-diagram" aria-hidden="true">
+        <svg viewBox="0 0 480 480" fill="none">
+          <circle
+            cx="240"
+            cy="240"
+            r="172"
+            stroke="#8e9690"
+            stroke-width=".6"
+          />
+          <circle
+            cx="240"
+            cy="240"
+            r="119"
+            stroke="#8e9690"
+            stroke-width=".6"
+          />
+          <circle cx="240" cy="240" r="68" stroke="#8e9690" stroke-width=".6" />
+          <ellipse
+            cx="240"
+            cy="240"
+            rx="172"
+            ry="55"
+            stroke="#785b32"
+            stroke-width=".8"
+            transform="rotate(-38 240 240)"
+          />
+          <ellipse
+            cx="240"
+            cy="240"
+            rx="172"
+            ry="55"
+            stroke="#617d84"
+            stroke-width=".8"
+            transform="rotate(38 240 240)"
+          />
+          <path
+            d="M240 28V452M28 240H452"
+            stroke="#8e9690"
+            stroke-width=".6"
+            stroke-dasharray="2 7"
+          />
+          <circle cx="240" cy="240" r="5" fill="#785b32" />
+          <circle cx="375" cy="135" r="4" fill="#617d84" />
+          <circle cx="134" cy="330" r="4" fill="#785b32" />
+        </svg>
+        <p class="eyebrow">Finance × Mathematics × Engineering</p>
+      </div>
     </div>
-    <p class="lead">{site.biography}</p>
-    <h2>Areas of focus</h2>
-    <p>
-      Stochastic modeling, reinforcement learning, path signatures, neural
-      hedging, optimization and recommendation systems.
-    </p>
-    <p>
-      <a href="/projects/">Explore the projects</a> or{' '}
-      <a href={site.links.github}>find me on GitHub</a>.
-    </p>
+    <div class="case-body">
+      <aside>
+        <p class="eyebrow">Areas of focus</p>
+      </aside>
+      <div class="prose">
+        <h2>Working across disciplines.</h2>
+        <p>
+          Stochastic modeling, reinforcement learning, path signatures, neural
+          hedging, optimization and recommendation systems.
+        </p>
+        <p>
+          I am interested in the whole path from a mathematical question to an
+          implementation: how to represent a problem, evaluate a method, and
+          understand where it stops working.
+        </p>
+        <a class="text-link" href="/projects/">
+          Explore the projects <span aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </div>
   </article>
 </BaseLayout>

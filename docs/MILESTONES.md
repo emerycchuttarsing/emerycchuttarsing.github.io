@@ -7,7 +7,7 @@ pour les fonctionnalités et le mélange Ing Tian × Mirage.
 | Jalon | Périmètre                                                          | État    |
 | ----- | ------------------------------------------------------------------ | ------- |
 | 1     | Structure du projet, dépendances, données, routes et vérifications | Terminé |
-| 2     | Mise en page et squelette visuel, composition Ing Tian × Mirage    | À venir |
+| 2     | Mise en page et squelette visuel, composition Ing Tian × Mirage    | Terminé |
 | 3     | Composants de contenu principaux, panneaux et études de cas        | À venir |
 | 4     | Interactivité, états de scène et connexions API si nécessaires     | À venir |
 | 5     | Responsive design, finitions CSS et recette finale                 | À venir |
@@ -28,7 +28,7 @@ manuel depuis `main` lors de la livraison finale.
 
 Commit prévu : `chore: complete milestone 1 project foundation`.
 
-## Vérifications réalisées
+## Vérifications du jalon 1
 
 Vérifications du 13 octobre 2026, sur le Mac local :
 
@@ -53,5 +53,23 @@ sur GitHub. Les essais de la scène, du responsive final et des autres navigateu
 appartiennent aux prochains jalons.
 
 Les textes sont provisoires et ne contiennent pas de revendications chiffrées.
-Le moteur 3D n'est pas encore implémenté : ses types, sa configuration et son
-contrat de cycle de vie sont prêts pour la suite.
+À ce point de contrôle, seuls les types, la configuration et le contrat du moteur
+3D étaient présents ; son implémentation arrive au jalon 2.
+
+## Jalon 2 — réalisé
+
+- Composition ivoire/graphite, nom ample, navigation en capsule et terrain 3D.
+- Sept panneaux éclairés dans la scène commune, trois phares et quatre secondaires.
+- Sept posters SVG distincts, illustratifs et remplaçables depuis les fiches.
+- Identité appliquée à l’index, aux sept études, à About et à la 404.
+- Replis HTML, clavier, mouvement réduit et cycle de vie vérifiés.
+- `npm run verify` réussi : 25 fichiers, zéro erreur/avertissement/indication
+  dans Astro Check ; onze pages et 152 références internes validées.
+- Recette Chrome : les quatre dimensions prévues, les sept parcours aller/retour,
+  absence de boucle permanente et un seul canvas après navigation répétée.
+
+Commit de contrôle : `feat: complete milestone 2 visual layout`.
+Les captures, mesures et limites sont dans [la recette du jalon 2](validation/jalon-2/README.md).
+
+Les animations de transition, les aperçus sélectionnés et les vidéos seront
+implémentés au jalon 4 ; les finitions responsive et performances au jalon 5.

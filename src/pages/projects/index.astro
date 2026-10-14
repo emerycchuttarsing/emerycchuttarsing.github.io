@@ -9,18 +9,21 @@ const projects = await getProjects();
   title="Projects"
   description="Explore seven projects in quantitative finance, machine learning and data science."
 >
-  <div class="page-heading">
-    <p class="eyebrow">Research & engineering</p>
-    <h1>Projects</h1>
-    <p class="lead">
-      From financial trajectories to recommendation systems: a collection of
-      applied research and engineering work.
-    </p>
+  <div class="editorial-page wrap">
+    <header class="page-heading">
+      <p class="eyebrow">01 / The project index</p>
+      <h1>
+        Ideas into
+        <br />
+        <em>practice.</em>
+      </h1>
+      <p class="lead">
+        From financial trajectories to recommendation systems. Seven
+        explorations in applied research and engineering.
+      </p>
+    </header>
+    <section aria-label="All projects">
+      <ProjectList projects={projects} />
+    </section>
   </div>
-  <section aria-labelledby="all-projects-title">
-    <h2 id="all-projects-title" class="visually-hidden">
-      All projects
-    </h2>
-    <ProjectList projects={projects} />
-  </section>
 </BaseLayout>

@@ -8,8 +8,8 @@ technologies: ['Python', 'Image analysis', 'Classification']
 editorialStatus: 'draft'
 poster:
   {
-    'src': '/media/project-placeholder.svg',
-    'alt': 'Illustrative abstract curves; not experimental results.',
+    'src': '/media/visual-learning.svg',
+    'alt': 'Illustrative image tiles and feature patterns; not model outputs.',
   }
 accent: '#92aaad'
 ---

@@ -3,13 +3,21 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout title="Page not found" noindex>
-  <div class="page-heading">
-    <p class="eyebrow">404</p>
-    <h1>Page not found</h1>
+  <div class="error-page wrap">
+    <p class="eyebrow">404 / Outside the mapped space</p>
+    <h1>
+      A path
+      <br />
+      <em>less defined.</em>
+    </h1>
     <p class="lead">This address does not lead to a page in the portfolio.</p>
     <div class="actions">
-      <a href="/">Return home</a>
-      <a href="/projects/">Explore projects</a>
+      <a class="text-link" href="/">
+        Return home <span aria-hidden="true">↗</span>
+      </a>
+      <a class="text-link" href="/projects/">
+        Explore projects <span aria-hidden="true">↗</span>
+      </a>
     </div>
   </div>
 </BaseLayout>
