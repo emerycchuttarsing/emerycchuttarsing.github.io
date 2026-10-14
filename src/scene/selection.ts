@@ -3,12 +3,13 @@ import type { SceneProject } from './types';
 const historyKey = 'portfolioPreview';
 
 export function createSelection(
+  dialog: HTMLDialogElement,
+  section: HTMLElement,
   projects: SceneProject[],
   onChange: (project: SceneProject | undefined) => void,
 ) {
-  const dialog = document.querySelector<HTMLDialogElement>('#project-preview')!;
   const triggers = [
-    ...document.querySelectorAll<HTMLButtonElement>('[data-preview]'),
+    ...section.querySelectorAll<HTMLButtonElement>('[data-preview]'),
   ];
   const events = new AbortController();
   let selected: SceneProject | undefined;

@@ -1,11 +1,13 @@
 ---
 title: 'Visual Learning & Image Analysis'
+displayTitle: 'Visual Learning & Image Analysis'
 summary: 'Exploring satellite imagery, image representations and classification for disaster and damage analysis.'
 order: 6
 featured: false
 categories: ['Computer vision', 'Data science']
 technologies: ['Python', 'Image analysis', 'Classification']
 editorialStatus: 'draft'
+scenePoster: /media/scene/visual-learning.svg
 poster:
   {
     'caption': 'Conceptual image tiles and feature regions. These are original illustrations, not satellite samples or model outputs.',

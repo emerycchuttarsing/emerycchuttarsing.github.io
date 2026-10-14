@@ -1,78 +1,84 @@
 import * as THREE from 'three';
 import { sceneConfig } from './config';
 import { createTerrain } from './terrain';
-import type { SceneController, SceneProject } from './types';
+import { createGround } from './ground';
+import { panelLayout, projectedPanel } from './layout';
+import { mediaLight } from './lighting';
+import { createPostprocessing } from './postprocessing';
+import type { SceneController, SceneElements, SceneProject } from './types';
 
-const clamp = (value: number) => Math.max(0, Math.min(1, value));
-const smooth = (value: number) => {
-  const t = clamp(value);
+const clamp = THREE.MathUtils.clamp;
+const mix = THREE.MathUtils.lerp;
+const smooth = (n: number) => {
+  const t = clamp(n, 0, 1);
   return t * t * (3 - 2 * t);
 };
-const mix = THREE.MathUtils.lerp;
-
+function approach(
+  current: number,
+  destination: number,
+  dt: number,
+  duration: number,
+) {
+  const next = mix(current, destination, 1 - Math.exp((-dt * 7) / duration));
+  return Math.abs(next - destination) < 0.001 ? destination : next;
+}
 export function createPortfolioScene(
-  root: HTMLElement,
+  elements: SceneElements,
   projects: SceneProject[],
+  onVisibility: (ids: string[]) => void,
 ): SceneController {
-  const hero = document.querySelector<HTMLElement>('[data-hero]')!;
-  const gallery = document.querySelector<HTMLElement>('[data-gallery]')!;
-  const preview = document.querySelector<HTMLElement>('[data-preview-panel]')!;
-  const previewScene = document.querySelector<HTMLElement>(
-    '[data-preview-scene]',
-  )!;
-  const dialog = document.querySelector<HTMLDialogElement>('#project-preview')!;
+  const { root, section, hero, preview, previewScene, dialog, mode } = elements;
   const renderer = new THREE.WebGLRenderer({
     alpha: true,
     antialias: true,
-    powerPreference: 'low-power',
+    powerPreference: 'high-performance',
   });
   renderer.setClearColor(0x000000, 0);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.1;
+  renderer.toneMappingExposure = 1.15;
   root.append(renderer.domElement);
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 120);
+  const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 200);
   scene.add(
     new THREE.HemisphereLight(
-      '#f1ede4',
-      '#566570',
+      '#d7e2df',
+      '#171c1e',
       sceneConfig.lighting.ambient,
     ),
   );
-  const key = new THREE.DirectionalLight('#e5d3ad', sceneConfig.lighting.key);
-  key.position.set(-8, 12, 10);
+  const key = new THREE.DirectionalLight('#b4c8c9', sceneConfig.lighting.key);
+  key.position.set(-8, 9, 12);
   scene.add(key);
-  const rim = new THREE.DirectionalLight('#8cbbcc', sceneConfig.lighting.rim);
-  rim.position.set(12, 3, 6);
+  const rim = new THREE.DirectionalLight('#e2c79d', sceneConfig.lighting.rim);
+  rim.position.set(10, 4, -3);
   scene.add(rim);
   const terrain = createTerrain();
   scene.add(terrain.points);
+  const ground = createGround(projects.length);
+  scene.add(ground.mesh);
+  const effects = createPostprocessing(renderer, scene, camera);
   const geometry = new THREE.BoxGeometry(1, 1, 1);
-  const edges = new THREE.EdgesGeometry(geometry);
+  const edgeGeometry = new THREE.EdgesGeometry(geometry);
   const materials: THREE.Material[] = [terrain.material];
   const textures: THREE.Texture[] = [];
   const panels = projects.map((project, index) => {
-    const anchor = document.querySelector<HTMLElement>(
-      `[data-panel="${project.id}"]`,
-    )!;
     const frame = new THREE.MeshStandardMaterial({
-      color: '#5c6362',
-      metalness: 0.6,
-      roughness: 0.38,
+      color: '#535b5a',
+      metalness: 0.72,
+      roughness: 0.26,
       transparent: true,
     });
     const front = new THREE.MeshBasicMaterial({
-      color: '#ffffff',
-      toneMapped: false,
+      color: new THREE.Color(1.65, 1.65, 1.65),
       transparent: true,
+      toneMapped: false,
     });
     const border = new THREE.LineBasicMaterial({
-      color: '#a1acaa',
+      color: '#c4d0ce',
       transparent: true,
-      opacity: 0.28,
+      opacity: 0.32,
     });
-    materials.push(frame, front, border);
     const mesh = new THREE.Mesh(geometry, [
       frame,
       frame,
@@ -81,45 +87,46 @@ export function createPortfolioScene(
       front,
       frame,
     ]);
-    mesh.add(new THREE.LineSegments(edges, border));
+    mesh.add(new THREE.LineSegments(edgeGeometry, border));
     mesh.visible = false;
     scene.add(mesh);
+    materials.push(frame, front, border);
     return {
-      anchor,
+      project,
+      index,
       mesh,
       frame,
       front,
       border,
-      project,
-      index,
       poster: undefined as THREE.Texture | undefined,
       video: undefined as THREE.VideoTexture | undefined,
-      playing: false,
+      element: undefined as HTMLVideoElement | undefined,
+      emphasis: 0,
     };
   });
-  let disposed = false;
-  let paused = document.hidden;
-  let frameId = 0;
-  let width = 1;
-  let height = 1;
-  let texturesReady = false;
-  let lastTime = 0;
-  let progress = -1;
-  let panelProgress = -1;
-  let selectionMix = 0;
-  let selected: string | undefined;
-  let focusId: string | undefined;
-  let previewRect: DOMRect | undefined;
+  let disposed = false,
+    paused = document.hidden,
+    frameId = 0,
+    width = 1,
+    height = 1,
+    texturesReady = false,
+    lastTime = 0;
+  let progress = mode === 'index' ? 1 : -1,
+    panelProgress = progress,
+    selectionMix = 0;
+  let selected: string | undefined,
+    focusId: string | undefined,
+    activeId: string | undefined;
   const events = new AbortController();
-  const direction = new THREE.Vector3();
-  const right = new THREE.Vector3();
-  const up = new THREE.Vector3();
-  const position = new THREE.Vector3();
-  const target = new THREE.Vector3();
-  const accent = new THREE.Color();
-  const defaultRim = new THREE.Color('#8cbbcc');
   const html = document.documentElement;
-
+  const direction = new THREE.Vector3(),
+    right = new THREE.Vector3(),
+    up = new THREE.Vector3();
+  const position = new THREE.Vector3(),
+    target = new THREE.Vector3(),
+    destinationScale = new THREE.Vector3();
+  const quaternion = new THREE.Quaternion();
+  const color = new THREE.Color();
   function placeAtPixel(
     x: number,
     y: number,
@@ -140,37 +147,27 @@ export function createPortfolioScene(
     delete html.dataset['terrainReady'];
     delete html.dataset['selectedReady'];
   }
-  function approach(
-    current: number,
-    destination: number,
-    dt: number,
-    duration: number,
-  ) {
-    if (Math.abs(current - destination) < 0.001) return destination;
-    const next = mix(current, destination, 1 - Math.exp((-dt * 7) / duration));
-    return Math.abs(next - destination) < 0.001 ? destination : next;
-  }
   function render(now: number) {
     frameId = 0;
     if (disposed || paused) return;
-    const heroRect = hero.getBoundingClientRect();
-    const galleryRect = gallery.getBoundingClientRect();
+    const rect = section.getBoundingClientRect();
+    const heroRect = hero?.getBoundingClientRect();
     const visible =
       Boolean(selected) ||
-      heroRect.bottom > 0 ||
-      (galleryRect.top < height && galleryRect.bottom > 0);
+      (heroRect ? heroRect.bottom > 0 : false) ||
+      (rect.top < height && rect.bottom > 0);
     root.hidden = !visible;
     if (!visible) {
-      restorePosters();
+      onVisibility([]);
       lastTime = 0;
       return;
     }
     const dt = lastTime ? Math.min(100, now - lastTime) : 16.7;
     lastTime = now;
-    const destination = clamp(
-      (height * 0.9 - galleryRect.top) / (height * 0.9),
-    );
-    const selectionDestination = selected ? 1 : 0;
+    const destination =
+      mode === 'index'
+        ? 1
+        : clamp((height * 0.9 - rect.top) / (height * 0.9), 0, 1);
     if (progress < 0) progress = panelProgress = destination;
     progress = approach(
       progress,
@@ -186,125 +183,182 @@ export function createPortfolioScene(
     );
     selectionMix = approach(
       selectionMix,
-      selectionDestination,
+      selected ? 1 : 0,
       dt,
-      sceneConfig.timing.cameraDurationMs,
+      sceneConfig.timing.selectionDurationMs,
     );
+    const travel = smooth(progress);
     root.dataset['state'] = selected
       ? 'selected'
-      : progress <= 0.001
+      : progress === 0
         ? 'hero'
-        : progress >= 0.999
+        : progress === 1
           ? 'overview'
           : 'reveal';
     root.dataset['progress'] = progress.toFixed(3);
     root.dataset['selectionProgress'] = selectionMix.toFixed(3);
-    const desktop =
-      width >= sceneConfig.panels.minWidth &&
-      height >= sceneConfig.panels.minHeight;
-    const poses = sceneConfig.camera[desktop ? 'desktop' : 'compact'];
-    const travel = smooth(progress);
-    camera.position
-      .fromArray(poses.hero.position)
-      .lerp(target.fromArray(poses.overview.position), travel);
-    camera.position.z -= selectionMix * 0.6;
+    const mobile = width < 640;
+    const poses = sceneConfig.camera[mobile ? 'compact' : 'desktop'];
+    target.fromArray(poses.overview.position);
+    const worldWidth = mobile ? 8.5 : 18.8;
+    target.z = Math.max(
+      target.z,
+      worldWidth /
+        (2 *
+          Math.tan(THREE.MathUtils.degToRad(poses.overview.fov / 2)) *
+          (width / height)),
+    );
+    if (!mobile) target.y = 4.8 * (target.z / 36);
+    camera.position.fromArray(poses.hero.position).lerp(target, travel);
     camera.fov = mix(poses.hero.fov, poses.overview.fov, travel);
     camera.aspect = width / height;
     position
       .fromArray(poses.hero.target)
       .lerp(target.fromArray(poses.overview.target), travel);
     camera.lookAt(position);
+    const compactShift =
+      width < 640
+        ? height / 2 - 270
+        : width < 1000
+          ? height / 2 - 390
+          : Math.min(0, height / 2 - 400);
+    camera.setViewOffset(
+      width,
+      height,
+      0,
+      (-rect.top + compactShift) * travel * (1 - selectionMix),
+      width,
+      height,
+    );
     camera.updateProjectionMatrix();
     camera.updateMatrixWorld();
     camera.getWorldDirection(direction);
     right.set(1, 0, 0).applyQuaternion(camera.quaternion);
     up.set(0, 1, 0).applyQuaternion(camera.quaternion);
-    const scrollTerrainY = mix(
-      heroRect.top + heroRect.height * 0.86,
-      galleryRect.top + Math.min(galleryRect.height, height) * 0.82,
-      travel,
-    );
-    const terrainY = mix(scrollTerrainY, height * 0.88, selectionMix);
-    const terrainUnit = placeAtPixel(width * 0.48, terrainY, 24, position);
-    terrain.points.position.copy(position);
+    const heroY = heroRect
+      ? heroRect.top + heroRect.height * 0.86
+      : height * 0.86;
+    const terrainUnit = placeAtPixel(width * 0.48, heroY, 24, position);
+    terrain.points.position.copy(position).multiplyScalar(1 - travel);
     terrain.points.rotation.set(
-      mix(0.24, 0.16, travel),
-      -0.1 + travel * 0.06,
-      -0.04,
+      0.24 * (1 - travel),
+      -0.1 * (1 - travel),
+      -0.04 * (1 - travel),
     );
-    terrain.points.scale.setScalar((terrainUnit * Math.max(width, 1100)) / 29);
+    const heroScale = (terrainUnit * Math.max(width, 1100)) / 29;
+    terrain.points.scale.set(
+      mix(heroScale, 1, travel),
+      mix(heroScale, 0.24, travel),
+      mix(heroScale, 1, travel),
+    );
     terrain.material.uniforms['opacity']!.value =
-      mix(
-        sceneConfig.terrain.heroOpacity,
-        sceneConfig.terrain.overviewOpacity,
-        travel,
-      ) *
-      (1 - selectionMix * 0.65);
+      sceneConfig.terrain.heroOpacity *
+      (1 - smooth((progress - 0.2) / 0.6)) *
+      (1 - selectionMix);
     terrain.material.uniforms['overview']!.value = travel;
-    const selectedProject = projects.find((project) => project.id === focusId);
-    accent.set(selectedProject?.accent ?? '#8cbbcc');
-    rim.color.copy(defaultRim).lerp(accent, selectionMix);
-    rim.intensity = sceneConfig.lighting.rim * (1 + selectionMix * 0.5);
-    if (selected) previewRect = preview.getBoundingClientRect();
+    ground.uniforms.opacity.value =
+      smooth((progress - 0.18) / 0.56) * (1 - selectionMix * 0.88);
+    ground.mesh.visible = ground.uniforms.opacity.value > 0.001;
+    const end = preview.getBoundingClientRect();
+    let highlighting = false;
     const showPanels =
-      desktop && texturesReady && (panelProgress > 0.001 || Boolean(selected));
+      texturesReady && (panelProgress > 0.02 || Boolean(selected));
     for (const panel of panels) {
-      const { anchor, mesh, index, front, frame, border, project } = panel;
-      const focused = project.id === focusId;
+      const { project, index, mesh, front, frame, border } = panel;
+      const layout = panelLayout(project, width);
+      const desired = activeId === project.id ? 1 : 0;
+      panel.emphasis = approach(
+        panel.emphasis,
+        desired,
+        dt,
+        sceneConfig.timing.highlightDurationMs,
+      );
+      if (panel.emphasis !== desired) highlighting = true;
+      const amount = focusId === project.id ? smooth(selectionMix) : 0;
       const opacity =
-        (focused && selected
+        (selected && focusId === project.id
           ? 1
-          : smooth((panelProgress - 0.03 * index) / (0.82 - 0.03 * index))) *
-        (focused ? 1 : 1 - selectionMix);
+          : smooth((panelProgress - 0.27 - 0.025 * index) / 0.55)) *
+        (focusId === project.id ? 1 : 1 - selectionMix);
       mesh.visible = showPanels && opacity > 0.001;
-      if (!mesh.visible) continue;
-      const rect = anchor.getBoundingClientRect();
-      const amount = focused ? smooth(selectionMix) : 0;
-      const end = previewRect ?? rect;
-      const x = mix(
-        rect.left + rect.width / 2,
-        end.left + end.width / 2,
-        amount,
-      );
-      const y = mix(
-        rect.top + rect.height / 2 + (1 - panelProgress) * 80,
-        end.top + end.height / 2,
-        amount,
-      );
-      const distance = mix(18 + (index % 3) * 0.65, 14, amount);
-      const unit = placeAtPixel(x, y, distance, mesh.position);
-      mesh.quaternion.copy(camera.quaternion);
-      mesh.rotateX(-sceneConfig.panels.tilt * mix(0.65, 0.2, amount));
-      mesh.rotateY(
-        ((index % 3) - 1) * sceneConfig.panels.tilt * mix(1.3, 0.35, amount),
-      );
-      mesh.rotateZ((index % 2 === 0 ? 1 : -1) * 0.012 * (1 - amount));
-      const panelWidth =
-        mix(rect.width * sceneConfig.panels.scale, end.width * 0.97, amount) *
-        unit;
-      mesh.scale.set(
-        panelWidth,
-        mix(rect.height * sceneConfig.panels.scale, end.height * 0.97, amount) *
-          unit,
-        panelWidth * sceneConfig.panels.thickness,
-      );
+      mesh.position.copy(layout.position);
+      mesh.position.y += (1 - panelProgress) * -0.35 + panel.emphasis * 0.06;
+      mesh.scale.copy(layout.scale).multiplyScalar(1 + panel.emphasis * 0.035);
+      mesh.quaternion.copy(layout.quaternion);
+      if (amount > 0) {
+        const unit = placeAtPixel(
+          end.left + end.width / 2,
+          end.top + end.height / 2,
+          16,
+          position,
+        );
+        mesh.position.lerp(position, amount);
+        destinationScale.set(
+          end.width * 0.97 * unit,
+          end.height * 0.97 * unit,
+          0.08,
+        );
+        mesh.scale.lerp(destinationScale, amount);
+        quaternion.copy(camera.quaternion);
+        mesh.quaternion.slerp(quaternion, amount);
+      }
+      const map = front.map;
+      if (map) {
+        const aspect = mesh.scale.x / mesh.scale.y;
+        map.repeat.set(Math.min(1, aspect / 1.6), Math.min(1, 1.6 / aspect));
+        map.offset.set((1 - map.repeat.x) / 2, (1 - map.repeat.y) / 2);
+      }
       front.opacity = frame.opacity = opacity;
-      border.opacity = opacity * mix(0.28, 0.65, amount);
-      frame.color.set(focused ? project.accent : '#5c6362');
+      border.opacity = opacity * (0.22 + panel.emphasis * 0.4);
+      front.color.setScalar(1.7 + panel.emphasis * 0.45);
+      frame.color
+        .set(project.accent)
+        .multiplyScalar(0.5 + panel.emphasis * 0.3);
+      ground.uniforms.lights.value[index]!.copy(layout.position).y = 1.35;
+      mediaLight(project.id, project.accent, panel.element, color);
+      ground.uniforms.colors.value[index]!.copy(color);
+      ground.uniforms.strengths.value[index] = mix(1, 1.8, panel.emphasis);
     }
     try {
-      renderer.render(scene, camera);
+      if (travel > 0.995 || selected) {
+        renderer.setClearColor(0x000000, 1);
+        effects.render();
+      } else {
+        renderer.setClearColor(0x000000, 0);
+        renderer.render(scene, camera);
+      }
       html.dataset['terrainReady'] = 'true';
       html.dataset['panelsReady'] = String(showPanels);
       html.dataset['selectedReady'] = String(showPanels && Boolean(selected));
+      scene.updateMatrixWorld(true);
+      const bounds = panels.map((p) => ({
+        id: p.project.id,
+        visible: p.mesh.visible && p.front.opacity > 0.1,
+        ...projectedPanel(p.mesh, camera, width, height),
+      }));
+      root.dataset['panelBounds'] = JSON.stringify(bounds);
+      onVisibility(
+        bounds
+          .filter(
+            (p) =>
+              p.visible &&
+              p.bottom > 0 &&
+              p.top < height &&
+              p.right > 0 &&
+              p.left < width,
+          )
+          .map((p) => p.id),
+      );
+      root.dataset['gpuResources'] = JSON.stringify(renderer.info.memory);
     } catch {
       controller.setState({ kind: 'fallback', reason: 'load-error' });
       return;
     }
     if (
-      Math.abs(progress - destination) > 0.001 ||
-      Math.abs(panelProgress - destination) > 0.001 ||
-      Math.abs(selectionMix - selectionDestination) > 0.001
+      progress !== destination ||
+      panelProgress !== destination ||
+      selectionMix !== (selected ? 1 : 0) ||
+      highlighting
     )
       invalidate();
     else if (!selected) focusId = undefined;
@@ -322,15 +376,18 @@ export function createPortfolioScene(
     height = Math.max(1, nextHeight);
     const ratio = Math.min(
       window.devicePixelRatio || 1,
-      sceneConfig.quality.maxPixelRatio,
+      width < 1000 ? 1 : sceneConfig.quality.maxPixelRatio,
     );
     renderer.setPixelRatio(ratio);
     renderer.setSize(width, height, false);
+    effects.resize(width, height, ratio);
     terrain.material.uniforms['pixelRatio']!.value = ratio;
     invalidate();
   }
   const observer = new ResizeObserver(() => resize());
-  [hero, gallery, preview].forEach((element) => observer.observe(element));
+  [hero, section, preview].forEach((element) => {
+    if (element) observer.observe(element);
+  });
   const controller: SceneController = {
     setState(state) {
       if (disposed) return;
@@ -348,11 +405,16 @@ export function createPortfolioScene(
       delete html.dataset['selectedReady'];
       resize();
     },
+    setActive(id) {
+      activeId = id;
+      root.dataset['activeProject'] = id ?? '';
+      invalidate();
+    },
     setMedia(id, video) {
       if (disposed) return;
-      const panel = panels.find((item) => item.project.id === id);
+      const panel = panels.find((p) => p.project.id === id);
       if (!panel) return;
-      panel.playing = Boolean(video);
+      panel.element = video ?? undefined;
       if (video && !panel.video) {
         panel.video = new THREE.VideoTexture(video);
         panel.video.colorSpace = THREE.SRGBColorSpace;
@@ -383,10 +445,12 @@ export function createPortfolioScene(
       observer.disconnect();
       restorePosters();
       terrain.geometry.dispose();
+      ground.dispose();
+      effects.dispose();
       geometry.dispose();
-      edges.dispose();
-      materials.forEach((material) => material.dispose());
-      textures.forEach((texture) => texture.dispose());
+      edgeGeometry.dispose();
+      materials.forEach((m) => m.dispose());
+      textures.forEach((t) => t.dispose());
       scene.clear();
       renderer.dispose();
       renderer.forceContextLoss();
@@ -431,18 +495,16 @@ export function createPortfolioScene(
         4,
         renderer.capabilities.getMaxAnisotropy(),
       );
-      texture.repeat.y = 0.94;
-      texture.offset.y = 0.03;
       textures.push(texture);
       panel.poster = texture;
-      if (!panel.playing) {
+      if (!panel.element) {
         panel.front.map = texture;
         panel.front.needsUpdate = true;
       }
     }),
   ).then((results) => {
     if (disposed) return;
-    texturesReady = results.every((result) => result.status === 'fulfilled');
+    texturesReady = results.every((r) => r.status === 'fulfilled');
     if (!texturesReady) root.dataset['fallbackReason'] = 'load-error';
     invalidate();
   });

@@ -1,0 +1,368 @@
+{
+  "checkedAt": "2026-10-14T21:13:02.720Z",
+  "browser": "155.0.8059.79",
+  "viewports": [
+    {
+      "width": 1440,
+      "height": 900,
+      "overflow": false,
+      "panels": [
+        {
+          "id": "rl-path-signatures",
+          "top": 288,
+          "bottom": 354
+        },
+        {
+          "id": "signature-deep-hedging",
+          "top": 354,
+          "bottom": 420
+        },
+        {
+          "id": "music-recommendation",
+          "top": 420,
+          "bottom": 486
+        },
+        {
+          "id": "tinystories-transformer",
+          "top": 486,
+          "bottom": 552
+        },
+        {
+          "id": "link-prediction",
+          "top": 552,
+          "bottom": 618
+        },
+        {
+          "id": "visual-learning",
+          "top": 618,
+          "bottom": 684
+        },
+        {
+          "id": "retail-forecasting",
+          "top": 684,
+          "bottom": 750
+        }
+      ],
+      "canvasCount": 1,
+      "flags": {
+        "terrainReady": "true",
+        "panelsReady": "true",
+        "selectedReady": "false"
+      },
+      "posterOpacity": "0"
+    },
+    {
+      "width": 1280,
+      "height": 800,
+      "overflow": false,
+      "panels": [
+        {
+          "id": "rl-path-signatures",
+          "top": 254,
+          "bottom": 314
+        },
+        {
+          "id": "signature-deep-hedging",
+          "top": 314,
+          "bottom": 374
+        },
+        {
+          "id": "music-recommendation",
+          "top": 374,
+          "bottom": 434
+        },
+        {
+          "id": "tinystories-transformer",
+          "top": 434,
+          "bottom": 494
+        },
+        {
+          "id": "link-prediction",
+          "top": 494,
+          "bottom": 554
+        },
+        {
+          "id": "visual-learning",
+          "top": 554,
+          "bottom": 614
+        },
+        {
+          "id": "retail-forecasting",
+          "top": 614,
+          "bottom": 674
+        }
+      ],
+      "canvasCount": 1,
+      "flags": {
+        "terrainReady": "true",
+        "panelsReady": "true",
+        "selectedReady": "false"
+      },
+      "posterOpacity": "0"
+    },
+    {
+      "width": 768,
+      "height": 1024,
+      "overflow": false,
+      "panels": [
+        {
+          "id": "rl-path-signatures",
+          "top": 305.671875,
+          "bottom": 371.671875
+        },
+        {
+          "id": "signature-deep-hedging",
+          "top": 371.671875,
+          "bottom": 437.671875
+        },
+        {
+          "id": "music-recommendation",
+          "top": 437.671875,
+          "bottom": 503.671875
+        },
+        {
+          "id": "tinystories-transformer",
+          "top": 503.671875,
+          "bottom": 569.671875
+        },
+        {
+          "id": "link-prediction",
+          "top": 569.671875,
+          "bottom": 635.671875
+        },
+        {
+          "id": "visual-learning",
+          "top": 635.671875,
+          "bottom": 701.671875
+        },
+        {
+          "id": "retail-forecasting",
+          "top": 701.671875,
+          "bottom": 767.671875
+        }
+      ],
+      "canvasCount": 1,
+      "flags": {
+        "terrainReady": "true",
+        "panelsReady": "true",
+        "selectedReady": "false"
+      },
+      "posterOpacity": "0"
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "overflow": false,
+      "panels": [
+        {
+          "id": "rl-path-signatures",
+          "top": 309.078125,
+          "bottom": 413.171875
+        },
+        {
+          "id": "signature-deep-hedging",
+          "top": 413.171875,
+          "bottom": 513.171875
+        },
+        {
+          "id": "music-recommendation",
+          "top": 513.171875,
+          "bottom": 613.171875
+        },
+        {
+          "id": "tinystories-transformer",
+          "top": 613.171875,
+          "bottom": 713.171875
+        },
+        {
+          "id": "link-prediction",
+          "top": 713.171875,
+          "bottom": 813.171875
+        },
+        {
+          "id": "visual-learning",
+          "top": 813.171875,
+          "bottom": 913.171875
+        },
+        {
+          "id": "retail-forecasting",
+          "top": 913.171875,
+          "bottom": 1013.171875
+        }
+      ],
+      "canvasCount": 1,
+      "flags": {
+        "terrainReady": "true",
+        "panelsReady": "true",
+        "selectedReady": "false"
+      },
+      "posterOpacity": "0"
+    }
+  ],
+  "fallbacks": [
+    {
+      "kind": "no-js",
+      "width": 1440,
+      "height": 900,
+      "overflow": false,
+      "panels": [
+        {
+          "id": "rl-path-signatures",
+          "top": 288,
+          "bottom": 354
+        },
+        {
+          "id": "signature-deep-hedging",
+          "top": 354,
+          "bottom": 420
+        },
+        {
+          "id": "music-recommendation",
+          "top": 420,
+          "bottom": 486
+        },
+        {
+          "id": "tinystories-transformer",
+          "top": 486,
+          "bottom": 552
+        },
+        {
+          "id": "link-prediction",
+          "top": 552,
+          "bottom": 618
+        },
+        {
+          "id": "visual-learning",
+          "top": 618,
+          "bottom": 684
+        },
+        {
+          "id": "retail-forecasting",
+          "top": 684,
+          "bottom": 750
+        }
+      ],
+      "canvasCount": 0,
+      "flags": {},
+      "posterOpacity": "1",
+      "scripts": []
+    },
+    {
+      "kind": "reduced-motion",
+      "width": 1440,
+      "height": 900,
+      "overflow": false,
+      "panels": [
+        {
+          "id": "rl-path-signatures",
+          "top": 288,
+          "bottom": 354
+        },
+        {
+          "id": "signature-deep-hedging",
+          "top": 354,
+          "bottom": 420
+        },
+        {
+          "id": "music-recommendation",
+          "top": 420,
+          "bottom": 486
+        },
+        {
+          "id": "tinystories-transformer",
+          "top": 486,
+          "bottom": 552
+        },
+        {
+          "id": "link-prediction",
+          "top": 552,
+          "bottom": 618
+        },
+        {
+          "id": "visual-learning",
+          "top": 618,
+          "bottom": 684
+        },
+        {
+          "id": "retail-forecasting",
+          "top": 684,
+          "bottom": 750
+        }
+      ],
+      "canvasCount": 0,
+      "flags": {},
+      "posterOpacity": "1",
+      "scripts": [
+        "http://127.0.0.1:4321/_astro/PortfolioScene.astro_astro_type_script_index_0_lang.CabjKErT.js"
+      ]
+    },
+    {
+      "kind": "no-webgl",
+      "width": 1440,
+      "height": 900,
+      "overflow": false,
+      "panels": [
+        {
+          "id": "rl-path-signatures",
+          "top": 288,
+          "bottom": 354
+        },
+        {
+          "id": "signature-deep-hedging",
+          "top": 354,
+          "bottom": 420
+        },
+        {
+          "id": "music-recommendation",
+          "top": 420,
+          "bottom": 486
+        },
+        {
+          "id": "tinystories-transformer",
+          "top": 486,
+          "bottom": 552
+        },
+        {
+          "id": "link-prediction",
+          "top": 552,
+          "bottom": 618
+        },
+        {
+          "id": "visual-learning",
+          "top": 618,
+          "bottom": 684
+        },
+        {
+          "id": "retail-forecasting",
+          "top": 684,
+          "bottom": 750
+        }
+      ],
+      "canvasCount": 0,
+      "flags": {},
+      "posterOpacity": "1",
+      "scripts": [
+        "http://127.0.0.1:4321/_astro/PortfolioScene.astro_astro_type_script_index_0_lang.CabjKErT.js",
+        "http://127.0.0.1:4321/_astro/renderer.CGWUZSHw.js"
+      ]
+    }
+  ],
+  "navigation": {
+    "keyboardProjects": 7,
+    "openedReloadedAndReturned": [
+      "rl-path-signatures",
+      "signature-deep-hedging",
+      "music-recommendation",
+      "tinystories-transformer",
+      "link-prediction",
+      "visual-learning",
+      "retail-forecasting"
+    ],
+    "canvasAfterRepeatedNavigation": 1,
+    "idleRafRequests": 0,
+    "resize": true,
+    "motionPreferenceChange": true,
+    "contextLoss": true
+  },
+  "errors": []
+}

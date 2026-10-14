@@ -1,0 +1,67 @@
+---
+import type { Project } from '../lib/projects';
+import ProjectRows from './ProjectRows.astro';
+import '../styles/works.css';
+interface Props {
+  projects: Project[];
+  mode?: 'home' | 'index';
+}
+const { projects, mode = 'home' } = Astro.props;
+const Heading = mode === 'index' ? 'h1' : 'h2';
+---
+
+<section
+  class="projects-showcase"
+  id="projects"
+  aria-labelledby="projects-title"
+  data-gallery
+  data-mode={mode}
+>
+  <div class="works-fallback" aria-hidden="true">
+    <picture>
+      <source
+        media="(max-width: 639px)"
+        srcset="/media/works-still-mobile.webp"
+      />
+      <source
+        media="(max-width: 999px)"
+        srcset="/media/works-still-tablet.webp"
+      />
+      <img
+        src="/media/works-still-desktop.webp"
+        alt=""
+        width="1440"
+        height="900"
+      />
+    </picture>
+  </div>
+  <div class="works-content">
+    <header class="works-heading">
+      <Heading id="projects-title">Selected projects</Heading>
+      <button class="motion-toggle" type="button" data-motion-toggle hidden>
+        Pause previews
+      </button>
+    </header>
+    <ProjectRows projects={projects} />
+    <p class="works-note">
+      <span>Quantitative finance & machine learning</span>
+      <span>07 projects / 03 featured</span>
+    </p>
+  </div>
+  <div class="scene-media-sources" aria-hidden="true">
+    {projects
+      .filter((project) => project.data.video)
+      .map((project) => (
+        <video
+          class="panel-video"
+          data-project-video={project.id}
+          data-src={project.data.video}
+          muted
+          loop
+          playsinline
+          preload="none"
+          tabindex="-1"
+        />
+      ))}
+  </div>
+</section>

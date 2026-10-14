@@ -1,5 +1,6 @@
 ---
 title: 'Multi-Stage Music Recommendation'
+displayTitle: 'Multi-Stage Music Recommendation'
 summary: 'A playlist continuation pipeline combining ALS retrieval, SASRec re-ranking and MMR diversification.'
 order: 3
 featured: true
@@ -7,6 +8,7 @@ categories: ['Machine learning', 'Recommendation']
 technologies: ['Python', 'ALS', 'SASRec', 'Streamlit']
 editorialStatus: 'draft'
 video: '/media/music-recommendation.mp4'
+scenePoster: /media/scene/music-recommendation.svg
 poster:
   {
     'caption': 'Conceptual recommendation network and sound wave. The positions are illustrative, not learned embeddings.',

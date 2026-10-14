@@ -39,27 +39,35 @@ export interface SceneConfig {
     depth: number;
     pointSize: number;
     heroOpacity: number;
-    overviewOpacity: number;
-  };
-  panels: {
-    minWidth: number;
-    minHeight: number;
-    scale: number;
-    thickness: number;
-    tilt: number;
   };
   lighting: { ambient: number; key: number; rim: number };
   media: { desktopPlayingLimit: number; constrainedPlayingLimit: number };
   quality: { maxPixelRatio: number; targetFps: number };
-  timing: { cameraDurationMs: number; revealDurationMs: number };
+  timing: {
+    cameraDurationMs: number;
+    revealDurationMs: number;
+    selectionDurationMs: number;
+    highlightDurationMs: number;
+  };
 }
 
 export interface SceneController {
   setState(state: SceneState): void;
+  setActive(projectId: string | undefined): void;
   resize(width: number, height: number): void;
   pause(): void;
   resume(): void;
   dispose(): void;
   invalidate(): void;
   setMedia(projectId: string, video: HTMLVideoElement | null): void;
+}
+
+export interface SceneElements {
+  root: HTMLElement;
+  section: HTMLElement;
+  hero: HTMLElement | undefined;
+  dialog: HTMLDialogElement;
+  preview: HTMLElement;
+  previewScene: HTMLElement;
+  mode: 'home' | 'index';
 }

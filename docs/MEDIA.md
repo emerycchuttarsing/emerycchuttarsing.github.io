@@ -61,3 +61,21 @@ GitHub Pages ; aucun service vidéo externe ni API fictive n’est utilisé.
 La sélection n’ajoute pas d’URL publique : elle ajoute une entrée d’historique
 à URL inchangée. Retour la ferme, Avancer la restaure. Le partage et l’accès direct
 continuent à utiliser les URLs des études.
+
+## Médias de l’exposition Works
+
+`scenePoster` désigne une version sans légendes intégrées, adaptée au recadrage
+vertical. `poster` conserve la figure légendée de l’étude. Les trois MP4 locaux
+ont aussi leurs annotations retirées ; leur statut conceptuel reste dans le
+dialogue et les études. Aucun résultat scientifique n’est ajouté.
+
+`src/data/media-colors.json` contient des moyennes de pixels lumineux calculées
+hors ligne à deux échantillons par seconde. Le shader utilise les couleurs
+interpolées selon le temps des vidéos, en espace linéaire. Les accents servent
+de secours. Après remplacement des vidéos, exécuter `scripts/prepare-scene-assets.py`
+avec Python standard et FFmpeg (`FFMPEG` permet d’indiquer le binaire).
+
+Les trois `works-still-*.webp` sont des captures de notre scène en pause, sans la
+couche de textes HTML. `scripts/capture-works-stills.mjs` prépare les PNG dans
+`test-results/works-stills` ; convertir en WebP avec Pillow ou un outil équivalent.
+Ce sont des médias locaux originaux, utilisés avant chargement et dans les replis.

@@ -15,6 +15,7 @@ const projects = defineCollection({
   loader: glob({ pattern: '*.md', base: './src/content/projects' }),
   schema: z.object({
     title: z.string().min(1),
+    displayTitle: z.string().min(1).optional(),
     summary: z.string().min(1).max(320),
     context: z.string().min(1),
     role: z.string().min(1),
@@ -34,6 +35,7 @@ const projects = defineCollection({
       alt: z.string().min(1),
       caption: z.string().min(1),
     }),
+    scenePoster: localMedia.optional(),
     video: localMedia.optional(),
     accent: z.string().regex(/^#[0-9a-fA-F]{6}$/),
     links: z

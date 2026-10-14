@@ -1,0 +1,786 @@
+{
+  "study": "Mirage Works correction / ProjectIndex targeted REA",
+  "date_local": "2026-10-14",
+  "timezone": "America/Los_Angeles",
+  "rea_version": "6.4.0",
+  "source_page": "https://studiomirage.io/works",
+  "html_sha256": "9c3158111a800ae038926061bab19b96f544304721d3f25dc164fc0df2771df4",
+  "source_manifest": [
+    {
+      "url": "https://studiomirage.io/_app/immutable/nodes/3.BgKeXjxy.js",
+      "file": "/private/tmp/portfolio-mirage-correction-20261014/works-sources/_app/immutable/nodes/3.BgKeXjxy.js",
+      "bytes": 722,
+      "sha256": "4dbed2f6556576656f750dbacfb071c9a757457f0ed793c4e8ff67a2657ae8f9"
+    },
+    {
+      "url": "https://studiomirage.io/_app/immutable/chunks/DO3l11rT.js",
+      "file": "/private/tmp/portfolio-mirage-correction-20261014/works-sources/_app/immutable/chunks/DO3l11rT.js",
+      "bytes": 86683,
+      "sha256": "6b8c2c91e9c33ba829157cd0732789468b84c1a1802bdb3f3680449529f2e824"
+    },
+    {
+      "url": "https://studiomirage.io/_app/immutable/assets/3.DxK3euS3.css",
+      "file": "/private/tmp/portfolio-mirage-correction-20261014/works-sources/_app/immutable/assets/3.DxK3euS3.css",
+      "bytes": 54,
+      "sha256": "01f4e5e77b13fcb6748a024fc532c75de0bacc7c751c9091044ed62323e774a1"
+    },
+    {
+      "url": "https://studiomirage.io/_app/immutable/assets/index.C2UlERh3.css",
+      "file": "/private/tmp/portfolio-mirage-correction-20261014/works-sources/_app/immutable/assets/index.C2UlERh3.css",
+      "bytes": 39966,
+      "sha256": "ffbadb0d566ec0bb60f71b0d40378ef60295cff4e4b35bd13c68c9a66cc5eb0e"
+    }
+  ],
+  "reports": [
+    {
+      "report_file_temporary": "/private/tmp/portfolio-mirage-correction-20261014/works-rea.json",
+      "report_sha256": "3b0f62b5aec61e85574b3e425651c70418eb4b502e3e81c6c25545073a044e94",
+      "evidence_id": "ev_1da3a4cdb09a93a7247670f6f04df4a4debbfe27e03630c8e18a77d1dca7ea87",
+      "statistics": {
+        "relevant_files": 2,
+        "nested_asar_containers": 0,
+        "text_bytes_read": 87405,
+        "invalid_utf8_files": 0,
+        "parsed_javascript_files": 2,
+        "visited_ast_nodes": 30310,
+        "findings": 175,
+        "modules": 0,
+        "parse_failures": 0
+      },
+      "semantic_nodes": 172,
+      "semantic_relations": 149,
+      "coverage": {
+        "status": "partial",
+        "truncated": true,
+        "omitted_nodes": null,
+        "omitted_relations": null,
+        "limits": [
+          {
+            "name": "javascript_analysis_parent_result_budget_bytes",
+            "value": 728606252,
+            "unit": "bytes"
+          },
+          {
+            "name": "javascript_analysis_worker_heap_limit_bytes",
+            "value": 1098907648,
+            "unit": "bytes"
+          },
+          {
+            "name": "javascript_analysis_worker_timeout_ms",
+            "value": 180000,
+            "unit": "milliseconds"
+          }
+        ]
+      },
+      "resource_limit_reasons": [
+        "chunks/DO3l11rT.js: Resource constraint during analyze_javascript_application: Semantic graph for chunks/DO3l11rT.js exceeds the parent's remaining result budget; static and module facts were retained"
+      ]
+    },
+    {
+      "report_file_temporary": "/private/tmp/portfolio-mirage-correction-20261014/project-index-rea.json",
+      "report_sha256": "ac5328343e18062e481136485b9dd7d9d3003895267597c1955a6ee9d0d5366b",
+      "evidence_id": "ev_89944a086a3c2de626058e06c2616a9da403f995d6764639369272b4e0250b73",
+      "statistics": {
+        "relevant_files": 1,
+        "nested_asar_containers": 0,
+        "text_bytes_read": 8255,
+        "invalid_utf8_files": 0,
+        "parsed_javascript_files": 1,
+        "visited_ast_nodes": 2729,
+        "findings": 131,
+        "modules": 0,
+        "parse_failures": 0
+      },
+      "semantic_nodes": 2398,
+      "semantic_relations": 2568,
+      "coverage": {
+        "status": "unknown",
+        "truncated": false,
+        "omitted_nodes": 0,
+        "omitted_relations": 0,
+        "limits": []
+      },
+      "resource_limit_reasons": []
+    }
+  ],
+  "extraction_manifest": {
+    "url": "https://studiomirage.io/_app/immutable/chunks/DO3l11rT.js",
+    "source_sha256": "6b8c2c91e9c33ba829157cd0732789468b84c1a1802bdb3f3680449529f2e824",
+    "excerpt_sha256": "6a5062127932a89ea8471c229502872c8cb88f022aeaa523dd954d3fbecea678",
+    "bytes": 8255,
+    "method": "Exact top-level imports, template declaration and function ro, separated by newlines. No source execution or symbol renaming.",
+    "spans": [
+      {
+        "kind": "ImportDeclaration",
+        "name": null,
+        "original_start_utf16": 281,
+        "original_end_utf16_exclusive": 303,
+        "excerpt_start_utf16": 0,
+        "excerpt_end_utf16_exclusive": 22
+      },
+      {
+        "kind": "ImportDeclaration",
+        "name": null,
+        "original_start_utf16": 303,
+        "original_end_utf16_exclusive": 886,
+        "excerpt_start_utf16": 23,
+        "excerpt_end_utf16_exclusive": 606
+      },
+      {
+        "kind": "ImportDeclaration",
+        "name": null,
+        "original_start_utf16": 886,
+        "original_end_utf16_exclusive": 984,
+        "excerpt_start_utf16": 607,
+        "excerpt_end_utf16_exclusive": 705
+      },
+      {
+        "kind": "ImportDeclaration",
+        "name": null,
+        "original_start_utf16": 984,
+        "original_end_utf16_exclusive": 1270,
+        "excerpt_start_utf16": 706,
+        "excerpt_end_utf16_exclusive": 992
+      },
+      {
+        "kind": "ImportDeclaration",
+        "name": null,
+        "original_start_utf16": 1270,
+        "original_end_utf16_exclusive": 1313,
+        "excerpt_start_utf16": 993,
+        "excerpt_end_utf16_exclusive": 1036
+      },
+      {
+        "kind": "ImportDeclaration",
+        "name": null,
+        "original_start_utf16": 1313,
+        "original_end_utf16_exclusive": 1428,
+        "excerpt_start_utf16": 1037,
+        "excerpt_end_utf16_exclusive": 1152
+      },
+      {
+        "kind": "ImportDeclaration",
+        "name": null,
+        "original_start_utf16": 1428,
+        "original_end_utf16_exclusive": 1471,
+        "excerpt_start_utf16": 1153,
+        "excerpt_end_utf16_exclusive": 1196
+      },
+      {
+        "kind": "VariableDeclaration",
+        "name": "Yl",
+        "original_start_utf16": 61144,
+        "original_end_utf16_exclusive": 62321,
+        "excerpt_start_utf16": 1197,
+        "excerpt_end_utf16_exclusive": 2374
+      },
+      {
+        "kind": "FunctionDeclaration",
+        "name": "ro",
+        "original_start_utf16": 62321,
+        "original_end_utf16_exclusive": 68200,
+        "excerpt_start_utf16": 2375,
+        "excerpt_end_utf16_exclusive": 8254
+      }
+    ]
+  },
+  "selected_static_relations": [
+    {
+      "relation": {
+        "source_node_id": "jsrg_node_9e79d75687d4540d72135efc5f050064ad3415443bee164b51530111611c4dc5",
+        "target_node_id": "jsrg_node_ccbdac7895f85d125f03dbd5d2e7a98f296c3694c41a728bdf7ceb1e3e36d466",
+        "relation": "calls",
+        "resolution": "resolved",
+        "properties": {},
+        "evidence": {
+          "context_id": "jsrg_evidence_48f378dcaffc26215d54950123745bd592922a71552f25fddbfb4205e936f506",
+          "location": {
+            "available": true,
+            "value": {
+              "kind": "source-range",
+              "source": "ProjectIndex.js",
+              "start": {
+                "line": 9,
+                "column": 1205
+              },
+              "end": {
+                "line": 9,
+                "column": 1209
+              }
+            }
+          }
+        },
+        "relation_id": "jsrg_relation_2717bd8e24200b9cf6e4cf952879dd2d6a8995ff205855a6306b901511b3e2d7"
+      },
+      "source_node": {
+        "kind": "call-site",
+        "identity": {
+          "artifact_sha256": "6a5062127932a89ea8471c229502872c8cb88f022aeaa523dd954d3fbecea678",
+          "module_path": "ProjectIndex.js",
+          "source_range": {
+            "start": {
+              "line": 9,
+              "column": 1205
+            },
+            "end": {
+              "line": 9,
+              "column": 1209
+            }
+          },
+          "role_key": "call:call:call:3580:3584"
+        },
+        "function_node_id": "jsrg_node_394aa296f4561f4b5ea8e872a404c54e5a0e07cdec0b81adb6e8689ce4a22e4c",
+        "application_node_ids": [],
+        "label": "call",
+        "properties": {},
+        "evidence": {
+          "context_id": "jsrg_evidence_580a4498dc0ee260f194921fa0257cc43cac2df8114bdb4aebd8bb89760562cc",
+          "location": {
+            "available": true,
+            "value": {
+              "kind": "source-range",
+              "source": "ProjectIndex.js",
+              "start": {
+                "line": 9,
+                "column": 1205
+              },
+              "end": {
+                "line": 9,
+                "column": 1209
+              }
+            }
+          }
+        },
+        "node_id": "jsrg_node_9e79d75687d4540d72135efc5f050064ad3415443bee164b51530111611c4dc5"
+      },
+      "target_function": {
+        "kind": "function",
+        "identity": {
+          "artifact_sha256": "6a5062127932a89ea8471c229502872c8cb88f022aeaa523dd954d3fbecea678",
+          "module_path": "ProjectIndex.js",
+          "source_range": {
+            "start": {
+              "line": 9,
+              "column": 1662
+            },
+            "end": {
+              "line": 9,
+              "column": 1975
+            }
+          },
+          "role_key": "callable:callable:function:4037:4350"
+        },
+        "function_node_id": null,
+        "application_node_ids": [],
+        "label": "w",
+        "properties": {
+          "name": "w"
+        },
+        "evidence": {
+          "context_id": "jsrg_evidence_580a4498dc0ee260f194921fa0257cc43cac2df8114bdb4aebd8bb89760562cc",
+          "location": {
+            "available": true,
+            "value": {
+              "kind": "source-range",
+              "source": "ProjectIndex.js",
+              "start": {
+                "line": 9,
+                "column": 1662
+              },
+              "end": {
+                "line": 9,
+                "column": 1975
+              }
+            }
+          }
+        },
+        "node_id": "jsrg_node_ccbdac7895f85d125f03dbd5d2e7a98f296c3694c41a728bdf7ceb1e3e36d466"
+      },
+      "containing_function": {
+        "kind": "function",
+        "identity": {
+          "artifact_sha256": "6a5062127932a89ea8471c229502872c8cb88f022aeaa523dd954d3fbecea678",
+          "module_path": "ProjectIndex.js",
+          "source_range": {
+            "start": {
+              "line": 9,
+              "column": 1147
+            },
+            "end": {
+              "line": 9,
+              "column": 1210
+            }
+          },
+          "role_key": "callable:callable:function:3522:3585"
+        },
+        "function_node_id": null,
+        "application_node_ids": [],
+        "label": "_",
+        "properties": {
+          "name": "_"
+        },
+        "evidence": {
+          "context_id": "jsrg_evidence_580a4498dc0ee260f194921fa0257cc43cac2df8114bdb4aebd8bb89760562cc",
+          "location": {
+            "available": true,
+            "value": {
+              "kind": "source-range",
+              "source": "ProjectIndex.js",
+              "start": {
+                "line": 9,
+                "column": 1147
+              },
+              "end": {
+                "line": 9,
+                "column": 1210
+              }
+            }
+          }
+        },
+        "node_id": "jsrg_node_394aa296f4561f4b5ea8e872a404c54e5a0e07cdec0b81adb6e8689ce4a22e4c"
+      },
+      "mapped_original_call_site": {
+        "url": "https://studiomirage.io/_app/immutable/chunks/DO3l11rT.js",
+        "sha256": "6b8c2c91e9c33ba829157cd0732789468b84c1a1802bdb3f3680449529f2e824",
+        "start_utf16": 63526,
+        "end_utf16_exclusive": 63530,
+        "source_range": {
+          "start": {
+            "line": 3,
+            "column": 54149
+          },
+          "end": {
+            "line": 3,
+            "column": 54153
+          }
+        },
+        "mapping_verified_by_exact_text_equality": true
+      },
+      "not_a_runtime_trace": true
+    },
+    {
+      "relation": {
+        "source_node_id": "jsrg_node_2d57a6e0f05ef50b0fd667f31c0ac87422eb6e59536ecda04bc4efc07f5538da",
+        "target_node_id": "jsrg_node_ccbdac7895f85d125f03dbd5d2e7a98f296c3694c41a728bdf7ceb1e3e36d466",
+        "relation": "calls",
+        "resolution": "resolved",
+        "properties": {},
+        "evidence": {
+          "context_id": "jsrg_evidence_48f378dcaffc26215d54950123745bd592922a71552f25fddbfb4205e936f506",
+          "location": {
+            "available": true,
+            "value": {
+              "kind": "source-range",
+              "source": "ProjectIndex.js",
+              "start": {
+                "line": 9,
+                "column": 4572
+              },
+              "end": {
+                "line": 9,
+                "column": 4579
+              }
+            }
+          }
+        },
+        "relation_id": "jsrg_relation_6cf6401efa3f1787984fbfc20e0b8da4c8fc30da87cadb88e65a4793a960f8d7"
+      },
+      "source_node": {
+        "kind": "call-site",
+        "identity": {
+          "artifact_sha256": "6a5062127932a89ea8471c229502872c8cb88f022aeaa523dd954d3fbecea678",
+          "module_path": "ProjectIndex.js",
+          "source_range": {
+            "start": {
+              "line": 9,
+              "column": 4572
+            },
+            "end": {
+              "line": 9,
+              "column": 4579
+            }
+          },
+          "role_key": "call:call:call:6947:6954"
+        },
+        "function_node_id": "jsrg_node_40459d07234fc4a6dd323ef65bc091e7e572b351c46839e62c3c0273960bdd2a",
+        "application_node_ids": [],
+        "label": "call",
+        "properties": {},
+        "evidence": {
+          "context_id": "jsrg_evidence_580a4498dc0ee260f194921fa0257cc43cac2df8114bdb4aebd8bb89760562cc",
+          "location": {
+            "available": true,
+            "value": {
+              "kind": "source-range",
+              "source": "ProjectIndex.js",
+              "start": {
+                "line": 9,
+                "column": 4572
+              },
+              "end": {
+                "line": 9,
+                "column": 4579
+              }
+            }
+          }
+        },
+        "node_id": "jsrg_node_2d57a6e0f05ef50b0fd667f31c0ac87422eb6e59536ecda04bc4efc07f5538da"
+      },
+      "target_function": {
+        "kind": "function",
+        "identity": {
+          "artifact_sha256": "6a5062127932a89ea8471c229502872c8cb88f022aeaa523dd954d3fbecea678",
+          "module_path": "ProjectIndex.js",
+          "source_range": {
+            "start": {
+              "line": 9,
+              "column": 1662
+            },
+            "end": {
+              "line": 9,
+              "column": 1975
+            }
+          },
+          "role_key": "callable:callable:function:4037:4350"
+        },
+        "function_node_id": null,
+        "application_node_ids": [],
+        "label": "w",
+        "properties": {
+          "name": "w"
+        },
+        "evidence": {
+          "context_id": "jsrg_evidence_580a4498dc0ee260f194921fa0257cc43cac2df8114bdb4aebd8bb89760562cc",
+          "location": {
+            "available": true,
+            "value": {
+              "kind": "source-range",
+              "source": "ProjectIndex.js",
+              "start": {
+                "line": 9,
+                "column": 1662
+              },
+              "end": {
+                "line": 9,
+                "column": 1975
+              }
+            }
+          }
+        },
+        "node_id": "jsrg_node_ccbdac7895f85d125f03dbd5d2e7a98f296c3694c41a728bdf7ceb1e3e36d466"
+      },
+      "containing_function": {
+        "kind": "function",
+        "identity": {
+          "artifact_sha256": "6a5062127932a89ea8471c229502872c8cb88f022aeaa523dd954d3fbecea678",
+          "module_path": "ProjectIndex.js",
+          "source_range": {
+            "start": {
+              "line": 9,
+              "column": 4568
+            },
+            "end": {
+              "line": 9,
+              "column": 4579
+            }
+          },
+          "role_key": "callable:callable:function:6943:6954"
+        },
+        "function_node_id": null,
+        "application_node_ids": [],
+        "label": null,
+        "properties": {
+          "name": null
+        },
+        "evidence": {
+          "context_id": "jsrg_evidence_580a4498dc0ee260f194921fa0257cc43cac2df8114bdb4aebd8bb89760562cc",
+          "location": {
+            "available": true,
+            "value": {
+              "kind": "source-range",
+              "source": "ProjectIndex.js",
+              "start": {
+                "line": 9,
+                "column": 4568
+              },
+              "end": {
+                "line": 9,
+                "column": 4579
+              }
+            }
+          }
+        },
+        "node_id": "jsrg_node_40459d07234fc4a6dd323ef65bc091e7e572b351c46839e62c3c0273960bdd2a"
+      },
+      "mapped_original_call_site": {
+        "url": "https://studiomirage.io/_app/immutable/chunks/DO3l11rT.js",
+        "sha256": "6b8c2c91e9c33ba829157cd0732789468b84c1a1802bdb3f3680449529f2e824",
+        "start_utf16": 66893,
+        "end_utf16_exclusive": 66900,
+        "source_range": {
+          "start": {
+            "line": 3,
+            "column": 57516
+          },
+          "end": {
+            "line": 3,
+            "column": 57523
+          }
+        },
+        "mapping_verified_by_exact_text_equality": true
+      },
+      "not_a_runtime_trace": true
+    },
+    {
+      "relation": {
+        "source_node_id": "jsrg_node_5f6abf6733a779164d8ce34fb0722f7ebbfaf99b6137de3391b18bd441ed7f77",
+        "target_node_id": "jsrg_node_c4cef23e75bc8a40bffb8916b46c8cb8bfbdc69346e19e6ff3f24a793122ff7e",
+        "relation": "calls",
+        "resolution": "resolved",
+        "properties": {},
+        "evidence": {
+          "context_id": "jsrg_evidence_48f378dcaffc26215d54950123745bd592922a71552f25fddbfb4205e936f506",
+          "location": {
+            "available": true,
+            "value": {
+              "kind": "source-range",
+              "source": "ProjectIndex.js",
+              "start": {
+                "line": 9,
+                "column": 2156
+              },
+              "end": {
+                "line": 9,
+                "column": 2159
+              }
+            }
+          }
+        },
+        "relation_id": "jsrg_relation_8bcd6581316a1796af672933db706781453cd8196fbba456397747de61169e78"
+      },
+      "source_node": {
+        "kind": "call-site",
+        "identity": {
+          "artifact_sha256": "6a5062127932a89ea8471c229502872c8cb88f022aeaa523dd954d3fbecea678",
+          "module_path": "ProjectIndex.js",
+          "source_range": {
+            "start": {
+              "line": 9,
+              "column": 2156
+            },
+            "end": {
+              "line": 9,
+              "column": 2159
+            }
+          },
+          "role_key": "call:call:call:4531:4534"
+        },
+        "function_node_id": "jsrg_node_1461daf407e83caa8e490ee258d26269fe5c8c366cf7d519a1c265bffacd7de8",
+        "application_node_ids": [],
+        "label": "call",
+        "properties": {},
+        "evidence": {
+          "context_id": "jsrg_evidence_580a4498dc0ee260f194921fa0257cc43cac2df8114bdb4aebd8bb89760562cc",
+          "location": {
+            "available": true,
+            "value": {
+              "kind": "source-range",
+              "source": "ProjectIndex.js",
+              "start": {
+                "line": 9,
+                "column": 2156
+              },
+              "end": {
+                "line": 9,
+                "column": 2159
+              }
+            }
+          }
+        },
+        "node_id": "jsrg_node_5f6abf6733a779164d8ce34fb0722f7ebbfaf99b6137de3391b18bd441ed7f77"
+      },
+      "target_function": {
+        "kind": "function",
+        "identity": {
+          "artifact_sha256": "6a5062127932a89ea8471c229502872c8cb88f022aeaa523dd954d3fbecea678",
+          "module_path": "ProjectIndex.js",
+          "source_range": {
+            "start": {
+              "line": 9,
+              "column": 1978
+            },
+            "end": {
+              "line": 9,
+              "column": 2147
+            }
+          },
+          "role_key": "callable:callable:function:4353:4522"
+        },
+        "function_node_id": null,
+        "application_node_ids": [],
+        "label": "q",
+        "properties": {
+          "name": "q"
+        },
+        "evidence": {
+          "context_id": "jsrg_evidence_580a4498dc0ee260f194921fa0257cc43cac2df8114bdb4aebd8bb89760562cc",
+          "location": {
+            "available": true,
+            "value": {
+              "kind": "source-range",
+              "source": "ProjectIndex.js",
+              "start": {
+                "line": 9,
+                "column": 1978
+              },
+              "end": {
+                "line": 9,
+                "column": 2147
+              }
+            }
+          }
+        },
+        "node_id": "jsrg_node_c4cef23e75bc8a40bffb8916b46c8cb8bfbdc69346e19e6ff3f24a793122ff7e"
+      },
+      "containing_function": {
+        "kind": "function",
+        "identity": {
+          "artifact_sha256": "6a5062127932a89ea8471c229502872c8cb88f022aeaa523dd954d3fbecea678",
+          "module_path": "ProjectIndex.js",
+          "source_range": {
+            "start": {
+              "line": 9,
+              "column": 2151
+            },
+            "end": {
+              "line": 9,
+              "column": 2160
+            }
+          },
+          "role_key": "callable:callable:function:4526:4535"
+        },
+        "function_node_id": null,
+        "application_node_ids": [],
+        "label": "te",
+        "properties": {
+          "name": "te"
+        },
+        "evidence": {
+          "context_id": "jsrg_evidence_580a4498dc0ee260f194921fa0257cc43cac2df8114bdb4aebd8bb89760562cc",
+          "location": {
+            "available": true,
+            "value": {
+              "kind": "source-range",
+              "source": "ProjectIndex.js",
+              "start": {
+                "line": 9,
+                "column": 2151
+              },
+              "end": {
+                "line": 9,
+                "column": 2160
+              }
+            }
+          }
+        },
+        "node_id": "jsrg_node_1461daf407e83caa8e490ee258d26269fe5c8c366cf7d519a1c265bffacd7de8"
+      },
+      "mapped_original_call_site": {
+        "url": "https://studiomirage.io/_app/immutable/chunks/DO3l11rT.js",
+        "sha256": "6b8c2c91e9c33ba829157cd0732789468b84c1a1802bdb3f3680449529f2e824",
+        "start_utf16": 64477,
+        "end_utf16_exclusive": 64480,
+        "source_range": {
+          "start": {
+            "line": 3,
+            "column": 55100
+          },
+          "end": {
+            "line": 3,
+            "column": 55103
+          }
+        },
+        "mapping_verified_by_exact_text_equality": true
+      },
+      "not_a_runtime_trace": true
+    }
+  ],
+  "reviewed_facts": [
+    {
+      "id": "works-entry",
+      "authority": "html-and-source-manual-review",
+      "fact": "The Works bootstrap declares node_ids [0, 3]; node 3 imports the shared slice module DO3l11rT.js; project_index maps to ro."
+    },
+    {
+      "id": "scene-state",
+      "authority": "source-manual-review",
+      "source": "DO3l11rT.js",
+      "function": "ro",
+      "parameters": {
+        "scene_state": "pIndex",
+        "gl_lead": 0.4
+      },
+      "note": "Reduced component variants have separate conditions; this is the full Works index."
+    },
+    {
+      "id": "hover-preview",
+      "authority": "rea-static-call-plus-source-manual-review",
+      "source": "DO3l11rT.js",
+      "function": "ro/w",
+      "parameters": {
+        "delay_ms": 120,
+        "fields": ["uid", "videoUrl", "mobileVideoUrl", "forcePreview"]
+      },
+      "fact": "Desktop mouseenter requests the shared preview after a cancellable delay; the mobile selection callback also calls w."
+    },
+    {
+      "id": "restore-preview",
+      "authority": "rea-static-call-plus-source-manual-review",
+      "source": "DO3l11rT.js",
+      "function": "ro/te/q",
+      "fact": "List mouseleave calls te, which calls q to cancel the pending timer and conditionally restore captured shared state."
+    },
+    {
+      "id": "works-css",
+      "authority": "css-manual-review",
+      "source": "index.C2UlERh3.css",
+      "parameters": {
+        "title_rem": 2,
+        "link_padding_vertical_px": 22,
+        "separator_alpha": 0.1,
+        "hover_backdrop_blur_px": 8,
+        "hover_glow_transition_s": 0.35
+      },
+      "fact": "A separate radial glow layer is masked to separator lines. These are source declarations, not measured final layout dimensions."
+    },
+    {
+      "id": "mobile-wheel",
+      "authority": "source-and-css-manual-review",
+      "source": "DO3l11rT.js and index.C2UlERh3.css",
+      "parameters": {
+        "breakpoint_max_width_px": 768,
+        "wheel_height_svh": 40,
+        "perspective_px": 620
+      },
+      "fact": "The original uses a mobile wheel with CSS perspective, masking and centered selection; our proposed mobile list intentionally differs."
+    }
+  ],
+  "prior_scene_evidence": "MIRAGE_REA_DEEP_EVIDENCE.json",
+  "reproduction": {
+    "command": "node --max-old-space-size=1536 /private/tmp/rea-portfolio-tools/node_modules/rea-agents/scripts/rea.mjs analyze-javascript-application <input-directory> --analysis-timeout-ms 180000 --max-heap-mb 1024 --format json",
+    "inputs": [
+      "/private/tmp/portfolio-mirage-correction-20261014/works-sources/_app/immutable",
+      "/private/tmp/portfolio-mirage-correction-20261014/project-index-focus"
+    ],
+    "extraction_method": "Exact top-level imports, template declaration and function ro, separated by newlines. No source execution or symbol renaming."
+  },
+  "limitations": [
+    "No target JavaScript was executed during static analysis.",
+    "The shared module semantic graph exceeded the parent result budget; static facts were retained.",
+    "The targeted graph is not resource-truncated but coverage remains unknown, with unresolved imported and dynamic behavior.",
+    "The targeted excerpt keeps original imports; dependency bodies and declarations outside the extraction are absent.",
+    "CSS behavior was read manually, not inferred by the JavaScript REA pass.",
+    "This is not a new runtime capture of all Works interactions or a performance benchmark.",
+    "The first attempt was blocked by compiler-cache sandbox access; the recorded successful passes followed with authorized access."
+  ]
+}

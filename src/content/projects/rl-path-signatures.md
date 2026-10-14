@@ -1,5 +1,6 @@
 ---
 title: 'Reinforcement Learning & Path Signatures for Crypto Markets'
+displayTitle: 'Reinforcement Learning & Path Signatures'
 summary: 'Exploring path representations and reinforcement learning policies for cryptocurrency markets, with attention to temporal evaluation, costs and risk.'
 order: 1
 featured: true
@@ -7,6 +8,7 @@ categories: ['Quantitative finance', 'Reinforcement learning']
 technologies: ['Python', 'PyTorch', 'Path signatures']
 editorialStatus: 'draft'
 video: '/media/rl-path-signatures.mp4'
+scenePoster: /media/scene/rl-path-signatures.svg
 poster:
   {
     'caption': 'Conceptual market trajectories and path representations. The illustration contains no backtest results.',

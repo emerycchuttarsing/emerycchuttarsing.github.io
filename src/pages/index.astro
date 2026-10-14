@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
-import ProjectGallery from '../components/ProjectGallery.astro';
+import ProjectsShowcase from '../components/ProjectsShowcase.astro';
 import AboutTeaser from '../components/AboutTeaser.astro';
 import PortfolioScene from '../components/PortfolioScene.astro';
 import ProjectPreview from '../components/ProjectPreview.astro';
@@ -14,10 +14,8 @@ const projects = await getProjects();
 <BaseLayout title={site.headline} home>
   <PortfolioScene projects={projects.map(toSceneProject)} />
   <Hero />
-  <div class="atmosphere" aria-hidden="true">
-    <span>From possibilities to practice</span>
-  </div>
-  <ProjectGallery projects={projects} />
+  <div class="scene-transition" aria-hidden="true"></div>
+  <ProjectsShowcase projects={projects} />
   <AboutTeaser />
   <ProjectPreview />
 </BaseLayout>

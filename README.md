@@ -3,7 +3,8 @@
 Portfolio en anglais consacré à la finance quantitative, au machine learning et
 à l'ingénierie. Le développement suit [cinq jalons](docs/MILESTONES.md), avec un
 commit à chaque point de contrôle. Les jalons 1 à 4 sont réalisés : fondations, direction visuelle, études de cas,
-parcours et contact, puis scène interactive et aperçus animés.
+parcours et contact, puis scène interactive et aperçus animés. La présentation
+des projets est reprise selon le [correctif Works](docs/CORRECTIFS_GALERIE_MIRAGE.md).
 
 ## Démarrer localement
 
@@ -34,14 +35,14 @@ préserver leur contenu d'origine.
 ## Pages disponibles
 
 - `/` : présentation et accès aux sept projets.
-- `/projects/` : index des projets.
+- `/projects/` : exposition Works sombre, commune à la section projets de l’accueil.
 - `/projects/<id>/` : sept études avec textes provisoires.
 - `/about/` : biographie, expériences, formations, compétences et contact.
 - `/404.html` : page d'erreur.
 
 Les études en anglais restent provisoires : trois versions développées et quatre
 versions courtes, sans résultats chiffrés. Les posters sont des illustrations
-conceptuelles. Le CV fourni, son téléchargement et les coordonnées sont intégrés. L’accueil combine un terrain de points et sept panneaux dans une scène 3D.
+conceptuelles. Le CV fourni, son téléchargement et les coordonnées sont intégrés. L’accueil conserve son terrain de points et rejoint une exposition de sept panneaux 3D sur un relief éclairé. L’index ouvre directement cette exposition.
 Le défilement anime la transition vers les sept projets. Les boutons Preview
 ouvrent un aperçu ; les titres gardent leurs liens directs. Les trois phares ont
 des boucles conceptuelles, avec pause, budget de lecture et replis HTML.
@@ -65,7 +66,7 @@ Ne placer dans `public/` que des fichiers à rendre accessibles aux visiteurs.
 
 Chaque fiche renseigne `context`, `role`, `contributions`, trois étapes `workflow`
 (titre et description), et `poster.caption`. `summary` et `technologies` alimentent
-à la fois l’index et l’étude. Les liens `links.code`, `links.report` et `links.demo`
+les aperçus et les études. `displayTitle` et `scenePoster` adaptent la présentation Works sans modifier le titre complet ni la figure éditoriale. Les liens `links.code`, `links.report` et `links.demo`
 sont facultatifs : seules les destinations renseignées apparaissent. Le sommaire
 reprend automatiquement les titres Markdown `##`, avec une entrée pour le schéma
 de méthode. Éviter les identifiants réservés `method-overview` et `contributions-title`.
@@ -78,8 +79,7 @@ les textes, figures, ressources et informations de parcours. Le statut
 
 Les recettes des [jalons 2](docs/validation/jalon-2/README.md) et
 [3](docs/validation/jalon-3/README.md) et [4](docs/validation/jalon-4/README.md)
-contiennent les captures et résultats. La galerie montre les sept projets ensemble sur grand écran ;
-sous 1100 px de largeur ou 800 px de hauteur, elle utilise des posters HTML.
+conservent les captures historiques. La [recette Works](docs/validation/mirage-correction/README.md) documente la présentation actuelle et sa comparaison avec Mirage. Les sept projets restent visibles ensemble sur ordinateur ; les écrans compacts gardent le décor et une liste naturelle. Sans rendu 3D, une image de notre scène fournit le décor.
 Les quatre tailles contrôlées sont 1440 × 900, 1280 × 800, 768 × 1024 et 390 × 844.
 
 Le contrôle complémentaire `scripts/check-browser.mjs` nécessite Chrome et un
@@ -146,6 +146,8 @@ n’a été effectué pendant les jalons 1 à 4.
 
 ## Préparation conservée
 
+- [Point d’entrée pour l’IA codeuse : mission de correction Mirage Works](docs/PROMPT_AGENT_CORRECTION_MIRAGE.md)
+- [Correctifs prioritaires : présentation Mirage Works, appuyée sur REA](docs/CORRECTIFS_GALERIE_MIRAGE.md)
 - [Brief de passation pour la construction](docs/BRIEF_AGENT_CODEUR.md)
 - [Architecture actuelle](docs/ARCHITECTURE.md)
 - [Cinq jalons et vérifications](docs/MILESTONES.md)

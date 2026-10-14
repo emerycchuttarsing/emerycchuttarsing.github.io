@@ -1,0 +1,43 @@
+---
+import { projectPath, type Project } from '../lib/projects';
+interface Props {
+  projects: Project[];
+}
+const { projects } = Astro.props;
+---
+
+<ol class="project-rows" data-project-rows>
+  {projects.map((project) => (
+    <li
+      class="project-row"
+      data-project-id={project.id}
+      data-featured={String(project.data.featured)}
+      style={`--project-accent: ${project.data.accent}`}
+    >
+      <span class="row-number" aria-hidden="true">
+        {String(project.data.order).padStart(2, '0')}
+      </span>
+      <a class="row-title" href={projectPath(project.id)}>
+        {project.data.displayTitle ?? project.data.title}
+        <span class="row-arrow" aria-hidden="true">
+          ↗
+        </span>
+      </a>
+      <span class="row-featured">
+        {project.data.featured && <span>Featured</span>}
+      </span>
+      <span class="row-category">{project.data.categories[0]}</span>
+      <button
+        class="row-preview"
+        type="button"
+        data-preview={project.id}
+        aria-label={`Preview ${project.data.title}`}
+        aria-haspopup="dialog"
+        aria-controls="project-preview"
+        hidden
+      >
+        Preview <span aria-hidden="true">+</span>
+      </button>
+    </li>
+  ))}
+</ol>

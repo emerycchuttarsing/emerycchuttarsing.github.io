@@ -4,7 +4,8 @@ const { chromium } = await import(
 import assert from 'node:assert/strict';
 import { mkdir, writeFile } from 'node:fs/promises';
 const base = process.env['PORTFOLIO_BASE_URL'] ?? 'http://127.0.0.1:4321';
-const out = process.env['PORTFOLIO_SCREENSHOTS'] ?? 'test-results/jalon-4';
+const out =
+  process.env['PORTFOLIO_SCREENSHOTS'] ?? 'test-results/mirage-correction';
 await mkdir(out, { recursive: true });
 const browser = await chromium.launch({ channel: 'chrome', headless: true });
 const report = {
@@ -144,14 +145,14 @@ try {
     if (width === 1440)
       await page.screenshot({ path: `${out}/reveal-1440x900.png` });
     await gallery(page);
-    assert.equal(await page.locator('.gallery-grid > li').count(), 7);
+    assert.equal(await page.locator('.project-row').count(), 7);
     assert.equal(
       await page.evaluate(
         () => document.documentElement.scrollWidth > innerWidth,
       ),
       false,
     );
-    const panels = await page.locator('.gallery-grid > li').evaluateAll((es) =>
+    const panels = await page.locator('.project-row').evaluateAll((es) =>
       es.map((e) => ({
         top: e.getBoundingClientRect().top,
         bottom: e.getBoundingClientRect().bottom,
@@ -233,6 +234,214 @@ try {
     await context.close();
   }
 
+  for (const [width, height] of [
+    [1440, 900],
+    [1280, 800],
+    [768, 1024],
+    [390, 844],
+  ]) {
+    const { context, page } = await make({ viewport: { width, height } });
+    await page.goto(base + '/projects/', { waitUntil: 'networkidle' });
+    await page.waitForFunction(
+      () => document.documentElement.dataset.panelsReady === 'true',
+    );
+    assert.equal(await page.locator('h1').count(), 1);
+    assert.equal(await page.locator('.project-row').count(), 7);
+    assert.equal(await page.locator('.row-featured span').count(), 3);
+    assert.equal(await page.locator('canvas').count(), 1);
+    assert.equal(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth > innerWidth,
+      ),
+      false,
+    );
+    const projected = await page
+      .locator('[data-scene-root]')
+      .evaluate((e) => JSON.parse(e.dataset.panelBounds));
+    const rows = await page.locator('.project-row').evaluateAll((es) =>
+      es.map((e) => {
+        const r = e.getBoundingClientRect();
+        return { top: r.top, bottom: r.bottom };
+      }),
+    );
+    if (width >= 1280) {
+      assert(
+        rows.every((r) => r.top >= 0 && r.bottom <= height),
+        'seven rows visible',
+      );
+      for (const panel of projected) {
+        assert(
+          panel.visible &&
+            panel.left >= 0 &&
+            panel.right <= width &&
+            panel.top >= 0 &&
+            panel.bottom <= height,
+          'panel in viewport',
+        );
+        assert(panel.right - panel.left >= 90, 'panel wider than 90px');
+        // Conservative rectangular occlusion bound; actual faces are inside these rectangles.
+        const area = (panel.right - panel.left) * (panel.bottom - panel.top);
+        const covered = projected
+          .filter((p) => p.id !== panel.id && p.depth < panel.depth)
+          .reduce(
+            (sum, p) =>
+              sum +
+              Math.max(
+                0,
+                Math.min(panel.right, p.right) - Math.max(panel.left, p.left),
+              ) *
+                Math.max(
+                  0,
+                  Math.min(panel.bottom, p.bottom) - Math.max(panel.top, p.top),
+                ),
+            0,
+          );
+        panel.exposedLowerBound = 1 - covered / area;
+        assert(
+          panel.exposedLowerBound >= 0.7,
+          '70% of the panel remains exposed',
+        );
+      }
+    }
+    await page.screenshot({
+      path: `${out}/index-${width}x${height}.png`,
+      fullPage: width === 390,
+    });
+    const first = page.locator('.row-title').first();
+    await first.focus();
+    await page.waitForFunction(
+      () =>
+        document.querySelector('[data-scene-root]').dataset.activeProject ===
+        'rl-path-signatures',
+    );
+    const historyLength = await page.evaluate(() => history.length);
+    await page.locator('.project-row').nth(4).hover();
+    assert.equal(
+      await page
+        .locator('[data-scene-root]')
+        .getAttribute('data-active-project'),
+      ids[0],
+      'focus wins over hover',
+    );
+    await page.locator('h1').click();
+    await page.locator('.project-row').nth(4).hover();
+    await page.waitForFunction(
+      () =>
+        document.querySelector('[data-scene-root]').dataset.activeProject ===
+        'link-prediction',
+    );
+    assert.equal(await page.evaluate(() => history.length), historyLength);
+    assert.equal(
+      await page.locator('dialog').evaluate((e) => e.open),
+      false,
+      'hover does not select',
+    );
+    if (width === 1440) {
+      await page.waitForTimeout(500);
+      await page.screenshot({ path: `${out}/active-secondary.png` });
+      await page.locator('.project-row').nth(2).hover();
+      await page.waitForFunction(
+        () =>
+          document.querySelector('[data-project-video="music-recommendation"]')
+            .dataset.playing === 'true',
+      );
+      await page.waitForTimeout(500);
+      await page.screenshot({ path: `${out}/active-featured.png` });
+      const performanceSample = page.evaluate(
+        () =>
+          new Promise((resolve) => {
+            const times = [];
+            const start = performance.now();
+            function sample(t) {
+              times.push(t);
+              if (t - start < 2400) requestAnimationFrame(sample);
+              else resolve(times.slice(1).map((v, i) => v - times[i]));
+            }
+            requestAnimationFrame(sample);
+          }),
+      );
+      for (let i = 0; i < 10; i++) {
+        await page
+          .locator('.project-row')
+          .nth(i % 7)
+          .hover();
+        await page.waitForTimeout(150);
+      }
+      const deltas = await performanceSample;
+      deltas.sort((a, b) => a - b);
+      report.fluidity = {
+        method:
+          'browser rAF intervals during ten highlight transitions; videos are 24fps',
+        samples: deltas.length,
+        meanFps: 1000 / (deltas.reduce((a, b) => a + b, 0) / deltas.length),
+        medianMs: deltas[Math.floor(deltas.length * 0.5)],
+        p95Ms: deltas[Math.floor(deltas.length * 0.95)],
+        gpu: await page.locator('canvas').evaluate((c) => {
+          const gl = c.getContext('webgl2'),
+            ext = gl.getExtension('WEBGL_debug_renderer_info');
+          return ext
+            ? gl.getParameter(ext.UNMASKED_RENDERER_WEBGL)
+            : 'not exposed';
+        }),
+      };
+      const memory = [];
+      for (let round = 0; round < 3; round++) {
+        for (const id of ids.slice(0, 3)) {
+          await select(page, id);
+          await page.waitForTimeout(130);
+          await close(page);
+        }
+        await page.waitForTimeout(900);
+        memory.push(
+          await page
+            .locator('[data-scene-root]')
+            .evaluate((e) => JSON.parse(e.dataset.gpuResources)),
+        );
+      }
+      assert.deepEqual(
+        memory[2],
+        memory[1],
+        'GPU resources stable after warmup',
+      );
+      report.gpuMemory = memory;
+      for (const id of ids) {
+        await page.locator(`[data-project-id="${id}"] .row-title`).click();
+        await page.waitForURL(`**/projects/${id}/`);
+        assert.equal(await page.locator('canvas').count(), 0);
+        await page.goBack({ waitUntil: 'networkidle' });
+        await page.waitForFunction(
+          () => document.querySelectorAll('canvas').length === 1,
+        );
+      }
+      await select(page, ids[0]);
+      await page.goBack();
+      await page.waitForFunction(() => !document.querySelector('dialog').open);
+      await page.goForward();
+      await page.waitForFunction(() => document.querySelector('dialog').open);
+      await page.reload({ waitUntil: 'networkidle' });
+      await page.waitForFunction(() => document.querySelector('dialog').open);
+      await close(page);
+    }
+    report.layouts.push({
+      route: '/projects/',
+      width,
+      height,
+      rows,
+      projected,
+    });
+    console.log(`Works index passed: ${width} × ${height}`);
+    await context.close();
+  }
+  report.scenarios.push(
+    'index direct load / four viewports',
+    'seven spatial panels and projected exposure',
+    'focus priority over hover',
+    'hover leaves history and dialog unchanged',
+    'active video priority',
+    'index study links and native history',
+    'GPU resource stability',
+  );
+
   const { context, page } = await make();
   await home(page);
   await gallery(page);
@@ -272,7 +481,7 @@ try {
       document.querySelectorAll('canvas').length === 1,
   );
   await close(page);
-  await page.locator(`[data-project-id="${ids[6]}"] h3`).click();
+  await page.locator(`[data-project-id="${ids[6]}"] .row-title`).click();
   await page.waitForURL(`**/projects/${ids[6]}/`);
   await page.goBack({ waitUntil: 'networkidle' });
   await page.waitForFunction(
@@ -467,6 +676,79 @@ try {
     report.scenarios.push(kind);
     await context.close();
   }
+  for (const kind of ['no-js', 'reduced-motion', 'no-webgl', 'context-loss']) {
+    const { context, page } = await make(
+      {
+        javaScriptEnabled: kind !== 'no-js',
+        reducedMotion: kind === 'reduced-motion' ? 'reduce' : 'no-preference',
+      },
+      kind === 'no-webgl'
+        ? () => {
+            const original = HTMLCanvasElement.prototype.getContext;
+            HTMLCanvasElement.prototype.getContext = function (type, ...args) {
+              return /webgl/.test(type)
+                ? null
+                : original.call(this, type, ...args);
+            };
+          }
+        : undefined,
+    );
+    await page.goto(base + '/projects/', { waitUntil: 'networkidle' });
+    if (kind === 'context-loss') {
+      await page.waitForFunction(
+        () => document.documentElement.dataset.panelsReady === 'true',
+      );
+      await page
+        .locator('canvas')
+        .evaluate((c) =>
+          c
+            .getContext('webgl2')
+            .getExtension('WEBGL_lose_context')
+            .loseContext(),
+        );
+    }
+    await page.waitForFunction(
+      () => document.querySelectorAll('canvas').length === 0,
+    );
+    assert.equal(await page.locator('.row-title').count(), 7);
+    assert.equal(
+      await page
+        .locator('.works-fallback')
+        .evaluate((e) => getComputedStyle(e).visibility),
+      'visible',
+    );
+    assert(
+      await page
+        .locator('.works-fallback img')
+        .evaluate((e) => e.complete && e.naturalWidth > 0),
+    );
+    assert.equal(await countPlaying(page), 0);
+    await page.evaluate(() => document.fonts.ready);
+    // Disabled-JS documents do not run page RAF callbacks. Allow the font raster to settle.
+    await page.waitForTimeout(800);
+    await page.screenshot({ path: `${out}/index-${kind}.png` });
+    await page.locator('.row-title').first().click();
+    await page.waitForURL(`**/projects/${ids[0]}/`);
+    report.scenarios.push(`index ${kind}`);
+    await context.close();
+  }
+  // A smaller CSS viewport represents reflow at desktop zoom; physical browser zoom remains a manual check.
+  const zoom = await make({
+    viewport: { width: 720, height: 450 },
+    deviceScaleFactor: 2,
+  });
+  await zoom.page.goto(base + '/projects/', { waitUntil: 'networkidle' });
+  assert.equal(
+    await zoom.page.evaluate(
+      () => document.documentElement.scrollWidth > innerWidth,
+    ),
+    false,
+  );
+  assert.equal(await zoom.page.locator('.row-title').count(), 7);
+  await zoom.page.locator('.row-title').last().scrollIntoViewIfNeeded();
+  assert(await zoom.page.locator('.row-title').last().isVisible());
+  await zoom.context.close();
+  report.scenarios.push('zoom reflow simulation');
   const noJS = await browser.newContext({
     javaScriptEnabled: false,
     viewport: { width: 390, height: 844 },
@@ -474,9 +756,9 @@ try {
   const staticPage = await noJS.newPage();
   await staticPage.goto(base, { waitUntil: 'networkidle' });
   assert.equal(await staticPage.locator('[data-preview]:visible').count(), 0);
-  assert.equal(await staticPage.locator('.gallery-project').count(), 7);
+  assert.equal(await staticPage.locator('.row-title').count(), 7);
   assert.equal(await staticPage.locator('video[src]').count(), 0);
-  await staticPage.locator(`[data-project-id="${ids[0]}"] h3`).click();
+  await staticPage.locator(`[data-project-id="${ids[0]}"] .row-title`).click();
   await staticPage.waitForURL(`**/projects/${ids[0]}/`);
   await noJS.close();
   report.scenarios.push('no JavaScript');

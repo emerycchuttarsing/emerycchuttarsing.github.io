@@ -1,11 +1,11 @@
 import { sceneConfig } from './config';
+import type { SceneElements } from './types';
 
 type Connection = EventTarget & { saveData?: boolean };
 interface MediaEntry {
   id: string;
   video: HTMLVideoElement;
   home: HTMLElement;
-  visible: boolean;
   wanted: boolean;
   pending: boolean;
   failed: boolean;
@@ -15,16 +15,18 @@ interface MediaEntry {
 }
 
 export function createMediaManager(
+  elements: SceneElements,
   onChange: (id: string, video: HTMLVideoElement | null) => void,
   onFrame: () => void,
 ) {
   const entries: MediaEntry[] = [
-    ...document.querySelectorAll<HTMLVideoElement>('[data-project-video]'),
+    ...elements.section.querySelectorAll<HTMLVideoElement>(
+      '[data-project-video]',
+    ),
   ].map((video) => ({
     id: video.dataset['projectVideo']!,
     video,
     home: video.parentElement!,
-    visible: false,
     wanted: false,
     pending: false,
     failed: false,
@@ -46,8 +48,16 @@ export function createMediaManager(
   const buttons = [
     ...document.querySelectorAll<HTMLButtonElement>('[data-motion-toggle]'),
   ];
-  const status = document.querySelector<HTMLElement>('[data-media-status]')!;
-  const preview = document.querySelector<HTMLElement>('[data-preview-panel]')!;
+  const status = elements.dialog.querySelector<HTMLElement>(
+    '[data-media-status]',
+  )!;
+  const preview = elements.preview;
+  let sectionVisible = false;
+  let sceneAvailable = false;
+  let visibleProjects = new Set<string>();
+  let visibleKey = '';
+  let priority: string | undefined;
+  let priorityTimer: ReturnType<typeof setTimeout> | undefined;
   let selected: string | undefined;
   let previewVisible = false;
   let userPaused = false;
@@ -128,7 +138,12 @@ export function createMediaManager(
     const eligible = entries.filter(
       (entry) =>
         !entry.failed &&
-        (selected ? entry.id === selected && previewVisible : entry.visible),
+        (selected
+          ? entry.id === selected && previewVisible
+          : sectionVisible && sceneAvailable && visibleProjects.has(entry.id)),
+    );
+    eligible.sort(
+      (a, b) => Number(b.id === priority) - Number(a.id === priority),
     );
     const desired = new Set(
       stopped ? [] : eligible.slice(0, limit).map((entry) => entry.id),
@@ -168,18 +183,17 @@ export function createMediaManager(
         if (change.target === preview)
           previewVisible =
             change.isIntersecting && change.intersectionRatio >= 0.2;
-        const entry = entries.find((item) => item.home === change.target);
-        if (entry)
-          entry.visible =
-            change.isIntersecting && change.intersectionRatio >= 0.2;
+        if (change.target === elements.section)
+          sectionVisible =
+            change.isIntersecting && change.intersectionRatio >= 0.12;
       }
       update();
     },
-    { threshold: [0, 0.2] },
+    { threshold: [0, 0.12, 0.2] },
   );
   observer.observe(preview);
+  observer.observe(elements.section);
   for (const entry of entries) {
-    observer.observe(entry.home);
     entry.video.addEventListener(
       'playing',
       () => {
@@ -233,6 +247,29 @@ export function createMediaManager(
   connection?.addEventListener('change', update, { signal: events.signal });
   update();
   return {
+    setVisibleProjects(ids: string[]) {
+      const key = ids.join('|');
+      if (key === visibleKey) return;
+      visibleKey = key;
+      visibleProjects = new Set(ids);
+      update();
+    },
+    setSceneAvailable(available: boolean) {
+      sceneAvailable = available;
+      update();
+    },
+    prioritize(id: string | undefined) {
+      clearTimeout(priorityTimer);
+      if (!id) {
+        priority = undefined;
+        update();
+        return;
+      }
+      priorityTimer = setTimeout(() => {
+        priority = id;
+        update();
+      }, 120);
+    },
     select(id: string | undefined) {
       entries.forEach(pause);
       selected = id;
@@ -251,6 +288,7 @@ export function createMediaManager(
     },
     dispose() {
       disposed = true;
+      clearTimeout(priorityTimer);
       events.abort();
       observer.disconnect();
       for (const entry of entries) {

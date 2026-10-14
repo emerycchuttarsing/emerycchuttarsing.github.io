@@ -1,11 +1,13 @@
 ---
 title: 'Optimization for Link Prediction'
+displayTitle: 'Optimization for Link Prediction'
 summary: 'Learning graph representations for link prediction on a Last.fm network through numerical optimization.'
 order: 5
 featured: false
 categories: ['Optimization', 'Graph learning']
 technologies: ['Python', 'NumPy', 'Optimization']
 editorialStatus: 'draft'
+scenePoster: /media/scene/link-prediction.svg
 poster:
   {
     'caption': 'Conceptual graph communities and a candidate link. The drawing is illustrative, not a prediction result.',

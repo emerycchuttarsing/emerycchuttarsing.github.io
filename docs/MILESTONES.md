@@ -4,13 +4,13 @@ Le découpage demandé par Emeryc remplace l'ordre d'exécution proposé dans le
 anciens documents. Le [brief de passation](BRIEF_AGENT_CODEUR.md) reste la référence
 pour les fonctionnalités et le mélange Ing Tian × Mirage.
 
-| Jalon | Périmètre                                                          | État    |
-| ----- | ------------------------------------------------------------------ | ------- |
-| 1     | Structure du projet, dépendances, données, routes et vérifications | Terminé |
-| 2     | Mise en page et squelette visuel, composition Ing Tian × Mirage    | Terminé |
-| 3     | Composants de contenu principaux, études de cas et About           | Terminé |
-| 4     | Interactivité, états de scène et connexions API si nécessaires     | Terminé |
-| 5     | Responsive design, finitions CSS et recette finale                 | À venir |
+| Jalon | Périmètre                                                          | État           |
+| ----- | ------------------------------------------------------------------ | -------------- |
+| 1     | Structure du projet, dépendances, données, routes et vérifications | Terminé        |
+| 2     | Mise en page et squelette visuel, composition Ing Tian × Mirage    | Repris — Works |
+| 3     | Composants de contenu principaux, études de cas et About           | Terminé        |
+| 4     | Interactivité, états de scène et connexions API si nécessaires     | Terminé        |
+| 5     | Responsive design, finitions CSS et recette finale                 | À venir        |
 
 Un commit local marque chaque jalon terminé. La branche de construction est
 `codex/portfolio`. La publication GitHub Pages est préparée, avec un déclenchement
@@ -120,3 +120,19 @@ Voir la [recette du jalon 4](validation/jalon-4/README.md) et le
 [guide des médias](MEDIA.md). Aucune API n’est nécessaire au parcours retenu.
 La publication publique, les essais sur appareils physiques et les finitions
 responsive/performance restent au jalon 5.
+
+## Reprise du jalon 2 — correction Mirage Works
+
+Le commit du jalon 4 reste le point de départ historique ; aucun retour Git aux
+anciens jalons n’a été effectué. La nouvelle spécification remplace la grille
+3 + 4, l’index éditorial clair et la scène limitée à l’accueil.
+
+La correction comprend les composants communs sur les deux entrées, l’exposition
+spatiale, le sol et ses lumières, le thème, les adaptations compactes et les replis.
+Les interactions déjà réalisées au jalon 4 sont adaptées à cette composition :
+focus/survol séparés du dialogue, visibilité projetée et priorité vidéo.
+Les contenus du jalon 3 sont conservés. Le jalon 5 reste à venir pour les finitions
+globales et les essais sur navigateurs/appareils physiques supplémentaires.
+
+Voir la [recette V1–V8 et les captures comparatives](validation/mirage-correction/README.md).
+Point de contrôle prévu : `feat: correct milestone 2 Mirage Works layout`.

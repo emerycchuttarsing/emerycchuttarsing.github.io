@@ -1,5 +1,6 @@
 ---
 title: 'Signature-Based Deep Hedging'
+displayTitle: 'Signature-Based Deep Hedging'
 summary: 'Comparing raw price histories and path signatures for neural hedging of path-dependent options.'
 order: 2
 featured: true
@@ -7,6 +8,7 @@ categories: ['Quantitative finance', 'Deep learning']
 technologies: ['Python', 'PyTorch', 'Path signatures']
 editorialStatus: 'draft'
 video: '/media/signature-deep-hedging.mp4'
+scenePoster: /media/scene/signature-deep-hedging.svg
 poster:
   {
     'caption': 'Conceptual wireframe surface for the hedging study. It is not an experimental loss or pricing surface.',

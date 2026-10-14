@@ -41,15 +41,18 @@ async function metrics(page) {
     width: innerWidth,
     height: innerHeight,
     overflow: document.documentElement.scrollWidth > innerWidth,
-    panels: [...document.querySelectorAll('.gallery-grid li')].map((e) => ({
+    panels: [...document.querySelectorAll('.project-row')].map((e) => ({
       id: e.dataset.projectId,
       top: e.getBoundingClientRect().top,
       bottom: e.getBoundingClientRect().bottom,
     })),
     canvasCount: document.querySelectorAll('canvas').length,
     flags: { ...document.documentElement.dataset },
-    posterOpacity: getComputedStyle(document.querySelector('.panel-poster'))
-      .opacity,
+    posterOpacity:
+      getComputedStyle(document.querySelector('.works-fallback')).visibility ===
+      'visible'
+        ? '1'
+        : '0',
   }));
 }
 for (const [width, height] of [
@@ -78,10 +81,7 @@ for (const [width, height] of [
       m.panels.every((p) => p.top >= 0 && p.bottom <= height),
       'all seven visible at 1440',
     );
-  if (width < 1100) {
-    assert.equal(m.flags.panelsReady, 'false');
-    assert.equal(m.posterOpacity, '1');
-  }
+  assert.equal(m.flags.panelsReady, 'true');
   await page.screenshot({
     path: `${out}/gallery-${width}x${height}.png`,
     fullPage: false,
@@ -98,8 +98,8 @@ for (const [width, height] of [
       await page.goto(base + route, { waitUntil: 'networkidle' });
       assert.equal(
         await page.locator('canvas').count(),
-        0,
-        'no scene outside home',
+        route === '/projects/' ? 1 : 0,
+        'scene on home and Works index only',
       );
       await page.screenshot({
         path: `${out}/${name}-1440.png`,
@@ -159,7 +159,7 @@ for (const kind of ['no-js', 'reduced-motion', 'no-webgl']) {
   assert.equal(m.posterOpacity, '1');
   assert.equal(
     await page
-      .locator('.panel-poster')
+      .locator('.works-fallback img')
       .evaluateAll((es) => es.every((e) => e.complete && e.naturalWidth > 0)),
     true,
   );
@@ -194,7 +194,7 @@ for (let i = 0; i < 32 && reached.length < 7; i++) {
     const e = document.activeElement;
     return {
       href: e?.getAttribute('href'),
-      project: e?.classList.contains('gallery-project'),
+      project: e?.classList.contains('row-title'),
       outline: e ? getComputedStyle(e).outlineStyle : 'none',
     };
   });
@@ -206,10 +206,10 @@ for (let i = 0; i < 32 && reached.length < 7; i++) {
 assert.equal(new Set(reached).size, 7, 'all project links reached by keyboard');
 await gallery(page);
 const ids = await page
-  .locator('.gallery-grid li')
+  .locator('.project-row')
   .evaluateAll((es) => es.map((e) => e.dataset.projectId));
 for (const id of ids) {
-  await page.locator(`[data-project-id="${id}"] .gallery-project h3`).click();
+  await page.locator(`[data-project-id="${id}"] .row-title`).click();
   await page.waitForURL(`**/projects/${id}/`);
   await page.reload({ waitUntil: 'networkidle' });
   assert.equal(await page.locator('h1').count(), 1);
@@ -239,7 +239,12 @@ await page.evaluate(() =>
 await page.waitForTimeout(100);
 await page.setViewportSize({ width: 1024, height: 768 });
 await page.waitForTimeout(120);
-assert.equal((await metrics(page)).posterOpacity, '1');
+assert.equal(
+  (await metrics(page)).canvasCount,
+  1,
+  'compact resize keeps the scene',
+);
+assert.equal((await metrics(page)).overflow, false);
 await page.setViewportSize({ width: 1440, height: 900 });
 await gallery(page);
 await page.waitForFunction(
@@ -252,6 +257,7 @@ await page.waitForFunction(
   () => document.querySelectorAll('canvas').length === 0,
 );
 assert.equal((await metrics(page)).posterOpacity, '1');
+assert.equal((await metrics(page)).overflow, false);
 await page.emulateMedia({ reducedMotion: 'no-preference' });
 await waitScene(page);
 await gallery(page);
@@ -267,6 +273,7 @@ await page.waitForFunction(
   () => document.querySelectorAll('canvas').length === 0,
 );
 assert.equal((await metrics(page)).posterOpacity, '1');
+assert.equal((await metrics(page)).overflow, false);
 report.navigation = {
   keyboardProjects: reached.length,
   openedReloadedAndReturned: ids,

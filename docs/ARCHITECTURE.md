@@ -3,12 +3,12 @@
 ## Décisions du jalon 1
 
 Astro génère un site statique pour `https://emerycchuttarsing.github.io/`, à la
-racine du domaine. TypeScript utilise le mode strictest. Three.js fournit désormais la scène commune de l’accueil. Node est fixé par `.nvmrc` et les
+racine du domaine. TypeScript utilise le mode strictest. Three.js fournit la scène commune de l’accueil et de `/projects/`. Node est fixé par `.nvmrc` et les
 versions des dépendances sont enregistrées dans `package-lock.json`.
 
 Le navigateur reçoit du HTML pour les titres, textes et liens. La navigation
-entre pages utilise des liens natifs. La scène reste limitée à l’accueil
-et est chargée par import dynamique côté navigateur. Aucun serveur applicatif n'est nécessaire à ce stade.
+entre pages utilise des liens natifs. La scène est montée sur l’accueil et l’index Works,
+et chargée par import dynamique côté navigateur. Aucun serveur applicatif n'est nécessaire à ce stade.
 
 ## Contenu et génération
 
@@ -35,32 +35,37 @@ et des sources locales ; ils ne revendiquent pas de performances numériques.
 - Vidéos : poster immédiat, deux lectures sur ordinateur, une sur configuration contrainte.
 - Cycle de vie : pause hors champ, respect du mouvement réduit et libération explicite des ressources.
 
-## Réalisation du jalon 2
+## Jalon 2 repris — présentation Works
 
-L’accueil assemble `Hero`, `ProjectGallery`, `AboutTeaser` et `PortfolioScene`.
-Une scène transparente fixe partage terrain, caméra et sept panneaux. Le passage
-`hero` → `overview` se fait au franchissement du milieu de l’écran par la galerie.
-Les poses sont fixes ; le défilement reste natif. Les panneaux sont des boîtes
-fines éclairées, avec un poster sur la face avant et un cadre métallique.
-Leurs positions sont calculées à partir des rectangles HTML de la grille.
+L’accueil assemble `Hero`, une transition progressive, `ProjectsShowcase`,
+`AboutTeaser`, `PortfolioScene` et un dialogue. `/projects/` utilise les mêmes
+composants de présentation et de scène en mode `index`, directement en overview.
+`ProjectRows` rend sept lignes HTML avec liens natifs, catégories, trois mentions
+Featured et sept commandes Preview. L’ancienne grille a été retirée.
 
-À partir de 1100 × 800, la grille de douze colonnes réserve quatre colonnes à
-chaque phare et trois à chaque secondaire. En dessous de ce seuil, les panneaux
-restent des images HTML : deux colonnes dès 640 px, une en dessous. Les titres,
-liens et focus clavier restent toujours en HTML. Les textes et URLs proviennent
-de la même collection qu’au jalon 1.
+Les panneaux occupent des positions déterministes dans le monde (`layout.ts`),
+avec orientations et profondeurs propres. Leur disposition ne dépend plus des
+rectangles HTML. La pose Works utilise un FOV de 18° et adapte le recul au cadrage.
+Les points du hero et le sol partagé dérivent de la même fonction `height.ts`.
+Le sol continu reçoit sept contributions de lumière, des variations de matière,
+un bloom discret et un vignettage. Les titres ne traversent pas ces effets.
 
-Les rendus sont déclenchés par les changements, sans boucle permanente. Le
-cycle de vie couvre les chargements tardifs, les redimensionnements hors champ,
-la préférence de mouvement réduit, les retours navigateur et les pertes de
-contexte WebGL. Les ressources GPU sont libérées à la sortie de l’accueil.
+Le mode de page et les éléments présents sont injectés au moteur. Le hero est
+facultatif. Le projet actif au survol/focus est séparé de la sélection modale.
+Le gestionnaire vidéo combine visibilité de section et positions projetées ;
+les lecteurs techniques cachés ne déterminent plus l’éligibilité par leur DOM.
 
-Les styles sont répartis entre `tokens.css`, `global.css` (navigation et gabarits
-éditoriaux), `home.css` (accueil et galerie), et le style propre à l’index.
-Les posters sont sept SVG originaux et illustratifs. Les études restent des
-brouillons. Le périmètre adopté au jalon 3 conserve les illustrations conceptuelles
-et reporte l’intégration des résultats chiffrés à une revue ultérieure.
-Les types `reveal` et `selected`, durées et budgets vidéo préparent le jalon 4.
+`home.css` conserve le hero et la fin d’accueil ; `works.css` définit l’exposition,
+les lignes et le thème sombre ; `preview.css` porte le dialogue commun. L’adaptation
+compacte garde une liste naturelle et un décor allégé. Les vues de secours sont
+des images de notre propre scène, avec sources desktop, tablette et téléphone.
+
+Les champs facultatifs `displayTitle` et `scenePoster` spécialisent les lignes et
+les faces 3D. Le titre complet et le poster légendé restent dans l’étude. Les URL,
+contenus scientifiques provisoires, CV et coordonnées restent ceux du jalon 3.
+
+La [recette de correction](validation/mirage-correction/README.md) remplace les
+captures de l’ancienne grille comme référence de validation courante.
 
 ## Réalisation du jalon 3
 
@@ -74,7 +79,7 @@ construit des liens d’ancrage natifs depuis les titres de niveau 2.
 `ProjectNavigation` reçoit les voisins calculés à partir de l’ordre de la collection.
 Le premier projet n’a pas de précédent, le dernier n’a pas de suivant. Les liens
 vers l’index et la galerie restent présents aux deux extrémités.
-`ProjectResources` est partagé par l’index et les études ; les destinations
+`ProjectResources` est utilisé dans les études ; les destinations
 manquantes ne génèrent aucun bouton.
 
 Le sommaire reste latéral et sticky au-dessus de 900 px, puis précède le texte.
@@ -94,7 +99,7 @@ Les contenus, leur provenance et les emplacements de remplacement sont décrits
 
 ## Réalisation du jalon 4
 
-L’accueil dispose désormais de deux couches indépendantes : commandes et médias
+L’accueil et l’index Works disposent de deux couches indépendantes : commandes et médias
 HTML (`selection.ts`, `media.ts`), puis scène Three.js facultative. La sélection
 reste accessible quand WebGL échoue ou que le mouvement réduit est demandé.
 Les liens des titres conservent leur destination directe ; les boutons Preview
@@ -104,11 +109,11 @@ Le défilement pilote une progression continue entre les poses hero et overview.
 Les panneaux apparaissent de manière coordonnée avec le terrain. Une sélection
 agrandit le panneau vers un emplacement mesuré dans le dialogue et colore la
 lumière avec son accent. Le canvas existant est déplacé dans le dialogue, puis
-réintégré à l’accueil à la fermeture ; la scène et le contexte restent uniques.
+réintégré à sa racine de scène à la fermeture ; la scène et le contexte restent uniques.
 
 Trois boucles conceptuelles locales alimentent les panneaux phares. Un
 ordonnanceur limite les lectures à deux sur ordinateur, une sur configuration
-compacte, mobile ou profil Safari, et donne priorité au projet sélectionné. La lecture
+compacte, mobile ou profil Safari, et donne priorité au projet sélectionné, puis au projet actif au focus/survol. La lecture
 est muette, inline, suspendue hors champ et dans les onglets masqués. Les
 callbacks de frames n’existent que pendant une lecture ou une transition.
 Les préférences de mouvement réduit et d’économie de données conservent les

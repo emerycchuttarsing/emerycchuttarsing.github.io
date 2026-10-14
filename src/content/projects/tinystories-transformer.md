@@ -1,11 +1,13 @@
 ---
 title: 'Building a TinyStories Transformer'
+displayTitle: 'TinyStories Transformer'
 summary: 'An end-to-end language modeling project, from tokenization to Transformer training and text generation.'
 order: 4
 featured: false
 categories: ['Machine learning', 'Language modeling']
 technologies: ['Python', 'PyTorch', 'BPE']
 editorialStatus: 'draft'
+scenePoster: /media/scene/tinystories-transformer.svg
 poster:
   {
     'caption': 'Conceptual tokens and attention matrix. The cells do not display attention weights from a trained model.',

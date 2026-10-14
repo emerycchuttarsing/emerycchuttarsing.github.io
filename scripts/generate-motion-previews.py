@@ -19,8 +19,6 @@ def base(label, color):
         v = 1 - abs(y / H - .5) * 2
         d.line((0, y, W, y), fill=(23 + int(v * 6), 33 + int(v * 8), 39 + int(v * 8)))
     d.rectangle((25, 25, W-25, H-25), outline='#435254', width=1)
-    d.text((44, 45), label, fill=color, font=FONT)
-    d.text((44, H-54), 'CONCEPTUAL MOTION / NO EXPERIMENTAL RESULTS', fill='#a5aaa6', font=SMALL)
     return im, d
 
 
@@ -37,7 +35,6 @@ def draw(kind, phase):
             j = int(((phase/TAU + line*.027) % 1) * (len(points)-1))
             px, py = points[j]
             d.ellipse((px-2, py-2, px+2, py+2), fill='#e9dec3')
-        d.text((45, 365), 'Sequence / representation / decision', fill='#c4a978', font=FONT)
     elif kind == 'signature-deep-hedging':
         im, d = base('SIGNATURE-BASED HEDGING', '#ccb583')
         def project(x,z):
@@ -51,7 +48,6 @@ def draw(kind, phase):
             x, z = .78*math.cos(phase + n), .68*math.sin(phase + n)
             px, py = project(x,z)
             d.ellipse((px-3,py-3,px+3,py+3), fill='#ead8ab')
-        d.text((45, 365), 'Paths + policies + risk', fill='#ccb583', font=FONT)
     else:
         im, d = base('LISTENING IN LATENT SPACE', '#b6cbb1')
         nodes = [(384+235*math.cos(n*2.399)*(.45+(n%4)*.13), 235+120*math.sin(n*2.399)) for n in range(22)]
@@ -65,7 +61,6 @@ def draw(kind, phase):
             x=210+n*4.6
             h=10+30*abs(math.sin(n*.28+phase))*math.sin(math.pi*n/76)
             d.line((x,235-h,x,235+h), fill='#c5c395', width=2)
-        d.text((45, 365), 'ALS  >  SASRec  >  MMR', fill='#b6cbb1', font=FONT)
     return im
 
 

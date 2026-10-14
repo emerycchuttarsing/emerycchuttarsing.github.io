@@ -2,13 +2,15 @@
 import type { SceneProject } from '../scene/types';
 interface Props {
   projects: SceneProject[];
+  mode?: 'home' | 'index';
 }
-const { projects } = Astro.props;
+const { projects, mode = 'home' } = Astro.props;
 ---
 
 <div
   class="scene-stage"
   data-scene-root
+  data-mode={mode}
   data-projects={JSON.stringify(projects)}
   aria-hidden="true"
 ></div>

@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { sceneConfig } from './config';
+import { terrainHeight } from './height';
 
 // A decorative sum of Gaussian hills and valleys, not a fitted financial surface.
 export function createTerrain() {
@@ -14,14 +15,7 @@ export function createTerrain() {
     const z = (row / rows - 0.5) * depth;
     for (let col = 0; col <= columns; col++) {
       const x = (col / columns - 0.5) * width;
-      const gaussian = (cx: number, cz: number, sx: number, sz: number) =>
-        Math.exp(-(((x - cx) / sx) ** 2) - ((z - cz) / sz) ** 2);
-      const height =
-        3.8 * gaussian(-6, -1, 4, 4) +
-        2.6 * gaussian(5, 2, 3.5, 4.3) +
-        1.4 * gaussian(11, -5, 3.3, 3) -
-        1.2 * gaussian(0, 0, 3.6, 3.3) -
-        0.6 * gaussian(-12, 4, 4, 3);
+      const height = terrainHeight(x, z);
       positions.push(x, height, z);
       const edge =
         Math.sin((Math.PI * col) / columns) * Math.sin((Math.PI * row) / rows);

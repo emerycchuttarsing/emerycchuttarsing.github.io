@@ -1,5 +1,7 @@
 # Passation à l’agent codeur — portfolio d’Emeryc Chuttarsing
 
+> **Mise à jour du 14 octobre 2026 — présentation des projets :** lire d’abord le [contrat d’exécution pour une IA](PROMPT_AGENT_CORRECTION_MIRAGE.md), complété par [les correctifs détaillés Mirage Works](CORRECTIFS_GALERIE_MIRAGE.md). Ces documents remplacent les anciennes consignes de grille 3 + 4, d’index clair séparé et de scène limitée à l’accueil. Le site est désormais construit jusqu’au jalon 4 ; le présent brief reste la référence historique pour les autres parties.
+
 Date : 13 octobre 2026. Ce document est le point d’entrée pour la construction.
 Il se suffit à lui-même pour comprendre la direction ; les études REA liées en
 fin de document fournissent les détails techniques supplémentaires.

@@ -39,9 +39,11 @@ export async function getProjects(): Promise<Project[]> {
     if (!project.body?.trim()) {
       throw new Error(`Project body is empty: ${project.id}`);
     }
-    for (const media of [project.data.poster.src, project.data.video].filter(
-      (value) => value !== undefined,
-    )) {
+    for (const media of [
+      project.data.poster.src,
+      project.data.scenePoster,
+      project.data.video,
+    ].filter((value) => value !== undefined)) {
       const asset = await stat(resolve('public', media.slice(1))).catch(
         () => null,
       );
@@ -60,7 +62,10 @@ export function toSceneProject(project: Project): SceneProject {
     title: project.data.title,
     summary: project.data.summary,
     featured: project.data.featured,
-    poster: project.data.poster,
+    poster: {
+      ...project.data.poster,
+      src: project.data.scenePoster ?? project.data.poster.src,
+    },
     accent: project.data.accent,
     ...(project.data.video ? { video: project.data.video } : {}),
   };

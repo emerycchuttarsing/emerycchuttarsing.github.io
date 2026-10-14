@@ -106,7 +106,10 @@ try {
         [],
         `element overflow: ${path} at ${width}`,
       );
-      assert.equal(await page.locator('canvas').count(), 0);
+      assert.equal(
+        await page.locator('canvas').count(),
+        path === '/projects/' ? 1 : 0,
+      );
       if (metrics.methodSteps.length) {
         assert.equal(metrics.methodSteps.length, 3);
         assert.equal(metrics.tocPosition, width > 900 ? 'sticky' : 'static');
@@ -146,7 +149,7 @@ try {
         await captureAt(page, '.contact-section', `contact-${width}x${height}`);
       }
       if (path === '/projects/')
-        await captureAt(page, '.project-list', `index-${width}x${height}`);
+        await captureAt(page, '.project-rows', `index-${width}x${height}`);
     }
     report.viewports.push({ width, height, checks });
     console.log(`Content layouts: ${width} × ${height}, nine pages passed`);
@@ -232,14 +235,14 @@ try {
   }
   await page.locator('.collection-links a[href="/projects/"]').click();
   await page.waitForURL(base + '/projects/');
-  assert.equal(await page.locator('.project-list > li').count(), 7);
+  assert.equal(await page.locator('.project-rows > li').count(), 7);
   await page.goBack();
   await page.locator('.collection-links a[href="/#projects"]').click();
   await page.waitForURL(base + '/#projects');
   await page.waitForFunction(
     () => document.documentElement.dataset.panelsReady === 'true',
   );
-  const panels = await page.locator('.gallery-grid li').evaluateAll((es) =>
+  const panels = await page.locator('.project-row').evaluateAll((es) =>
     es.map((e) => ({
       id: e.dataset.projectId,
       top: e.getBoundingClientRect().top,

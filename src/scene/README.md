@@ -1,87 +1,73 @@
-# Shared portfolio scene
+# Shared portfolio scene — Works correction
 
-The home page progressively enhances native links and posters. The editorial
-pages load neither the renderer nor video players. No API is needed for this
-static portfolio: its previews are local conceptual media, not remote inference.
+Both `/` and `/projects/` progressively enhance the same `ProjectsShowcase` and
+`ProjectRows`. Seven native title links remain available before any JavaScript.
+Case studies and About load neither Three.js nor video players.
 
-## Modules
+## Ownership and modes
 
-- `mount.ts`: owns the selection, media scheduler and optional renderer. It
-  disposes them on `pagehide` and restores them on a back/forward-cache return.
-  Generation tickets prevent a late dynamic import from creating an orphan scene.
-- `selection.ts`: native modal dialog, focus cycle, Escape, explicit close,
-  restoration of the trigger focus, and preview history entries. The URL stays
-  unchanged; browser Back closes the preview and Forward restores it. Opening a
-  case study uses an ordinary link. A reload or return from a study restores a
-  selected preview from history state.
-- `media.ts`: lazy source assignment, viewport observation, playback budget,
-  reduced-motion/data-saving preferences, manual pause/play, error recovery and
-  cancellation of pending video-frame callbacks. It runs independently of WebGL.
-- `renderer.ts`: one transparent canvas, one scene and one camera, with elapsed-time
-  interpolation, DOM-aligned panels, accent lighting and explicit GPU cleanup.
-- `terrain.ts`: the decorative mathematical point landscape, shared by the hero,
-  gallery and selection. It contains no measured scientific data.
-- `config.ts`: camera poses, transition durations, terrain, panel depth/tilt,
-  lighting, pixel ratio and video playback limits.
-- `types.ts`: serializable project data and renderer lifecycle contract.
-- `../lib/projects.ts`: derives browser data from the validated content collection.
+`mount.ts` collects explicit `SceneElements`: root, section, optional hero, dialog,
+preview slot and scene slot. The mode is `home` or `index`; index starts directly
+in overview and never measures a missing hero. Generation tickets protect late
+imports. Pagehide disposes renderer, highlight, media and selection; a persisted
+pageshow creates a fresh set. One document owns one canvas/context.
 
-## Scroll and selection
+The journey remains hero → reveal → overview → selected, or fallback. A separate
+active project identifies the row under keyboard focus or the pointer. Focus has
+priority, and hover never opens the modal or changes history.
 
-Native scrolling drives `hero` → `reveal` → `overview` and the reverse journey.
-Progress starts when the gallery enters the bottom 90% of the viewport and ends
-when its top reaches the viewport top. The camera and panel fades approach this
-progress with separate durations. Interpolation uses elapsed time and snaps to
-its final value before stopping; it does not depend on display refresh rate.
+## Spatial scene
 
-At 1440 × 900, the overview retains all seven panels and titles. Clicking the
-image's Preview button opens `selected`; clicking a project title still opens
-its study directly. The selected panel advances and grows into the dialog's
-measured media slot, while the other panels fade and the rim light takes the
-project's accent color. Closing returns it to its original HTML anchor.
+- `height.ts`: a shared sum of Gaussian hills, used by the hero points and the
+  continuous ground mesh. This is a decorative landscape, not research data.
+- `terrain.ts`: original point-cloud hero. Position, scale and opacity approach
+  the ground coordinate system during the reversible reveal.
+- `layout.ts`: deterministic world positions by project ID, own orientations,
+  depths and scales. Three featured panels are larger. No overview panel follows
+  a row's bounding rectangle. Compact screens use a tighter spatial arrangement.
+- `ground.ts`: indexed surface with normals, fine spatial grain/ripples, seven
+  attenuated colored light contributions and edge fading.
+- `lighting.ts`: samples local precomputed sRGB video-color curves, converts to
+  linear light and interpolates by currentTime. Accents serve as still fallbacks.
+- `postprocessing.ts`: RenderPass, restrained UnrealBloomPass, vignette, OutputPass.
+  Text stays in HTML above the canvas. Mobile omits bloom. Transparent hero/reveal
+  uses direct rendering; the settled dark scene uses the effects chain.
+- `renderer.ts`: camera interpolation, projected visibility, panel materials,
+  finite highlight/selection transitions and complete GPU cleanup.
+- `config.ts`: camera poses, point density, lights, timing, DPR and media budget.
 
-The **same canvas** moves into the dialog's scene container while it is open,
-then returns to the home scene root. There is no second renderer or WebGL context.
-The native dialog supplies modal semantics; a small explicit Tab/Shift+Tab cycle
-keeps focus among its commands. Escape and the visible back command restore the
-previous trigger without scrolling the gallery.
+Works uses an 18° desktop camera; distance expands when needed to fit the world
+layout. A view offset follows native document scroll. Only the explicit dialog
+uses DOM alignment: the selected panel advances into its measured media slot.
+The same canvas joins the native dialog top layer and returns to its scene root.
 
-Below 1100 px wide or 800 px high, panels and selected media use HTML posters and
-videos. The terrain remains optional. The dialog stacks on compact/short screens
-and scrolls naturally. No interaction relies on hover.
+## HTML, selection and media
 
-## Video budget and rendering
+`highlight.ts` binds pointer/focus to IDs and the separator glow. `selection.ts`
+retains native title links, an explicit Preview button, Escape, focus trapping,
+scroll preservation and Back/Forward history including reload and study return.
 
-Three featured projects have original six-second conceptual loops. Videos start
-with `preload="none"` and no `src`; a source is assigned only when eligible to play.
-The scheduler allows two simultaneous videos on desktop and one in a compact
-viewport or a mobile/Safari user-agent profile. Selection pauses the other videos and
-prioritizes the selected one. A video outside the viewport, including inside a
-scrolled dialog, pauses. Hidden documents pause every video and scene request.
+`media.ts` schedules at most two videos, one in constrained/mobile/Safari profiles.
+Overview eligibility combines section visibility with projected panel visibility;
+hidden source video elements are not intersection targets. Hover/focus media
+priority has a cancellable 120 ms delay and does not invoke modal selection.
+Selection separately reparents the chosen source video into the dialog.
 
-Muted inline looping is requested, never assumed to succeed. Autoplay refusal
-leaves a still image and a Play previews command; a media error preserves its
-poster. Pause previews returns the panels to their posters. Reduced motion and
-Save-Data prevent automatic video downloads and playback. Reduced motion also
-skips Three.js, while the HTML selection remains usable.
+Videos have no src initially. Muted autoplay refusal offers manual retry; errors
+retain posters. Pause, Save-Data, reduced motion and document visibility are
+respected. Video frames request renders via requestVideoFrameCallback; no ambient
+shader animation keeps an idle loop alive. Paused stable scenes stop rendering.
 
-The renderer requests frames only for a finite transition, a layout change, a
-texture load or a new playing-video frame. `requestVideoFrameCallback` drives
-video updates where available; a cancellable RAF fallback covers older engines.
-No scene loop runs when media are paused and the scene has settled.
+## Fallbacks and resources
 
-## Fallbacks and cleanup
+A responsive picture of our own rendered scene is shown before textures are ready,
+without JS/WebGL, after context loss and with reduced motion. Seven links and the
+Featured hierarchy survive. With JS, the dialog remains usable without WebGL.
+The mobile fallback retains the same dark exhibition and natural HTML list.
 
-HTML images appear before textures are ready. Missing WebGL or context loss
-removes the canvas and restores HTML media without closing a selected preview.
-Texture-loading failure keeps the HTML panel layer. Without JavaScript, preview
-buttons stay hidden and all seven original case-study links work normally.
+Disposal cancels listeners, observers, timers and video callbacks; restores moved
+videos; disposes every texture, material, geometry and postprocessing render target;
+and removes the canvas/context. DOM diagnostics expose projected panel bounds and
+renderer.info.memory for the browser validation script, without global mutable APIs.
 
-Disposal removes interaction/media events and observers, cancels RAF and video
-callbacks, pauses and unloads sources, restores moved video elements, disposes
-textures/geometries/materials, and releases the WebGL context. Lifecycle listeners
-remain only to restore the page when its own document returns from browser cache.
-
-See `docs/MEDIA.md` for replacing media and `docs/validation/jalon-4/README.md` for
-the interaction recipe. Final physical-device/browser and performance tuning
-remain part of milestone 5.
+See `docs/validation/mirage-correction/README.md` for evidence and limitations.

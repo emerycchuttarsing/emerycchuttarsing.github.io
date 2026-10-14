@@ -1,11 +1,13 @@
 ---
 title: 'Retail Demand Forecasting'
+displayTitle: 'Retail Demand Forecasting'
 summary: 'A retail forecasting case study connecting product and store demand to temporal validation and business interpretation.'
 order: 7
 featured: false
 categories: ['Forecasting', 'Applied data science']
 technologies: ['Python', 'Time series', 'Data analysis']
 editorialStatus: 'draft'
+scenePoster: /media/scene/retail-forecasting.svg
 poster:
   {
     'caption': 'Conceptual seasonal series and forecast interval. The band is decorative and does not represent estimated uncertainty.',
