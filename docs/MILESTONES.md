@@ -136,3 +136,14 @@ globales et les essais sur navigateurs/appareils physiques supplémentaires.
 
 Voir la [recette V1–V8 et les captures comparatives](validation/mirage-correction/README.md).
 Point de contrôle prévu : `feat: correct milestone 2 Mirage Works layout`.
+
+## Exploration supplémentaire — galerie orbitale
+
+À la demande d’Emeryc après la correction de netteté Retina : panneaux agrandis
+d’environ 50 %, révolution lente de 90 secondes, ciblage amorti au survol/focus
+et flou sélectif des images. La liste de sept liens reste indépendante du décor.
+Les panneaux peuvent désormais se masquer partiellement pendant la rotation ;
+chaque projet se place au premier plan quand sa ligne devient active.
+
+Ce prototype prolonge les jalons 2 et 4 ; le jalon 5 reste à venir.
+Voir [la recette, les captures et la démonstration](validation/orbit-gallery/README.md).

@@ -40,6 +40,11 @@ export interface SceneConfig {
     pointSize: number;
     heroOpacity: number;
   };
+  orbit: {
+    revolutionSeconds: number;
+    maxFocusSpeed: number;
+    blurRadius: number;
+  };
   lighting: { ambient: number; key: number; rim: number };
   media: { desktopPlayingLimit: number; constrainedPlayingLimit: number };
   quality: {
@@ -58,6 +63,7 @@ export interface SceneConfig {
 export interface SceneController {
   setState(state: SceneState): void;
   setActive(projectId: string | undefined): void;
+  setMotion(enabled: boolean): void;
   resize(width: number, height: number): void;
   pause(): void;
   resume(): void;

@@ -58,6 +58,9 @@ GitHub Pages ; aucun service vidéo externe ni API fictive n’est utilisé.
 - `src/scene/renderer.ts` : interpolation, lumière d’accent et textures vidéo.
 - `src/components/ProjectPreview.astro` et `src/styles/preview.css` : composition et
   commandes de l’aperçu. Les titres et résumés viennent toujours de la collection.
+- `src/scene/orbit.ts` : rotation et freinage ; le bouton Pause motion agit aussi
+  sur les vidéos. Le flou des faces est géré par `panel-material.ts` et les mipmaps
+  des textures vidéo ; les sources HD restent inchangées.
 
 La sélection n’ajoute pas d’URL publique : elle ajoute une entrée d’historique
 à URL inchangée. Retour la ferme, Avancer la restaure. Le partage et l’accès direct

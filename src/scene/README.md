@@ -23,8 +23,14 @@ priority, and hover never opens the modal or changes history.
 - `terrain.ts`: original point-cloud hero. Position, scale and opacity approach
   the ground coordinate system during the reversible reveal.
 - `layout.ts`: deterministic world positions by project ID, own orientations,
-  depths and scales. Three featured panels are larger. No overview panel follows
-  a row's bounding rectangle. Compact screens use a tighter spatial arrangement.
+  depths and scales on an elliptical orbit. Three featured panels are larger.
+  Panels have grown by about 50% and can overlap in depth. The seven native HTML
+  links remain visible and independently usable. Compact screens use a tighter orbit.
+- `orbit.ts`: 90-second ambient revolution and damped shortest-arc focus targeting.
+  Pointer/focus changes preserve velocity; targeted panels settle at the front.
+- `panel-material.ts`: derivative-aware mipmap filtering and a soft sampling kernel
+  blur image faces while drifting. Focus and explicit previews use the sharp level.
+  Frames, ground and HTML are never blurred. Video textures generate mipmaps.
 - `ground.ts`: indexed surface with normals, fine spatial grain/ripples, seven
   attenuated colored light contributions and edge fading.
 - `lighting.ts`: samples local precomputed sRGB video-color curves, converts to
@@ -60,10 +66,17 @@ hidden source video elements are not intersection targets. Hover/focus media
 priority has a cancellable 120 ms delay and does not invoke modal selection.
 Selection separately reparents the chosen source video into the dialog.
 
+The gallery’s Pause motion control freezes rotation and videos, showing sharp
+stills. Leaving a row resumes the slow orbit; keyboard focus has priority over
+pointer hover. Active panels sharpen and brighten, while other panels dim smoothly.
+The orbit stops in the explicit preview and when its panels leave the viewport.
+
 Videos have no src initially. Muted autoplay refusal offers manual retry; errors
 retain posters. Pause, Save-Data, reduced motion and document visibility are
-respected. Video frames request renders via requestVideoFrameCallback; no ambient
-shader animation keeps an idle loop alive. Paused stable scenes stop rendering.
+respected. Video frames request renders via requestVideoFrameCallback. The visible
+orbit schedules animation frames while drifting or settling; it schedules no
+frames once paused, hidden, offscreen, or settled on a static project. Reduced
+motion uses the static HTML fallback. No timer continues an invisible orbit.
 
 ## Fallbacks and resources
 

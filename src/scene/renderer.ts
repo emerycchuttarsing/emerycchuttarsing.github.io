@@ -5,6 +5,8 @@ import { createGround } from './ground';
 import { panelLayout, projectedPanel } from './layout';
 import { mediaLight } from './lighting';
 import { createPostprocessing } from './postprocessing';
+import { createOrbit } from './orbit';
+import { createPanelMaterial } from './panel-material';
 import type { SceneController, SceneElements, SceneProject } from './types';
 
 const clamp = THREE.MathUtils.clamp;
@@ -58,6 +60,8 @@ export function createPortfolioScene(
   const ground = createGround(projects.length);
   scene.add(ground.mesh);
   const effects = createPostprocessing(renderer, scene, camera);
+  const orbit = createOrbit(projects.length);
+  let motionEnabled = true;
   const geometry = new THREE.BoxGeometry(1, 1, 1);
   const edgeGeometry = new THREE.EdgesGeometry(geometry);
   const materials: THREE.Material[] = [terrain.material];
@@ -69,11 +73,8 @@ export function createPortfolioScene(
       roughness: 0.26,
       transparent: true,
     });
-    const front = new THREE.MeshBasicMaterial({
-      color: new THREE.Color(1.65, 1.65, 1.65),
-      transparent: true,
-      toneMapped: false,
-    });
+    const surface = createPanelMaterial();
+    const front = surface.material;
     const border = new THREE.LineBasicMaterial({
       color: '#c4d0ce',
       transparent: true,
@@ -94,6 +95,7 @@ export function createPortfolioScene(
     return {
       project,
       index,
+      surface,
       mesh,
       frame,
       front,
@@ -113,7 +115,8 @@ export function createPortfolioScene(
     lastTime = 0;
   let progress = mode === 'index' ? 1 : -1,
     panelProgress = progress,
-    selectionMix = 0;
+    selectionMix = 0,
+    attentionMix = 0;
   let selected: string | undefined,
     focusId: string | undefined,
     activeId: string | undefined;
@@ -208,7 +211,7 @@ export function createPortfolioScene(
           Math.tan(THREE.MathUtils.degToRad(poses.overview.fov / 2)) *
           (width / height)),
     );
-    if (!mobile) target.y = 4.8 * (target.z / 36);
+    if (!mobile) target.y = poses.overview.position[1] * (target.z / 36);
     camera.position.fromArray(poses.hero.position).lerp(target, travel);
     camera.fov = mix(poses.hero.fov, poses.overview.fov, travel);
     camera.aspect = width / height;
@@ -259,13 +262,34 @@ export function createPortfolioScene(
     ground.uniforms.opacity.value =
       smooth((progress - 0.18) / 0.56) * (1 - selectionMix * 0.88);
     ground.mesh.visible = ground.uniforms.opacity.value > 0.001;
+    attentionMix = approach(attentionMix, activeId ? 1 : 0, dt, 700);
+    const orbitEnabled =
+      motionEnabled && !selected && selectionMix === 0 && progress > 0.96;
+    const orbitMoving = orbit.update(dt / 1000, orbitEnabled);
+    root.dataset['orbitAngle'] = orbit.angle.toFixed(6);
+    root.dataset['orbitVelocity'] = orbit.velocity.toFixed(6);
+    root.dataset['orbitState'] = !motionEnabled
+      ? 'paused'
+      : selected
+        ? 'preview'
+        : activeId
+          ? orbit.settled
+            ? 'focused'
+            : 'focusing'
+          : 'drifting';
     const end = preview.getBoundingClientRect();
     let highlighting = false;
     const showPanels =
       texturesReady && (panelProgress > 0.02 || Boolean(selected));
     for (const panel of panels) {
       const { project, index, mesh, front, frame, border } = panel;
-      const layout = panelLayout(project, width);
+      const layout = panelLayout(
+        project,
+        width,
+        orbit.angle,
+        index,
+        projects.length,
+      );
       const desired = activeId === project.id ? 1 : 0;
       panel.emphasis = approach(
         panel.emphasis,
@@ -275,11 +299,14 @@ export function createPortfolioScene(
       );
       if (panel.emphasis !== desired) highlighting = true;
       const amount = focusId === project.id ? smooth(selectionMix) : 0;
+      const background = mix(1, 0.48, attentionMix * (1 - panel.emphasis));
+      const depthOpacity = mix(0.52, 1, layout.frontness);
       const opacity =
         (selected && focusId === project.id
           ? 1
           : smooth((panelProgress - 0.27 - 0.025 * index) / 0.55)) *
-        (focusId === project.id ? 1 : 1 - selectionMix);
+        (focusId === project.id ? 1 : 1 - selectionMix) *
+        mix(depthOpacity * background, 1, Math.max(panel.emphasis, amount));
       mesh.visible = showPanels && opacity > 0.001;
       mesh.position.copy(layout.position);
       mesh.position.y += (1 - panelProgress) * -0.35 + panel.emphasis * 0.06;
@@ -308,6 +335,12 @@ export function createPortfolioScene(
         map.repeat.set(Math.min(1, aspect / 1.6), Math.min(1, 1.6 / aspect));
         map.offset.set((1 - map.repeat.x) / 2, (1 - map.repeat.y) / 2);
       }
+      panel.surface.pixelRatio.value = renderer.getPixelRatio();
+      const restingBlur = motionEnabled
+        ? sceneConfig.orbit.blurRadius + (1 - layout.frontness) * 1.5
+        : 0;
+      panel.surface.blur.value =
+        restingBlur * (1 - panel.emphasis) * (1 - amount);
       front.opacity = frame.opacity = opacity;
       border.opacity = opacity * (0.22 + panel.emphasis * 0.4);
       front.color.setScalar(1.7 + panel.emphasis * 0.45);
@@ -317,7 +350,10 @@ export function createPortfolioScene(
       ground.uniforms.lights.value[index]!.copy(layout.position).y = 1.35;
       mediaLight(project.id, project.accent, panel.element, color);
       ground.uniforms.colors.value[index]!.copy(color);
-      ground.uniforms.strengths.value[index] = mix(1, 1.8, panel.emphasis);
+      ground.uniforms.strengths.value[index] =
+        mix(1, 1.8, panel.emphasis) *
+        mix(0.65, 1, layout.frontness) *
+        background;
     }
     try {
       if (travel > 0.995 || selected) {
@@ -337,19 +373,24 @@ export function createPortfolioScene(
         ...projectedPanel(p.mesh, camera, width, height),
       }));
       root.dataset['panelBounds'] = JSON.stringify(bounds);
-      onVisibility(
-        bounds
-          .filter(
-            (p) =>
-              p.visible &&
-              p.bottom > 0 &&
-              p.top < height &&
-              p.right > 0 &&
-              p.left < width,
-          )
-          .map((p) => p.id),
-      );
+      // A sliver at the viewport edge must not keep the carousel or videos alive.
+      const visibleBounds = bounds.filter((p) => {
+        const area = Math.max(1, (p.right - p.left) * (p.bottom - p.top));
+        const visibleArea =
+          Math.max(0, Math.min(width, p.right) - Math.max(0, p.left)) *
+          Math.max(0, Math.min(height, p.bottom) - Math.max(0, p.top));
+        return p.visible && visibleArea / area >= 0.25;
+      });
+      onVisibility(visibleBounds.map((p) => p.id));
       root.dataset['gpuResources'] = JSON.stringify(renderer.info.memory);
+      root.dataset['panelFocus'] = JSON.stringify(
+        panels.map((p) => ({
+          id: p.project.id,
+          blur: p.surface.blur.value,
+          emphasis: p.emphasis,
+        })),
+      );
+      if (orbitMoving && visibleBounds.length > 0) invalidate();
     } catch {
       controller.setState({ kind: 'fallback', reason: 'load-error' });
       return;
@@ -358,7 +399,8 @@ export function createPortfolioScene(
       progress !== destination ||
       panelProgress !== destination ||
       selectionMix !== (selected ? 1 : 0) ||
-      highlighting
+      highlighting ||
+      attentionMix !== (activeId ? 1 : 0)
     )
       invalidate();
     else if (!selected) focusId = undefined;
@@ -408,7 +450,15 @@ export function createPortfolioScene(
     },
     setActive(id) {
       activeId = id;
+      orbit.focus(
+        id ? projects.findIndex((project) => project.id === id) : undefined,
+      );
       root.dataset['activeProject'] = id ?? '';
+      invalidate();
+    },
+    setMotion(enabled) {
+      if (enabled === motionEnabled || disposed) return;
+      motionEnabled = enabled;
       invalidate();
     },
     setMedia(id, video) {
@@ -419,6 +469,8 @@ export function createPortfolioScene(
       if (video && !panel.video) {
         panel.video = new THREE.VideoTexture(video);
         panel.video.colorSpace = THREE.SRGBColorSpace;
+        panel.video.generateMipmaps = true;
+        panel.video.minFilter = THREE.LinearMipmapLinearFilter;
         textures.push(panel.video);
       }
       panel.front.map =

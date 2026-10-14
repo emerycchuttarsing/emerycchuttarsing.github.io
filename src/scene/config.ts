@@ -4,7 +4,7 @@ export const sceneConfig: SceneConfig = {
   camera: {
     desktop: {
       hero: { position: [0, 3, 17], target: [0, 0, 0], fov: 38 },
-      overview: { position: [0, 4.8, 36], target: [0, 0.2, 0], fov: 18 },
+      overview: { position: [0, 5.5, 36], target: [0, 1.85, 0], fov: 18 },
     },
     compact: {
       hero: { position: [0, 4, 19], target: [0, 0, 0], fov: 44 },
@@ -19,6 +19,7 @@ export const sceneConfig: SceneConfig = {
     pointSize: 2.15,
     heroOpacity: 0.82,
   },
+  orbit: { revolutionSeconds: 90, maxFocusSpeed: 1.1, blurRadius: 2.7 },
   lighting: { ambient: 1.2, key: 3.2, rim: 2.4 },
   media: { desktopPlayingLimit: 2, constrainedPlayingLimit: 1 },
   quality: { maxPixelRatio: 2, maxRenderPixels: 8_388_608, targetFps: 60 },

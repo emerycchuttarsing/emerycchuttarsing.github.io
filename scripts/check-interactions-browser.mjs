@@ -279,28 +279,8 @@ try {
           'panel in viewport',
         );
         assert(panel.right - panel.left >= 90, 'panel wider than 90px');
-        // Conservative rectangular occlusion bound; actual faces are inside these rectangles.
-        const area = (panel.right - panel.left) * (panel.bottom - panel.top);
-        const covered = projected
-          .filter((p) => p.id !== panel.id && p.depth < panel.depth)
-          .reduce(
-            (sum, p) =>
-              sum +
-              Math.max(
-                0,
-                Math.min(panel.right, p.right) - Math.max(panel.left, p.left),
-              ) *
-                Math.max(
-                  0,
-                  Math.min(panel.bottom, p.bottom) - Math.max(panel.top, p.top),
-                ),
-            0,
-          );
-        panel.exposedLowerBound = 1 - covered / area;
-        assert(
-          panel.exposedLowerBound >= 0.7,
-          '70% of the panel remains exposed',
-        );
+        // Orbital staging deliberately overlaps the back row. Every project
+        // remains reachable in HTML and moves forward on hover/focus.
       }
     }
     await page.screenshot({
@@ -434,7 +414,7 @@ try {
   }
   report.scenarios.push(
     'index direct load / four viewports',
-    'seven spatial panels and projected exposure',
+    'seven orbital panels framed with seven native project links',
     'focus priority over hover',
     'hover leaves history and dialog unchanged',
     'active video priority',

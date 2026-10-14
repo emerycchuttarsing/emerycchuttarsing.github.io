@@ -43,12 +43,16 @@ composants de présentation et de scène en mode `index`, directement en overvie
 `ProjectRows` rend sept lignes HTML avec liens natifs, catégories, trois mentions
 Featured et sept commandes Preview. L’ancienne grille a été retirée.
 
-Les panneaux occupent des positions déterministes dans le monde (`layout.ts`),
-avec orientations et profondeurs propres. Leur disposition ne dépend plus des
+Les panneaux suivent une orbite elliptique calculée dans le monde (`layout.ts`),
+avec orientations et profondeurs propres. `orbit.ts` produit la rotation lente
+et l’arrêt amorti sur le projet actif. Leur disposition ne dépend pas des
 rectangles HTML. La pose Works utilise un FOV de 18° et adapte le recul au cadrage.
 Les points du hero et le sol partagé dérivent de la même fonction `height.ts`.
 Le sol continu reçoit sept contributions de lumière, des variations de matière,
 un bloom discret et un vignettage. Les titres ne traversent pas ces effets.
+`panel-material.ts` applique un flou doux uniquement aux images ; le panneau
+actif ou sélectionné retrouve la texture HD nette. Les mipmaps vidéo permettent
+ce filtrage sans copies visibles des courbes.
 
 Le mode de page et les éléments présents sont injectés au moteur. Le hero est
 facultatif. Le projet actif au survol/focus est séparé de la sélection modale.
@@ -65,7 +69,9 @@ les faces 3D. Le titre complet et le poster légendé restent dans l’étude. L
 contenus scientifiques provisoires, CV et coordonnées restent ceux du jalon 3.
 
 La [recette de correction](validation/mirage-correction/README.md) remplace les
-captures de l’ancienne grille comme référence de validation courante.
+captures de l’ancienne grille. Le [prototype orbital](validation/orbit-gallery/README.md)
+décrit l’évolution demandée ensuite : panneaux agrandis, chevauchements en
+profondeur et mise au point progressive au survol.
 
 ## Réalisation du jalon 3
 
@@ -115,7 +121,8 @@ Trois boucles conceptuelles locales alimentent les panneaux phares. Un
 ordonnanceur limite les lectures à deux sur ordinateur, une sur configuration
 compacte, mobile ou profil Safari, et donne priorité au projet sélectionné, puis au projet actif au focus/survol. La lecture
 est muette, inline, suspendue hors champ et dans les onglets masqués. Les
-callbacks de frames n’existent que pendant une lecture ou une transition.
+callbacks de frames existent pendant une lecture, une transition ou la rotation
+visible de la galerie. Le contrôle Pause motion arrête les médias et l’orbite.
 Les préférences de mouvement réduit et d’économie de données conservent les
 posters sans téléchargement vidéo automatique.
 

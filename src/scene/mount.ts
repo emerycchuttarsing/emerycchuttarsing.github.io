@@ -87,6 +87,7 @@ export function mountPortfolioScene() {
       elements,
       (id, video) => controller?.setMedia(id, video),
       () => controller?.invalidate(),
+      (enabled) => controller?.setMotion(enabled),
     );
     highlight = createHighlight(section!, (id) => {
       controller?.setActive(id);

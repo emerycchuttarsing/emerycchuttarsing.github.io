@@ -98,7 +98,7 @@ PLAYWRIGHT_MODULE=/chemin/vers/playwright/index.mjs node scripts/check-browser.m
 répertoire de sortie, par défaut `test-results/jalon-2` (ignoré par Git).
 Ce contrôle couvre cadrage, débordements, navigation clavier, rechargement et
 retour pour les sept études, replis sans JavaScript/WebGL, mouvement réduit,
-perte du contexte, redimensionnement et absence de rendus continus au repos.
+perte du contexte, redimensionnement et arrêt des rendus en pause ou hors champ.
 Il complète `npm run verify`, qui reste le contrôle de CI sans navigateur.
 
 Le contrôle des contenus utilise le même outillage :
@@ -155,3 +155,12 @@ n’a été effectué pendant les jalons 1 à 4.
 - [Synthèse Ing Tian × Mirage](docs/DESIGN_SYNTHESIS_ING_MIRAGE.md)
 - [Feuille de route préparatoire](docs/ROADMAP.md)
 - [Passation REA et études](docs/REA_HANDOFF.md)
+
+### Prototype de galerie orbitale
+
+La galerie comporte maintenant des panneaux agrandis, une rotation lente,
+un arrêt amorti sur le projet survolé ou ciblé au clavier et un flou doux des
+images en arrière-plan. Le bouton Pause motion fige la scène et les vidéos.
+La [recette orbitale](docs/validation/orbit-gallery/README.md) et
+`scripts/check-orbit-browser.mjs` couvrent ces interactions ; le contrôle Retina
+reste dans `scripts/check-scene-quality-browser.mjs`.

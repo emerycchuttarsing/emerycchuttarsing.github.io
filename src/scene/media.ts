@@ -18,6 +18,7 @@ export function createMediaManager(
   elements: SceneElements,
   onChange: (id: string, video: HTMLVideoElement | null) => void,
   onFrame: () => void,
+  onMotionChange: (enabled: boolean) => void,
 ) {
   const entries: MediaEntry[] = [
     ...elements.section.querySelectorAll<HTMLVideoElement>(
@@ -61,6 +62,7 @@ export function createMediaManager(
   let selected: string | undefined;
   let previewVisible = false;
   let userPaused = false;
+  let motionEnabled = false;
   let disposed = false;
   let autoplayBlocked = false;
 
@@ -131,6 +133,8 @@ export function createMediaManager(
     if (disposed) return;
     const stopped =
       userPaused || reduce.matches || connection?.saveData || document.hidden;
+    motionEnabled = !stopped;
+    onMotionChange(motionEnabled);
     const limit =
       compact.matches || safari || mobile
         ? sceneConfig.media.constrainedPlayingLimit
@@ -163,7 +167,13 @@ export function createMediaManager(
         Boolean(connection?.saveData) ||
         (Boolean(button.closest('dialog')) &&
           !entries.some((entry) => entry.id === selected));
-      button.textContent = userPaused ? 'Play previews' : 'Pause previews';
+      button.textContent = button.closest('dialog')
+        ? userPaused
+          ? 'Play previews'
+          : 'Pause previews'
+        : userPaused
+          ? 'Resume motion'
+          : 'Pause motion';
       button.setAttribute('aria-pressed', String(!userPaused));
     }
     const item = entries.find((entry) => entry.id === selected);
@@ -280,6 +290,7 @@ export function createMediaManager(
       update();
     },
     attach() {
+      onMotionChange(motionEnabled);
       for (const entry of entries)
         onChange(
           entry.id,
