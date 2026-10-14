@@ -6,6 +6,7 @@ featured: true
 categories: ['Quantitative finance', 'Deep learning']
 technologies: ['Python', 'PyTorch', 'Path signatures']
 editorialStatus: 'draft'
+video: '/media/signature-deep-hedging.mp4'
 poster:
   {
     'caption': 'Conceptual wireframe surface for the hedging study. It is not an experimental loss or pricing surface.',

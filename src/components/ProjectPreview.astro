@@ -1,0 +1,48 @@
+<dialog
+  class="project-preview"
+  id="project-preview"
+  aria-labelledby="preview-title"
+  aria-describedby="preview-summary"
+>
+  <div class="preview-scene" data-preview-scene aria-hidden="true"></div>
+  <div class="preview-shell wrap">
+    <header class="preview-toolbar">
+      <button type="button" data-preview-close autofocus>
+        <span aria-hidden="true">←</span> Back to all projects
+      </button>
+      <span class="eyebrow" data-preview-number>
+        Project preview
+      </span>
+    </header>
+    <div class="preview-layout">
+      <div class="preview-visual">
+        <div class="preview-media" data-preview-panel>
+          <img
+            data-preview-poster
+            src="/media/project-placeholder.svg"
+            alt=""
+            width="960"
+            height="600"
+          />
+        </div>
+        <p class="preview-caption" data-preview-caption>
+          Conceptual illustration · No experimental results.
+        </p>
+      </div>
+      <div class="preview-copy">
+        <p class="eyebrow" data-preview-category>
+          Research & engineering
+        </p>
+        <h2 id="preview-title">Project preview</h2>
+        <p id="preview-summary"></p>
+        <a class="text-link" data-preview-study href="/projects/">
+          Read the case study <span aria-hidden="true">↗</span>
+        </a>
+        <button class="motion-toggle" type="button" data-motion-toggle hidden>
+          Pause previews
+        </button>
+        <p class="preview-media-status" data-media-status role="status"></p>
+      </div>
+    </div>
+  </div>
+</dialog>

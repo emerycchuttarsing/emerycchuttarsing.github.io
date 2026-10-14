@@ -2,8 +2,8 @@
 
 Portfolio en anglais consacré à la finance quantitative, au machine learning et
 à l'ingénierie. Le développement suit [cinq jalons](docs/MILESTONES.md), avec un
-commit à chaque point de contrôle. Les jalons 1 à 3 sont réalisés : fondations, direction visuelle, scène 3D et
-études de cas structurées avec parcours et contact.
+commit à chaque point de contrôle. Les jalons 1 à 4 sont réalisés : fondations, direction visuelle, études de cas,
+parcours et contact, puis scène interactive et aperçus animés.
 
 ## Démarrer localement
 
@@ -42,7 +42,9 @@ préserver leur contenu d'origine.
 Les études en anglais restent provisoires : trois versions développées et quatre
 versions courtes, sans résultats chiffrés. Les posters sont des illustrations
 conceptuelles. Le CV fourni, son téléchargement et les coordonnées sont intégrés. L’accueil combine un terrain de points et sept panneaux dans une scène 3D.
-Les transitions animées, la sélection et les vidéos relèvent du jalon 4.
+Le défilement anime la transition vers les sept projets. Les boutons Preview
+ouvrent un aperçu ; les titres gardent leurs liens directs. Les trois phares ont
+des boucles conceptuelles, avec pause, budget de lecture et replis HTML.
 
 ## Modifier les contenus
 
@@ -75,7 +77,8 @@ les textes, figures, ressources et informations de parcours. Le statut
 ## Validation visuelle et navigateur
 
 Les recettes des [jalons 2](docs/validation/jalon-2/README.md) et
-[3](docs/validation/jalon-3/README.md) contiennent les captures et résultats. La galerie montre les sept projets ensemble sur grand écran ;
+[3](docs/validation/jalon-3/README.md) et [4](docs/validation/jalon-4/README.md)
+contiennent les captures et résultats. La galerie montre les sept projets ensemble sur grand écran ;
 sous 1100 px de largeur ou 800 px de hauteur, elle utilise des posters HTML.
 Les quatre tailles contrôlées sont 1440 × 900, 1280 × 800, 768 × 1024 et 390 × 844.
 
@@ -109,6 +112,22 @@ aux quatre dimensions, les sommaires, les parcours précédent/suivant, le clavi
 les études sans JavaScript, le téléchargement du CV et la galerie à 1440 × 900.
 Il ne lance aucun entraînement et ne contacte pas les destinataires des liens.
 
+Le contrôle des interactions du jalon 4 utilise le même module Playwright :
+
+```bash
+PLAYWRIGHT_MODULE=/chemin/vers/playwright/index.mjs node scripts/check-interactions-browser.mjs
+```
+
+Sa sortie est `test-results/jalon-4`. Il couvre transitions, aperçu, clavier,
+historique, défilement, budget vidéo, arrêt au repos, mouvement réduit, absence
+de WebGL, perte de contexte, refus d’autoplay, erreur média et absence de JavaScript.
+Les profils Safari et mobile sont simulés dans Chrome pour vérifier la règle de
+budget ; ils ne remplacent pas des essais sur ces navigateurs et appareils.
+
+Le [guide des médias](docs/MEDIA.md) décrit les trois boucles originales et leur
+remplacement. `src/scene/config.ts` centralise les réglages de mouvement et de
+qualité. Aucune nouvelle dépendance frontend ni connexion API n’est requise.
+
 ## Publication GitHub Pages
 
 La cible est `https://emerycchuttarsing.github.io/` et la base est `/`.
@@ -123,7 +142,7 @@ Pour la livraison finale :
 
 Le workflow valide puis publie uniquement `dist/`. Les modifications locales et
 les commits de jalon ne déclenchent pas une publication. Aucun déploiement distant
-n’a été effectué pendant les jalons 1 à 3.
+n’a été effectué pendant les jalons 1 à 4.
 
 ## Préparation conservée
 

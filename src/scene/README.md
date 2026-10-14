@@ -1,46 +1,87 @@
 # Shared portfolio scene
 
-Milestone 2 implements the first visual composition with two fixed camera poses.
+The home page progressively enhances native links and posters. The editorial
+pages load neither the renderer nor video players. No API is needed for this
+static portfolio: its previews are local conceptual media, not remote inference.
 
-- `mount.ts`: home-only dynamic import, reduced-motion preference, page lifecycle
-  and back/forward cache restoration. A preference change disposes or remounts
-  the scene without reloading the page.
-- `renderer.ts`: one transparent canvas, one scene, one perspective camera;
-  DOM-to-world panel alignment, lighting, textures and explicit resource cleanup.
-- `terrain.ts`: 18,281 samples of five Gaussian hills/valleys, a soft circular
-  point shader and fading edges. This is a decorative mathematical landscape.
-- `config.ts`: camera poses, terrain density, panel depth/tilt, lighting and DPR.
-- `types.ts`: serializable project data and lifecycle contract. The reveal and
-  selected state types reserve interfaces for milestone 4; those transitions
-  are not yet implemented.
-- `../lib/projects.ts`: derives scene data from the content collection at build
-  time. Filesystem checks and Markdown never enter the client module graph.
+## Modules
 
-## Layout and states
+- `mount.ts`: owns the selection, media scheduler and optional renderer. It
+  disposes them on `pagehide` and restores them on a back/forward-cache return.
+  Generation tickets prevent a late dynamic import from creating an orphan scene.
+- `selection.ts`: native modal dialog, focus cycle, Escape, explicit close,
+  restoration of the trigger focus, and preview history entries. The URL stays
+  unchanged; browser Back closes the preview and Forward restores it. Opening a
+  case study uses an ordinary link. A reload or return from a study restores a
+  selected preview from history state.
+- `media.ts`: lazy source assignment, viewport observation, playback budget,
+  reduced-motion/data-saving preferences, manual pause/play, error recovery and
+  cancellation of pending video-frame callbacks. It runs independently of WebGL.
+- `renderer.ts`: one transparent canvas, one scene and one camera, with elapsed-time
+  interpolation, DOM-aligned panels, accent lighting and explicit GPU cleanup.
+- `terrain.ts`: the decorative mathematical point landscape, shared by the hero,
+  gallery and selection. It contains no measured scientific data.
+- `config.ts`: camera poses, transition durations, terrain, panel depth/tilt,
+  lighting, pixel ratio and video playback limits.
+- `types.ts`: serializable project data and renderer lifecycle contract.
+- `../lib/projects.ts`: derives browser data from the validated content collection.
 
-Native scroll selects `overview` when the gallery top crosses the viewport
-midline; otherwise the scene uses `hero`. Panels occupy the camera-facing plane
-at their HTML anchor positions, with small depth and rotation offsets. The
-terrain remains in the same scene, behind the panels.
+## Scroll and selection
 
-The seven HTML images stay visible until every texture has loaded and the
-first frame has rendered. Panel enhancement requires a viewport of at least
-1100 × 800 CSS pixels; compact layouts retain the HTML posters and the terrain.
-Reduced motion skips the renderer import entirely. Unsupported WebGL, context
-loss and loading failures preserve native links and static poster content.
+Native scrolling drives `hero` → `reveal` → `overview` and the reverse journey.
+Progress starts when the gallery enters the bottom 90% of the viewport and ends
+when its top reaches the viewport top. The camera and panel fades approach this
+progress with separate durations. Interpolation uses elapsed time and snaps to
+its final value before stopping; it does not depend on display refresh rate.
 
-Rendering is demand-driven: textures, scroll, resize and visibility changes
-schedule at most one pending animation frame. No permanent animation loop runs.
-The canvas is hidden outside the hero/gallery; hidden documents pause requests.
-Disposal cancels pending frames, removes listeners and observers, disposes GPU
-resources and restores the HTML images. Late texture loads dispose themselves.
+At 1440 × 900, the overview retains all seven panels and titles. Clicking the
+image's Preview button opens `selected`; clicking a project title still opens
+its study directly. The selected panel advances and grows into the dialog's
+measured media slot, while the other panels fade and the rim light takes the
+project's accent color. Closing returns it to its original HTML anchor.
 
-The compact/static terrain illustration is `public/media/terrain.svg`.
-Poster images are original procedural SVGs, stored in `public/media/` and
-referenced from the Markdown collection. No third-party visual assets are used.
+The **same canvas** moves into the dialog's scene container while it is open,
+then returns to the home scene root. There is no second renderer or WebGL context.
+The native dialog supplies modal semantics; a small explicit Tab/Shift+Tab cycle
+keeps focus among its commands. Escape and the visible back command restore the
+previous trigger without scrolling the gallery.
 
-## Next milestones
+Below 1100 px wide or 800 px high, panels and selected media use HTML posters and
+videos. The terrain remains optional. The dialog stacks on compact/short screens
+and scrolls naturally. No interaction relies on hover.
 
-The animated camera path, panel selection, videos and their media budget remain
-for milestone 4. Final device/performance tuning remains for milestone 5.
-See `docs/validation/jalon-2/README.md` for the tested viewports and lifecycle cases.
+## Video budget and rendering
+
+Three featured projects have original six-second conceptual loops. Videos start
+with `preload="none"` and no `src`; a source is assigned only when eligible to play.
+The scheduler allows two simultaneous videos on desktop and one in a compact
+viewport or a mobile/Safari user-agent profile. Selection pauses the other videos and
+prioritizes the selected one. A video outside the viewport, including inside a
+scrolled dialog, pauses. Hidden documents pause every video and scene request.
+
+Muted inline looping is requested, never assumed to succeed. Autoplay refusal
+leaves a still image and a Play previews command; a media error preserves its
+poster. Pause previews returns the panels to their posters. Reduced motion and
+Save-Data prevent automatic video downloads and playback. Reduced motion also
+skips Three.js, while the HTML selection remains usable.
+
+The renderer requests frames only for a finite transition, a layout change, a
+texture load or a new playing-video frame. `requestVideoFrameCallback` drives
+video updates where available; a cancellable RAF fallback covers older engines.
+No scene loop runs when media are paused and the scene has settled.
+
+## Fallbacks and cleanup
+
+HTML images appear before textures are ready. Missing WebGL or context loss
+removes the canvas and restores HTML media without closing a selected preview.
+Texture-loading failure keeps the HTML panel layer. Without JavaScript, preview
+buttons stay hidden and all seven original case-study links work normally.
+
+Disposal removes interaction/media events and observers, cancels RAF and video
+callbacks, pauses and unloads sources, restores moved video elements, disposes
+textures/geometries/materials, and releases the WebGL context. Lifecycle listeners
+remain only to restore the page when its own document returns from browser cache.
+
+See `docs/MEDIA.md` for replacing media and `docs/validation/jalon-4/README.md` for
+the interaction recipe. Final physical-device/browser and performance tuning
+remain part of milestone 5.

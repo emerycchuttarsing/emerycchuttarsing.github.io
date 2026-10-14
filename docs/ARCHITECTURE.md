@@ -92,6 +92,37 @@ Les contenus, leur provenance et les emplacements de remplacement sont décrits
 [dans le guide éditorial](CONTENT_SOURCES.md). La recette du jalon 3 couvre
 également les parcours, les contenus statiques et le téléchargement.
 
+## Réalisation du jalon 4
+
+L’accueil dispose désormais de deux couches indépendantes : commandes et médias
+HTML (`selection.ts`, `media.ts`), puis scène Three.js facultative. La sélection
+reste accessible quand WebGL échoue ou que le mouvement réduit est demandé.
+Les liens des titres conservent leur destination directe ; les boutons Preview
+ouvrent un dialogue natif, avec résumé et accès à l’étude.
+
+Le défilement pilote une progression continue entre les poses hero et overview.
+Les panneaux apparaissent de manière coordonnée avec le terrain. Une sélection
+agrandit le panneau vers un emplacement mesuré dans le dialogue et colore la
+lumière avec son accent. Le canvas existant est déplacé dans le dialogue, puis
+réintégré à l’accueil à la fermeture ; la scène et le contexte restent uniques.
+
+Trois boucles conceptuelles locales alimentent les panneaux phares. Un
+ordonnanceur limite les lectures à deux sur ordinateur, une sur configuration
+compacte, mobile ou profil Safari, et donne priorité au projet sélectionné. La lecture
+est muette, inline, suspendue hors champ et dans les onglets masqués. Les
+callbacks de frames n’existent que pendant une lecture ou une transition.
+Les préférences de mouvement réduit et d’économie de données conservent les
+posters sans téléchargement vidéo automatique.
+
+Le dialogue conserve le focus, gère Échap et restaure sa commande d’ouverture.
+Une entrée d’historique à URL inchangée permet Retour/Avancer et la restauration
+après rechargement ou visite d’une étude. Le nettoyage couvre les retours en cache
+navigateur, les erreurs de lecture et la perte du contexte WebGL.
+
+Aucune API n’est nécessaire au parcours actuel. Les médias illustrent les
+méthodes ; ils ne présentent ni inférence distante ni nouveaux résultats de
+recherche. Voir le [guide des médias](MEDIA.md) et la [documentation du moteur](../src/scene/README.md).
+
 ## Vérification et hébergement
 
 `npm run verify` regroupe formatage, vérification Astro, construction et contrôle

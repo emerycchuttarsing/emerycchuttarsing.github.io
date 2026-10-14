@@ -9,7 +9,7 @@ pour les fonctionnalités et le mélange Ing Tian × Mirage.
 | 1     | Structure du projet, dépendances, données, routes et vérifications | Terminé |
 | 2     | Mise en page et squelette visuel, composition Ing Tian × Mirage    | Terminé |
 | 3     | Composants de contenu principaux, études de cas et About           | Terminé |
-| 4     | Interactivité, états de scène et connexions API si nécessaires     | À venir |
+| 4     | Interactivité, états de scène et connexions API si nécessaires     | Terminé |
 | 5     | Responsive design, finitions CSS et recette finale                 | À venir |
 
 Un commit local marque chaque jalon terminé. La branche de construction est
@@ -94,3 +94,29 @@ La [recette et les captures](validation/jalon-3/README.md) détaillent ces contr
 le [guide des contenus](CONTENT_SOURCES.md) indique leurs sources et emplacements.
 Les études restent provisoires et les posters conceptuels, selon le périmètre
 retenu : aucun audit de résultats ni nouvel entraînement dans ce jalon.
+
+## Jalon 4 — réalisé
+
+- Parcours `hero` → `reveal` → `overview` piloté par le défilement natif, dans les
+  deux sens, avec interpolation de caméra et apparition des panneaux.
+- Sélection d’un panneau dans la scène commune, agrandissement et éclairage selon
+  son accent ; résumé et accès à l’étude dans un dialogue HTML natif.
+- Clavier, Échap, retour du focus, conservation du scroll et historique
+  Retour/Avancer, y compris après rechargement ou visite d’une étude.
+- Trois boucles conceptuelles originales : 531 078 octets au total, muettes et
+  remplaçables dans les fiches. Deux lectures maximum sur ordinateur, une sur
+  configuration compacte/mobile ou profil Safari, priorité au projet sélectionné.
+- Pause utilisateur, arrêt hors champ et en onglet masqué, refus d’autoplay,
+  erreur média, mouvement réduit et économie de données traités.
+- Un seul canvas déplacé dans l’aperçu, puis restauré ; arrêt des rendus au repos
+  et nettoyage des ressources lors de la navigation.
+- `npm run verify` : 40 fichiers contrôlés par Astro Check sans diagnostic,
+  onze routes et 238 références internes validées.
+- Quatre dimensions contrôlées, sept projets toujours visibles à 1440 × 900,
+  replis HTML et parcours sans JavaScript conservés.
+
+Commit de contrôle : `feat: complete milestone 4 interactivity`.
+Voir la [recette du jalon 4](validation/jalon-4/README.md) et le
+[guide des médias](MEDIA.md). Aucune API n’est nécessaire au parcours retenu.
+La publication publique, les essais sur appareils physiques et les finitions
+responsive/performance restent au jalon 5.

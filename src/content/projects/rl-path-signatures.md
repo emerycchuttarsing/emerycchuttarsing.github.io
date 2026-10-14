@@ -6,6 +6,7 @@ featured: true
 categories: ['Quantitative finance', 'Reinforcement learning']
 technologies: ['Python', 'PyTorch', 'Path signatures']
 editorialStatus: 'draft'
+video: '/media/rl-path-signatures.mp4'
 poster:
   {
     'caption': 'Conceptual market trajectories and path representations. The illustration contains no backtest results.',

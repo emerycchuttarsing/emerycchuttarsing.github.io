@@ -6,6 +6,7 @@ featured: true
 categories: ['Machine learning', 'Recommendation']
 technologies: ['Python', 'ALS', 'SASRec', 'Streamlit']
 editorialStatus: 'draft'
+video: '/media/music-recommendation.mp4'
 poster:
   {
     'caption': 'Conceptual recommendation network and sound wave. The positions are illustrative, not learned embeddings.',

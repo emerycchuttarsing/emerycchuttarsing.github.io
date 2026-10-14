@@ -4,6 +4,7 @@ import Hero from '../components/Hero.astro';
 import ProjectGallery from '../components/ProjectGallery.astro';
 import AboutTeaser from '../components/AboutTeaser.astro';
 import PortfolioScene from '../components/PortfolioScene.astro';
+import ProjectPreview from '../components/ProjectPreview.astro';
 import { site } from '../data/site';
 import { getProjects, toSceneProject } from '../lib/projects';
 import '../styles/home.css';
@@ -18,4 +19,5 @@ const projects = await getProjects();
   </div>
   <ProjectGallery projects={projects} />
   <AboutTeaser />
+  <ProjectPreview />
 </BaseLayout>

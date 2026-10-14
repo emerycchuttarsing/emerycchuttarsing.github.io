@@ -60,4 +60,6 @@ export interface SceneController {
   pause(): void;
   resume(): void;
   dispose(): void;
+  invalidate(): void;
+  setMedia(projectId: string, video: HTMLVideoElement | null): void;
 }

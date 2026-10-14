@@ -1,0 +1,179 @@
+{
+  "checkedAt": "2026-10-14T08:39:21.261Z",
+  "browser": "155.0.8059.79",
+  "layouts": [
+    {
+      "width": 1440,
+      "height": 900,
+      "sevenProjects": true,
+      "maxPlaying": 2,
+      "modal": true,
+      "panels": [
+        {
+          "top": 211.546875,
+          "bottom": 539.9375
+        },
+        {
+          "top": 211.546875,
+          "bottom": 539.9375
+        },
+        {
+          "top": 211.546875,
+          "bottom": 539.9375
+        },
+        {
+          "top": 571.9375,
+          "bottom": 827.84375
+        },
+        {
+          "top": 571.9375,
+          "bottom": 827.84375
+        },
+        {
+          "top": 571.9375,
+          "bottom": 827.84375
+        },
+        {
+          "top": 571.9375,
+          "bottom": 827.84375
+        }
+      ]
+    },
+    {
+      "width": 1280,
+      "height": 800,
+      "sevenProjects": true,
+      "maxPlaying": 2,
+      "modal": true,
+      "panels": [
+        {
+          "top": 210.25,
+          "bottom": 521.390625
+        },
+        {
+          "top": 210.25,
+          "bottom": 521.390625
+        },
+        {
+          "top": 210.25,
+          "bottom": 521.390625
+        },
+        {
+          "top": 553.390625,
+          "bottom": 796.34375
+        },
+        {
+          "top": 553.390625,
+          "bottom": 796.34375
+        },
+        {
+          "top": 553.390625,
+          "bottom": 796.34375
+        },
+        {
+          "top": 553.390625,
+          "bottom": 796.34375
+        }
+      ]
+    },
+    {
+      "width": 768,
+      "height": 1024,
+      "sevenProjects": true,
+      "maxPlaying": 1,
+      "modal": true,
+      "panels": [
+        {
+          "top": 210.25,
+          "bottom": 506.328125
+        },
+        {
+          "top": 210.25,
+          "bottom": 506.328125
+        },
+        {
+          "top": 546.328125,
+          "bottom": 842.40625
+        },
+        {
+          "top": 546.328125,
+          "bottom": 842.40625
+        },
+        {
+          "top": 882.40625,
+          "bottom": 1144.5625
+        },
+        {
+          "top": 882.40625,
+          "bottom": 1144.5625
+        },
+        {
+          "top": 1184.5625,
+          "bottom": 1446.71875
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "sevenProjects": true,
+      "maxPlaying": 1,
+      "modal": true,
+      "panels": [
+        {
+          "top": 306.984375,
+          "bottom": 613.515625
+        },
+        {
+          "top": 653.515625,
+          "bottom": 930.921875
+        },
+        {
+          "top": 970.921875,
+          "bottom": 1277.453125
+        },
+        {
+          "top": 1317.453125,
+          "bottom": 1623.984375
+        },
+        {
+          "top": 1663.984375,
+          "bottom": 1941.390625
+        },
+        {
+          "top": 1981.390625,
+          "bottom": 2287.921875
+        },
+        {
+          "top": 2327.921875,
+          "bottom": 2605.328125
+        }
+      ]
+    }
+  ],
+  "scenarios": [
+    "keyboard preview activation",
+    "preview media pauses outside dialog viewport",
+    "seven previews",
+    "native study links",
+    "history back/forward",
+    "reload selected preview",
+    "study/back restores preview",
+    "single canvas after navigation",
+    "pause/resume",
+    "hidden document simulation",
+    "offscreen pause",
+    "idle rendering",
+    "motion preference change",
+    "context loss",
+    "reduced-motion",
+    "no-webgl",
+    "autoplay-denied",
+    "video-error",
+    "save-data",
+    "safari-budget",
+    "mobile-budget",
+    "no JavaScript"
+  ],
+  "errors": []
+}

@@ -29,6 +29,9 @@ const { projects } = Astro.props;
         <a href="/projects/">
           View project index <span aria-hidden="true">↗</span>
         </a>
+        <button class="motion-toggle" type="button" data-motion-toggle hidden>
+          Pause previews
+        </button>
       </div>
     </header>
     <ol class="gallery-grid">
@@ -38,6 +41,19 @@ const { projects } = Astro.props;
           data-featured={String(project.data.featured)}
           style={`--project-accent: ${project.data.accent}`}
         >
+          <button
+            class="preview-trigger"
+            type="button"
+            data-preview={project.id}
+            aria-label={`Preview ${project.data.title}`}
+            aria-haspopup="dialog"
+            aria-controls="project-preview"
+            hidden
+          >
+            <span>
+              Preview <span aria-hidden="true">+</span>
+            </span>
+          </button>
           <a class="gallery-project" href={projectPath(project.id)}>
             <div class="panel-anchor" data-panel={project.id}>
               <img
@@ -48,6 +64,19 @@ const { projects } = Astro.props;
                 height="600"
                 loading="eager"
               />
+              {project.data.video && (
+                <video
+                  class="panel-video"
+                  data-project-video={project.id}
+                  data-src={project.data.video}
+                  muted
+                  loop
+                  playsinline
+                  preload="none"
+                  aria-hidden="true"
+                  tabindex="-1"
+                />
+              )}
             </div>
             <div class="panel-caption">
               <p class="eyebrow">

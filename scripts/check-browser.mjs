@@ -188,7 +188,7 @@ assert.equal(await page.locator(':focus').textContent(), 'Skip to content');
 await page.keyboard.press('Enter');
 assert.equal(await page.locator(':focus').getAttribute('id'), 'main');
 const reached = [];
-for (let i = 0; i < 16 && reached.length < 7; i++) {
+for (let i = 0; i < 32 && reached.length < 7; i++) {
   await page.keyboard.press('Tab');
   const active = await page.evaluate(() => {
     const e = document.activeElement;
@@ -209,7 +209,7 @@ const ids = await page
   .locator('.gallery-grid li')
   .evaluateAll((es) => es.map((e) => e.dataset.projectId));
 for (const id of ids) {
-  await page.locator(`[data-project-id="${id}"] .gallery-project`).click();
+  await page.locator(`[data-project-id="${id}"] .gallery-project h3`).click();
   await page.waitForURL(`**/projects/${id}/`);
   await page.reload({ waitUntil: 'networkidle' });
   assert.equal(await page.locator('h1').count(), 1);
@@ -219,6 +219,14 @@ for (const id of ids) {
   await gallery(page);
   assert.equal(await page.locator('canvas').count(), 1);
 }
+await page.locator('[data-gallery] [data-motion-toggle]').click();
+await page.waitForFunction(() =>
+  [...document.querySelectorAll('video')].every((video) => video.paused),
+);
+await page.waitForFunction(
+  () =>
+    document.querySelector('[data-scene-root]').dataset.progress === '1.000',
+);
 await page.waitForTimeout(250);
 const idleBefore = await page.evaluate(() => window.__rafCount);
 await page.waitForTimeout(500);
