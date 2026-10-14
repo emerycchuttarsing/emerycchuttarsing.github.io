@@ -1,0 +1,24 @@
+---
+import { site } from '../data/site';
+const currentPath = Astro.url.pathname;
+---
+
+<header class="site-header">
+  <a class="wordmark" href="/" aria-label={`${site.name} — Home`}>
+    EC<span aria-hidden="true">.</span>
+  </a>
+  <nav aria-label="Main navigation">
+    {site.navigation.map(({ label, href }) => (
+      <a
+        href={href}
+        aria-current={
+          (href === '/' ? currentPath === '/' : currentPath.startsWith(href))
+            ? 'page'
+            : undefined
+        }
+      >
+        {label}
+      </a>
+    ))}
+  </nav>
+</header>

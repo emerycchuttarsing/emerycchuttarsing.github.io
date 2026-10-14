@@ -1,0 +1,17 @@
+---
+import { site } from '../data/site';
+---
+
+<footer class="site-footer">
+  <p>{site.name}</p>
+  <nav aria-label="Profile links">
+    <a href={site.links.github}>GitHub</a>
+    {site.links.linkedin && <a href={site.links.linkedin}>LinkedIn</a>}
+    {site.links.email && <a href={`mailto:${site.links.email}`}>Email</a>}
+    {site.links.resume && (
+      <a href={site.links.resume} download>
+        Download CV
+      </a>
+    )}
+  </nav>
+</footer>

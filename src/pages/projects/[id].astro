@@ -1,0 +1,52 @@
+---
+import { render } from 'astro:content';
+import type { GetStaticPaths, InferGetStaticPropsType } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getProjects } from '../../lib/projects';
+export const getStaticPaths = (async () => {
+  return (await getProjects()).map((project) => ({
+    params: { id: project.id },
+    props: { project },
+  }));
+}) satisfies GetStaticPaths;
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+const { project } = Astro.props;
+const { Content } = await render(project);
+const links = [
+  { label: 'View code', href: project.data.links.code },
+  { label: 'Read report', href: project.data.links.report },
+  { label: 'Try demo', href: project.data.links.demo },
+].filter((link) => link.href !== undefined);
+---
+
+<BaseLayout title={project.data.title} description={project.data.summary}>
+  <article class="case-study">
+    <a class="back-link" href="/projects/">
+      ← All projects
+    </a>
+    <header class="page-heading">
+      <p class="eyebrow">{project.data.categories.join(' / ')}</p>
+      <h1>{project.data.title}</h1>
+      <p class="lead">{project.data.summary}</p>
+      <p class="project-tags">{project.data.technologies.join(' · ')}</p>
+    </header>
+    {project.data.editorialStatus === 'draft' && (
+      <p class="editorial-note">
+        Draft case study. Results and supporting figures are being prepared.
+      </p>
+    )}
+    <div class="prose">
+      <Content />
+    </div>
+    {links.length > 0 && (
+      <nav class="actions" aria-label="Project resources">
+        {links.map(({ label, href }) => (
+          <a href={href}>{label}</a>
+        ))}
+      </nav>
+    )}
+    <p>
+      <a href="/#projects">Back to the project collection</a>
+    </p>
+  </article>
+</BaseLayout>

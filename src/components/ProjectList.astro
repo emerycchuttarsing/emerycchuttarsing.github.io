@@ -1,0 +1,30 @@
+---
+import { projectPath, type Project } from '../lib/projects';
+interface Props {
+  projects: Project[];
+}
+const { projects } = Astro.props;
+---
+
+<ol class="project-list">
+  {projects.map((project) => (
+    <li
+      data-project-id={project.id}
+      data-featured={project.data.featured ? 'true' : 'false'}
+    >
+      <article>
+        <p class="eyebrow">
+          {String(project.data.order).padStart(2, '0')} ·{' '}
+          {project.data.featured
+            ? 'Featured project'
+            : project.data.categories[0]}
+        </p>
+        <h3>
+          <a href={projectPath(project.id)}>{project.data.title}</a>
+        </h3>
+        <p>{project.data.summary}</p>
+        <p class="project-tags">{project.data.technologies.join(' · ')}</p>
+      </article>
+    </li>
+  ))}
+</ol>

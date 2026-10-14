@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../data/site';
+---
+
+<BaseLayout
+  title="About"
+  description={`About ${site.name}: quantitative finance, machine learning and engineering.`}
+>
+  <article class="prose">
+    <div class="page-heading">
+      <p class="eyebrow">Background</p>
+      <h1>About me</h1>
+    </div>
+    <p class="lead">{site.biography}</p>
+    <h2>Areas of focus</h2>
+    <p>
+      Stochastic modeling, reinforcement learning, path signatures, neural
+      hedging, optimization and recommendation systems.
+    </p>
+    <p>
+      <a href="/projects/">Explore the projects</a> or{' '}
+      <a href={site.links.github}>find me on GitHub</a>.
+    </p>
+  </article>
+</BaseLayout>

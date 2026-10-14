@@ -1,0 +1,1201 @@
+{
+  "purpose": "Extraits des rapports existants pour distinguer les faits REA de leur interprétation manuelle. Aucun nouveau passage REA.",
+  "reports": [
+    {
+      "file": "ing-tian-rea-focused.json",
+      "evidence_id": "ev_38299cea4e4b060ed2b2eb34c21332314d9097f2b5bd36e56581c5d6e38e0fbf",
+      "statistics": {
+        "relevant_files": 3,
+        "nested_asar_containers": 0,
+        "text_bytes_read": 7923,
+        "invalid_utf8_files": 0,
+        "parsed_javascript_files": 3,
+        "visited_ast_nodes": 3534,
+        "findings": 37,
+        "modules": 0,
+        "parse_failures": 0
+      },
+      "graph_coverage": {
+        "status": "complete",
+        "truncated": false,
+        "omitted_count": 0,
+        "limits": []
+      },
+      "limitations": [
+        "CommonJS and ESM binding relationships were recovered from inert syntax and resolved only within the inventoried artifact container.",
+        "JavaScript and HTML were parsed as inert text; bundle bootstrap code was never executed.",
+        "Static imports, entrypoints, workers, endpoints, and storage relationships do not prove runtime execution.",
+        "Static paths and relationships may remain unresolved when expressions are dynamic or obfuscated.",
+        "Webpack/Rspack factories were recovered from AST literals; REA did not invoke push handlers or bundle bootstrap code."
+      ],
+      "selected_relations": [
+        {
+          "relation": "imports",
+          "properties": {
+            "module_link_kind": "import",
+            "specifier": "./motion.u94fiHpI.js",
+            "imported_name": "p",
+            "imported_path": [
+              "p"
+            ],
+            "local_name": "St",
+            "exported_name": null,
+            "resolved_path": "motion.u94fiHpI.js",
+            "resolution_status": "resolved",
+            "target_file_kind": "javascript",
+            "target_json_status": null
+          },
+          "evidence": {
+            "authority": "static-relationship-inference",
+            "state": "inferred",
+            "confidence": "high",
+            "artifact": {
+              "available": true,
+              "artifact_id": "art_b0623c39406f2390f19af3783e3ab0dc3788fafade14802c7bbf8f25ce2b36ab",
+              "sha256": "b0623c39406f2390f19af3783e3ab0dc3788fafade14802c7bbf8f25ce2b36ab"
+            },
+            "location": {
+              "available": true,
+              "value": {
+                "kind": "source-range",
+                "source": "TerrainHero.astro_astro_type_script_index_0_lang.Bqm68QFw.js",
+                "start": {
+                  "line": 1,
+                  "column": 169
+                },
+                "end": {
+                  "line": 1,
+                  "column": 176
+                }
+              }
+            },
+            "extractor": {
+              "name": "rea-javascript-artifact-reconstruction",
+              "version": "1",
+              "operation": "resolve-semantic-module-relationship",
+              "executable_sha256": null
+            },
+            "coverage": {
+              "status": "complete",
+              "truncated": false,
+              "omitted_count": 0,
+              "limits": []
+            },
+            "limitations": [
+              "Cross-function mutation and dynamic property resolution remain unknown.",
+              "Local call, argument, return, and closure relations are static candidates and do not prove runtime invocation.",
+              "Promise ownership covers explicit unshadowed Promise construction, static factories, aggregation, chaining, and await syntax only.",
+              "Return sites include only direct callable returns; nested callable returns remain separate.",
+              "Static syntax does not prove that this relationship executes at runtime.",
+              "Values and aliases were recovered from inert syntax only; no JavaScript was executed."
+            ],
+            "evidence_ids": []
+          },
+          "source_labels": [
+            "TerrainHero.astro_astro_type_script_index_0_lang.Bqm68QFw.js"
+          ],
+          "target_labels": [
+            "motion.u94fiHpI.js"
+          ]
+        },
+        {
+          "relation": "imports",
+          "properties": {
+            "module_link_kind": "import",
+            "specifier": "./terrain.BfFMUilB.js",
+            "imported_name": "f",
+            "imported_path": [
+              "f"
+            ],
+            "local_name": "ot",
+            "exported_name": null,
+            "resolved_path": "terrain.BfFMUilB.js",
+            "resolution_status": "resolved",
+            "target_file_kind": "javascript",
+            "target_json_status": null
+          },
+          "evidence": {
+            "authority": "static-relationship-inference",
+            "state": "inferred",
+            "confidence": "high",
+            "artifact": {
+              "available": true,
+              "artifact_id": "art_b0623c39406f2390f19af3783e3ab0dc3788fafade14802c7bbf8f25ce2b36ab",
+              "sha256": "b0623c39406f2390f19af3783e3ab0dc3788fafade14802c7bbf8f25ce2b36ab"
+            },
+            "location": {
+              "available": true,
+              "value": {
+                "kind": "source-range",
+                "source": "TerrainHero.astro_astro_type_script_index_0_lang.Bqm68QFw.js",
+                "start": {
+                  "line": 1,
+                  "column": 39
+                },
+                "end": {
+                  "line": 1,
+                  "column": 46
+                }
+              }
+            },
+            "extractor": {
+              "name": "rea-javascript-artifact-reconstruction",
+              "version": "1",
+              "operation": "resolve-semantic-module-relationship",
+              "executable_sha256": null
+            },
+            "coverage": {
+              "status": "complete",
+              "truncated": false,
+              "omitted_count": 0,
+              "limits": []
+            },
+            "limitations": [
+              "Cross-function mutation and dynamic property resolution remain unknown.",
+              "Local call, argument, return, and closure relations are static candidates and do not prove runtime invocation.",
+              "Promise ownership covers explicit unshadowed Promise construction, static factories, aggregation, chaining, and await syntax only.",
+              "Return sites include only direct callable returns; nested callable returns remain separate.",
+              "Static syntax does not prove that this relationship executes at runtime.",
+              "Values and aliases were recovered from inert syntax only; no JavaScript was executed."
+            ],
+            "evidence_ids": []
+          },
+          "source_labels": [
+            "TerrainHero.astro_astro_type_script_index_0_lang.Bqm68QFw.js"
+          ],
+          "target_labels": [
+            "terrain.BfFMUilB.js"
+          ]
+        },
+        {
+          "relation": "exposes",
+          "properties": {
+            "module_link_kind": "export",
+            "specifier": null,
+            "imported_name": "e",
+            "imported_path": [],
+            "local_name": "e",
+            "exported_name": "p",
+            "resolved_path": null,
+            "resolution_status": null,
+            "target_file_kind": null,
+            "target_json_status": null
+          },
+          "evidence": {
+            "authority": "static-relationship-inference",
+            "state": "inferred",
+            "confidence": "high",
+            "artifact": {
+              "available": true,
+              "artifact_id": "art_4780cc873e14d0b336c3458ffbaedf11bcbe025d5914f563e78a6bca620686f6",
+              "sha256": "4780cc873e14d0b336c3458ffbaedf11bcbe025d5914f563e78a6bca620686f6"
+            },
+            "location": {
+              "available": true,
+              "value": {
+                "kind": "source-range",
+                "source": "motion.u94fiHpI.js",
+                "start": {
+                  "line": 1,
+                  "column": 146
+                },
+                "end": {
+                  "line": 1,
+                  "column": 152
+                }
+              }
+            },
+            "extractor": {
+              "name": "rea-javascript-artifact-reconstruction",
+              "version": "1",
+              "operation": "expose-module-export",
+              "executable_sha256": null
+            },
+            "coverage": {
+              "status": "complete",
+              "truncated": false,
+              "omitted_count": 0,
+              "limits": []
+            },
+            "limitations": [
+              "Cross-function mutation and dynamic property resolution remain unknown.",
+              "Local call, argument, return, and closure relations are static candidates and do not prove runtime invocation.",
+              "Promise ownership covers explicit unshadowed Promise construction, static factories, aggregation, chaining, and await syntax only.",
+              "Return sites include only direct callable returns; nested callable returns remain separate.",
+              "Static syntax does not prove that this relationship executes at runtime.",
+              "Values and aliases were recovered from inert syntax only; no JavaScript was executed."
+            ],
+            "evidence_ids": []
+          },
+          "source_labels": [
+            "motion.u94fiHpI.js"
+          ],
+          "target_labels": [
+            "motion.u94fiHpI.js:p",
+            "motion.u94fiHpI.js:p:return-shapes"
+          ]
+        },
+        {
+          "relation": "exposes",
+          "properties": {
+            "module_link_kind": "export",
+            "specifier": null,
+            "imported_name": "Y",
+            "imported_path": [],
+            "local_name": "Y",
+            "exported_name": "p",
+            "resolved_path": null,
+            "resolution_status": null,
+            "target_file_kind": null,
+            "target_json_status": null
+          },
+          "evidence": {
+            "authority": "static-relationship-inference",
+            "state": "inferred",
+            "confidence": "high",
+            "artifact": {
+              "available": true,
+              "artifact_id": "art_4fe9039a914193f42a23833d3e876f56cad07cf5ba15f28c5c38b6e66bc8607b",
+              "sha256": "4fe9039a914193f42a23833d3e876f56cad07cf5ba15f28c5c38b6e66bc8607b"
+            },
+            "location": {
+              "available": true,
+              "value": {
+                "kind": "source-range",
+                "source": "terrain.BfFMUilB.js",
+                "start": {
+                  "line": 1,
+                  "column": 2826
+                },
+                "end": {
+                  "line": 1,
+                  "column": 2832
+                }
+              }
+            },
+            "extractor": {
+              "name": "rea-javascript-artifact-reconstruction",
+              "version": "1",
+              "operation": "expose-module-export",
+              "executable_sha256": null
+            },
+            "coverage": {
+              "status": "complete",
+              "truncated": false,
+              "omitted_count": 0,
+              "limits": []
+            },
+            "limitations": [
+              "Cross-function mutation and dynamic property resolution remain unknown.",
+              "Local call, argument, return, and closure relations are static candidates and do not prove runtime invocation.",
+              "Promise ownership covers explicit unshadowed Promise construction, static factories, aggregation, chaining, and await syntax only.",
+              "Return sites include only direct callable returns; nested callable returns remain separate.",
+              "Static syntax does not prove that this relationship executes at runtime.",
+              "Values and aliases were recovered from inert syntax only; no JavaScript was executed."
+            ],
+            "evidence_ids": []
+          },
+          "source_labels": [
+            "terrain.BfFMUilB.js"
+          ],
+          "target_labels": [
+            "terrain.BfFMUilB.js:p:return-shapes",
+            "terrain.BfFMUilB.js:p"
+          ]
+        },
+        {
+          "relation": "imports",
+          "properties": {
+            "module_link_kind": "import",
+            "specifier": "./terrain.BfFMUilB.js",
+            "imported_name": "p",
+            "imported_path": [
+              "p"
+            ],
+            "local_name": "lt",
+            "exported_name": null,
+            "resolved_path": "terrain.BfFMUilB.js",
+            "resolution_status": "resolved",
+            "target_file_kind": "javascript",
+            "target_json_status": null
+          },
+          "evidence": {
+            "authority": "static-relationship-inference",
+            "state": "inferred",
+            "confidence": "high",
+            "artifact": {
+              "available": true,
+              "artifact_id": "art_b0623c39406f2390f19af3783e3ab0dc3788fafade14802c7bbf8f25ce2b36ab",
+              "sha256": "b0623c39406f2390f19af3783e3ab0dc3788fafade14802c7bbf8f25ce2b36ab"
+            },
+            "location": {
+              "available": true,
+              "value": {
+                "kind": "source-range",
+                "source": "TerrainHero.astro_astro_type_script_index_0_lang.Bqm68QFw.js",
+                "start": {
+                  "line": 1,
+                  "column": 47
+                },
+                "end": {
+                  "line": 1,
+                  "column": 54
+                }
+              }
+            },
+            "extractor": {
+              "name": "rea-javascript-artifact-reconstruction",
+              "version": "1",
+              "operation": "resolve-semantic-module-relationship",
+              "executable_sha256": null
+            },
+            "coverage": {
+              "status": "complete",
+              "truncated": false,
+              "omitted_count": 0,
+              "limits": []
+            },
+            "limitations": [
+              "Cross-function mutation and dynamic property resolution remain unknown.",
+              "Local call, argument, return, and closure relations are static candidates and do not prove runtime invocation.",
+              "Promise ownership covers explicit unshadowed Promise construction, static factories, aggregation, chaining, and await syntax only.",
+              "Return sites include only direct callable returns; nested callable returns remain separate.",
+              "Static syntax does not prove that this relationship executes at runtime.",
+              "Values and aliases were recovered from inert syntax only; no JavaScript was executed."
+            ],
+            "evidence_ids": []
+          },
+          "source_labels": [
+            "TerrainHero.astro_astro_type_script_index_0_lang.Bqm68QFw.js"
+          ],
+          "target_labels": [
+            "terrain.BfFMUilB.js"
+          ]
+        },
+        {
+          "relation": "exposes",
+          "properties": {
+            "module_link_kind": "export",
+            "specifier": null,
+            "imported_name": "S",
+            "imported_path": [],
+            "local_name": "S",
+            "exported_name": "f",
+            "resolved_path": null,
+            "resolution_status": null,
+            "target_file_kind": null,
+            "target_json_status": null
+          },
+          "evidence": {
+            "authority": "static-relationship-inference",
+            "state": "inferred",
+            "confidence": "high",
+            "artifact": {
+              "available": true,
+              "artifact_id": "art_4fe9039a914193f42a23833d3e876f56cad07cf5ba15f28c5c38b6e66bc8607b",
+              "sha256": "4fe9039a914193f42a23833d3e876f56cad07cf5ba15f28c5c38b6e66bc8607b"
+            },
+            "location": {
+              "available": true,
+              "value": {
+                "kind": "source-range",
+                "source": "terrain.BfFMUilB.js",
+                "start": {
+                  "line": 1,
+                  "column": 2791
+                },
+                "end": {
+                  "line": 1,
+                  "column": 2797
+                }
+              }
+            },
+            "extractor": {
+              "name": "rea-javascript-artifact-reconstruction",
+              "version": "1",
+              "operation": "expose-module-export",
+              "executable_sha256": null
+            },
+            "coverage": {
+              "status": "complete",
+              "truncated": false,
+              "omitted_count": 0,
+              "limits": []
+            },
+            "limitations": [
+              "Cross-function mutation and dynamic property resolution remain unknown.",
+              "Local call, argument, return, and closure relations are static candidates and do not prove runtime invocation.",
+              "Promise ownership covers explicit unshadowed Promise construction, static factories, aggregation, chaining, and await syntax only.",
+              "Return sites include only direct callable returns; nested callable returns remain separate.",
+              "Static syntax does not prove that this relationship executes at runtime.",
+              "Values and aliases were recovered from inert syntax only; no JavaScript was executed."
+            ],
+            "evidence_ids": []
+          },
+          "source_labels": [
+            "terrain.BfFMUilB.js"
+          ],
+          "target_labels": [
+            "terrain.BfFMUilB.js:f:return-shapes",
+            "terrain.BfFMUilB.js:f"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "studio-mirage-rea-focused.json",
+      "evidence_id": "ev_7ff8711bd3d750cd80fc45eb210a5a8fbb0db084c09acba5a2306e4691fb9091",
+      "statistics": {
+        "relevant_files": 1,
+        "nested_asar_containers": 0,
+        "text_bytes_read": 184346,
+        "invalid_utf8_files": 0,
+        "parsed_javascript_files": 1,
+        "visited_ast_nodes": 19816,
+        "findings": 2,
+        "modules": 0,
+        "parse_failures": 0
+      },
+      "graph_coverage": {
+        "status": "complete",
+        "truncated": false,
+        "omitted_count": 0,
+        "limits": []
+      },
+      "limitations": [
+        "CommonJS and ESM binding relationships were recovered from inert syntax and resolved only within the inventoried artifact container.",
+        "JavaScript and HTML were parsed as inert text; bundle bootstrap code was never executed.",
+        "Static imports, entrypoints, workers, endpoints, and storage relationships do not prove runtime execution.",
+        "Static paths and relationships may remain unresolved when expressions are dynamic or obfuscated.",
+        "Webpack/Rspack factories were recovered from AST literals; REA did not invoke push handlers or bundle bootstrap code."
+      ],
+      "selected_relations": [
+        {
+          "relation": "imports",
+          "properties": {
+            "kind": "dynamic-import",
+            "specifier": "./_app/immutable/entry/start.XrJOhQV7.js",
+            "expression": null,
+            "resolved_path": null
+          },
+          "evidence": {
+            "authority": "static-relationship-inference",
+            "state": "inferred",
+            "confidence": "high",
+            "artifact": {
+              "available": true,
+              "artifact_id": "art_86c0926bb72413db166ba773fe16f32d121e7db2cd492848566db948563a826e",
+              "sha256": "86c0926bb72413db166ba773fe16f32d121e7db2cd492848566db948563a826e"
+            },
+            "location": {
+              "available": true,
+              "value": {
+                "kind": "source-range",
+                "source": "bootstrap.js",
+                "start": {
+                  "line": 10,
+                  "column": 6
+                },
+                "end": {
+                  "line": 10,
+                  "column": 56
+                }
+              }
+            },
+            "extractor": {
+              "name": "rea-javascript-artifact-reconstruction",
+              "version": "1",
+              "operation": "map-static-relationship",
+              "executable_sha256": null
+            },
+            "coverage": {
+              "status": "complete",
+              "truncated": false,
+              "omitted_count": 0,
+              "limits": []
+            },
+            "limitations": [
+              "Static syntax does not prove that this relationship executes at runtime."
+            ],
+            "evidence_ids": []
+          },
+          "source_labels": [
+            "bootstrap.js"
+          ],
+          "target_labels": [
+            "./_app/immutable/entry/start.XrJOhQV7.js"
+          ]
+        },
+        {
+          "relation": "imports",
+          "properties": {
+            "kind": "dynamic-import",
+            "specifier": "./_app/immutable/entry/app.wSI8DMXa.js",
+            "expression": null,
+            "resolved_path": null
+          },
+          "evidence": {
+            "authority": "static-relationship-inference",
+            "state": "inferred",
+            "confidence": "high",
+            "artifact": {
+              "available": true,
+              "artifact_id": "art_86c0926bb72413db166ba773fe16f32d121e7db2cd492848566db948563a826e",
+              "sha256": "86c0926bb72413db166ba773fe16f32d121e7db2cd492848566db948563a826e"
+            },
+            "location": {
+              "available": true,
+              "value": {
+                "kind": "source-range",
+                "source": "bootstrap.js",
+                "start": {
+                  "line": 11,
+                  "column": 6
+                },
+                "end": {
+                  "line": 11,
+                  "column": 54
+                }
+              }
+            },
+            "extractor": {
+              "name": "rea-javascript-artifact-reconstruction",
+              "version": "1",
+              "operation": "map-static-relationship",
+              "executable_sha256": null
+            },
+            "coverage": {
+              "status": "complete",
+              "truncated": false,
+              "omitted_count": 0,
+              "limits": []
+            },
+            "limitations": [
+              "Static syntax does not prove that this relationship executes at runtime."
+            ],
+            "evidence_ids": []
+          },
+          "source_labels": [
+            "bootstrap.js"
+          ],
+          "target_labels": [
+            "./_app/immutable/entry/app.wSI8DMXa.js"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "mirage-3d-rea.json",
+      "evidence_id": "ev_0335cb7c6095bf018aa3227681473cea743d70875d2ebd733cc339eaf3c85bbb",
+      "statistics": {
+        "relevant_files": 18,
+        "nested_asar_containers": 0,
+        "text_bytes_read": 1187388,
+        "invalid_utf8_files": 0,
+        "parsed_javascript_files": 18,
+        "visited_ast_nodes": 308222,
+        "findings": 777,
+        "modules": 0,
+        "parse_failures": 0
+      },
+      "graph_coverage": {
+        "status": "partial",
+        "truncated": false,
+        "omitted_count": null,
+        "limits": [
+          {
+            "name": "javascript_analysis_parent_result_budget_bytes",
+            "value": 986814188,
+            "unit": "bytes"
+          },
+          {
+            "name": "javascript_analysis_worker_heap_limit_bytes",
+            "value": 1098907648,
+            "unit": "bytes"
+          },
+          {
+            "name": "javascript_analysis_worker_timeout_ms",
+            "value": 60000,
+            "unit": "milliseconds"
+          }
+        ]
+      },
+      "limitations": [
+        "CommonJS and ESM binding relationships were recovered from inert syntax and resolved only within the inventoried artifact container.",
+        "Graph coverage is incomplete; unavailable facts remain explicit and must not be read as absence.",
+        "JavaScript and HTML were parsed as inert text; bundle bootstrap code was never executed.",
+        "Static imports, entrypoints, workers, endpoints, and storage relationships do not prove runtime execution.",
+        "Static paths and relationships may remain unresolved when expressions are dynamic or obfuscated.",
+        "Webpack/Rspack factories were recovered from AST literals; REA did not invoke push handlers or bundle bootstrap code.",
+        "chunks/B_VAJFjy.js: Resource constraint during analyze_javascript_application: Semantic graph for chunks/B_VAJFjy.js exceeds the parent's remaining result budget; static and module facts were retained",
+        "chunks/DUwSgNYY.js: Resource constraint during analyze_javascript_application: Owned JavaScript worker exhausted its heap while analyzing chunks/DUwSgNYY.js during semantic",
+        "chunks/Heh74mPD.js: Resource constraint during analyze_javascript_application: Semantic graph for chunks/Heh74mPD.js exceeds the parent's remaining result budget; static and module facts were retained",
+        "chunks/iTEJ16On.js: Resource constraint during analyze_javascript_application: Owned JavaScript worker exhausted its heap while analyzing chunks/iTEJ16On.js during semantic",
+        "nodes/0.BjG-yHQV.js: Resource constraint during analyze_javascript_application: Semantic graph for nodes/0.BjG-yHQV.js exceeds the parent's remaining result budget; static and module facts were retained"
+      ],
+      "selected_relations": [
+        {
+          "relation": "imports",
+          "properties": {
+            "module_link_kind": "import",
+            "specifier": "../chunks/iTEJ16On.js",
+            "imported_name": "ah",
+            "imported_path": [
+              "ah"
+            ],
+            "local_name": "We",
+            "exported_name": null,
+            "resolved_path": "chunks/iTEJ16On.js",
+            "resolution_status": "resolved",
+            "target_file_kind": "javascript",
+            "target_json_status": null
+          },
+          "evidence": {
+            "authority": "static-relationship-inference",
+            "state": "inferred",
+            "confidence": "high",
+            "artifact": {
+              "available": true,
+              "artifact_id": "art_aefb3eeb25f08333446c5b67c0731d9d3352a7915f1cf21b8268778aecc84d94",
+              "sha256": "aefb3eeb25f08333446c5b67c0731d9d3352a7915f1cf21b8268778aecc84d94"
+            },
+            "location": {
+              "available": true,
+              "value": {
+                "kind": "source-range",
+                "source": "nodes/0.BjG-yHQV.js",
+                "start": {
+                  "line": 1,
+                  "column": 1453
+                },
+                "end": {
+                  "line": 1,
+                  "column": 1461
+                }
+              }
+            },
+            "extractor": {
+              "name": "rea-javascript-artifact-reconstruction",
+              "version": "1",
+              "operation": "resolve-semantic-module-relationship",
+              "executable_sha256": null
+            },
+            "coverage": {
+              "status": "complete",
+              "truncated": false,
+              "omitted_count": 0,
+              "limits": []
+            },
+            "limitations": [
+              "Cross-function mutation and dynamic property resolution remain unknown.",
+              "Local call, argument, return, and closure relations are static candidates and do not prove runtime invocation.",
+              "Promise ownership covers explicit unshadowed Promise construction, static factories, aggregation, chaining, and await syntax only.",
+              "Return sites include only direct callable returns; nested callable returns remain separate.",
+              "Static syntax does not prove that this relationship executes at runtime.",
+              "Values and aliases were recovered from inert syntax only; no JavaScript was executed."
+            ],
+            "evidence_ids": []
+          },
+          "source_labels": [
+            "nodes/0.BjG-yHQV.js"
+          ],
+          "target_labels": [
+            "chunks/iTEJ16On.js"
+          ]
+        },
+        {
+          "relation": "imports",
+          "properties": {
+            "module_link_kind": "import",
+            "specifier": "../chunks/B_VAJFjy.js",
+            "imported_name": "T",
+            "imported_path": [
+              "T"
+            ],
+            "local_name": "Ce",
+            "exported_name": null,
+            "resolved_path": "chunks/B_VAJFjy.js",
+            "resolution_status": "resolved",
+            "target_file_kind": "javascript",
+            "target_json_status": null
+          },
+          "evidence": {
+            "authority": "static-relationship-inference",
+            "state": "inferred",
+            "confidence": "high",
+            "artifact": {
+              "available": true,
+              "artifact_id": "art_aefb3eeb25f08333446c5b67c0731d9d3352a7915f1cf21b8268778aecc84d94",
+              "sha256": "aefb3eeb25f08333446c5b67c0731d9d3352a7915f1cf21b8268778aecc84d94"
+            },
+            "location": {
+              "available": true,
+              "value": {
+                "kind": "source-range",
+                "source": "nodes/0.BjG-yHQV.js",
+                "start": {
+                  "line": 1,
+                  "column": 2432
+                },
+                "end": {
+                  "line": 1,
+                  "column": 2439
+                }
+              }
+            },
+            "extractor": {
+              "name": "rea-javascript-artifact-reconstruction",
+              "version": "1",
+              "operation": "resolve-semantic-module-relationship",
+              "executable_sha256": null
+            },
+            "coverage": {
+              "status": "complete",
+              "truncated": false,
+              "omitted_count": 0,
+              "limits": []
+            },
+            "limitations": [
+              "Cross-function mutation and dynamic property resolution remain unknown.",
+              "Local call, argument, return, and closure relations are static candidates and do not prove runtime invocation.",
+              "Promise ownership covers explicit unshadowed Promise construction, static factories, aggregation, chaining, and await syntax only.",
+              "Return sites include only direct callable returns; nested callable returns remain separate.",
+              "Static syntax does not prove that this relationship executes at runtime.",
+              "Values and aliases were recovered from inert syntax only; no JavaScript was executed."
+            ],
+            "evidence_ids": []
+          },
+          "source_labels": [
+            "nodes/0.BjG-yHQV.js"
+          ],
+          "target_labels": [
+            "chunks/B_VAJFjy.js"
+          ]
+        },
+        {
+          "relation": "imports",
+          "properties": {
+            "module_link_kind": "import",
+            "specifier": "../chunks/iTEJ16On.js",
+            "imported_name": "bm",
+            "imported_path": [
+              "bm"
+            ],
+            "local_name": "ji",
+            "exported_name": null,
+            "resolved_path": "chunks/iTEJ16On.js",
+            "resolution_status": "resolved",
+            "target_file_kind": "javascript",
+            "target_json_status": null
+          },
+          "evidence": {
+            "authority": "static-relationship-inference",
+            "state": "inferred",
+            "confidence": "high",
+            "artifact": {
+              "available": true,
+              "artifact_id": "art_aefb3eeb25f08333446c5b67c0731d9d3352a7915f1cf21b8268778aecc84d94",
+              "sha256": "aefb3eeb25f08333446c5b67c0731d9d3352a7915f1cf21b8268778aecc84d94"
+            },
+            "location": {
+              "available": true,
+              "value": {
+                "kind": "source-range",
+                "source": "nodes/0.BjG-yHQV.js",
+                "start": {
+                  "line": 1,
+                  "column": 1541
+                },
+                "end": {
+                  "line": 1,
+                  "column": 1549
+                }
+              }
+            },
+            "extractor": {
+              "name": "rea-javascript-artifact-reconstruction",
+              "version": "1",
+              "operation": "resolve-semantic-module-relationship",
+              "executable_sha256": null
+            },
+            "coverage": {
+              "status": "complete",
+              "truncated": false,
+              "omitted_count": 0,
+              "limits": []
+            },
+            "limitations": [
+              "Cross-function mutation and dynamic property resolution remain unknown.",
+              "Local call, argument, return, and closure relations are static candidates and do not prove runtime invocation.",
+              "Promise ownership covers explicit unshadowed Promise construction, static factories, aggregation, chaining, and await syntax only.",
+              "Return sites include only direct callable returns; nested callable returns remain separate.",
+              "Static syntax does not prove that this relationship executes at runtime.",
+              "Values and aliases were recovered from inert syntax only; no JavaScript was executed."
+            ],
+            "evidence_ids": []
+          },
+          "source_labels": [
+            "nodes/0.BjG-yHQV.js"
+          ],
+          "target_labels": [
+            "chunks/iTEJ16On.js"
+          ]
+        },
+        {
+          "relation": "calls",
+          "properties": {
+            "mechanism": "call:uniforms.get"
+          },
+          "evidence": {
+            "authority": "static-relationship-inference",
+            "state": "inferred",
+            "confidence": "high",
+            "artifact": {
+              "available": true,
+              "artifact_id": "art_aefb3eeb25f08333446c5b67c0731d9d3352a7915f1cf21b8268778aecc84d94",
+              "sha256": "aefb3eeb25f08333446c5b67c0731d9d3352a7915f1cf21b8268778aecc84d94"
+            },
+            "location": {
+              "available": true,
+              "value": {
+                "kind": "source-range",
+                "source": "nodes/0.BjG-yHQV.js",
+                "start": {
+                  "line": 563,
+                  "column": 380
+                },
+                "end": {
+                  "line": 563,
+                  "column": 406
+                }
+              }
+            },
+            "extractor": {
+              "name": "rea-javascript-artifact-reconstruction",
+              "version": "1",
+              "operation": "map-static-relationship",
+              "executable_sha256": null
+            },
+            "coverage": {
+              "status": "complete",
+              "truncated": false,
+              "omitted_count": 0,
+              "limits": []
+            },
+            "limitations": [
+              "Static syntax does not prove that this relationship executes at runtime."
+            ],
+            "evidence_ids": []
+          },
+          "source_labels": [
+            "nodes/0.BjG-yHQV.js"
+          ],
+          "target_labels": [
+            "uTime",
+            "uTime"
+          ],
+          "manual_review": "Faux positif de catégorie réseau : uniforms est une Map de paramètres du shader ; get ne déclenche pas ici de requête HTTP.",
+          "target_observation": {
+            "label": "uTime",
+            "source_map_reference": null,
+            "properties": {
+              "endpoint_kind": "network",
+              "value": "uTime",
+              "mechanism": "call:uniforms.get"
+            },
+            "evidence": {
+              "authority": "ast-static-analysis",
+              "state": "observed",
+              "confidence": "exact",
+              "artifact": {
+                "available": true,
+                "artifact_id": "art_aefb3eeb25f08333446c5b67c0731d9d3352a7915f1cf21b8268778aecc84d94",
+                "sha256": "aefb3eeb25f08333446c5b67c0731d9d3352a7915f1cf21b8268778aecc84d94"
+              },
+              "location": {
+                "available": true,
+                "value": {
+                  "kind": "source-range",
+                  "source": "nodes/0.BjG-yHQV.js",
+                  "start": {
+                    "line": 563,
+                    "column": 380
+                  },
+                  "end": {
+                    "line": 563,
+                    "column": 406
+                  }
+                }
+              },
+              "extractor": {
+                "name": "rea-javascript-artifact-reconstruction",
+                "version": "1",
+                "operation": "discover-static-endpoint",
+                "executable_sha256": null
+              },
+              "coverage": {
+                "status": "complete",
+                "truncated": false,
+                "omitted_count": 0,
+                "limits": []
+              },
+              "limitations": [],
+              "evidence_ids": []
+            },
+            "observation_id": "jag_observation_4a2e6b7b99730c836ad5fd1474a866ec64655e045a8ad5ed93b34f8f071ae397",
+            "identifier_strategy": {
+              "strategy": "semantic-content-sha256",
+              "stability": "observation-exact"
+            }
+          }
+        },
+        {
+          "relation": "calls",
+          "properties": {
+            "mechanism": "call:uniforms.get"
+          },
+          "evidence": {
+            "authority": "static-relationship-inference",
+            "state": "inferred",
+            "confidence": "high",
+            "artifact": {
+              "available": true,
+              "artifact_id": "art_aefb3eeb25f08333446c5b67c0731d9d3352a7915f1cf21b8268778aecc84d94",
+              "sha256": "aefb3eeb25f08333446c5b67c0731d9d3352a7915f1cf21b8268778aecc84d94"
+            },
+            "location": {
+              "available": true,
+              "value": {
+                "kind": "source-range",
+                "source": "nodes/0.BjG-yHQV.js",
+                "start": {
+                  "line": 621,
+                  "column": 336
+                },
+                "end": {
+                  "line": 621,
+                  "column": 362
+                }
+              }
+            },
+            "extractor": {
+              "name": "rea-javascript-artifact-reconstruction",
+              "version": "1",
+              "operation": "map-static-relationship",
+              "executable_sha256": null
+            },
+            "coverage": {
+              "status": "complete",
+              "truncated": false,
+              "omitted_count": 0,
+              "limits": []
+            },
+            "limitations": [
+              "Static syntax does not prove that this relationship executes at runtime."
+            ],
+            "evidence_ids": []
+          },
+          "source_labels": [
+            "nodes/0.BjG-yHQV.js"
+          ],
+          "target_labels": [
+            "uTime",
+            "uTime"
+          ],
+          "manual_review": "Faux positif de catégorie réseau : uniforms est une Map de paramètres du shader ; get ne déclenche pas ici de requête HTTP.",
+          "target_observation": {
+            "label": "uTime",
+            "source_map_reference": null,
+            "properties": {
+              "endpoint_kind": "network",
+              "value": "uTime",
+              "mechanism": "call:uniforms.get"
+            },
+            "evidence": {
+              "authority": "ast-static-analysis",
+              "state": "observed",
+              "confidence": "exact",
+              "artifact": {
+                "available": true,
+                "artifact_id": "art_aefb3eeb25f08333446c5b67c0731d9d3352a7915f1cf21b8268778aecc84d94",
+                "sha256": "aefb3eeb25f08333446c5b67c0731d9d3352a7915f1cf21b8268778aecc84d94"
+              },
+              "location": {
+                "available": true,
+                "value": {
+                  "kind": "source-range",
+                  "source": "nodes/0.BjG-yHQV.js",
+                  "start": {
+                    "line": 563,
+                    "column": 380
+                  },
+                  "end": {
+                    "line": 563,
+                    "column": 406
+                  }
+                }
+              },
+              "extractor": {
+                "name": "rea-javascript-artifact-reconstruction",
+                "version": "1",
+                "operation": "discover-static-endpoint",
+                "executable_sha256": null
+              },
+              "coverage": {
+                "status": "complete",
+                "truncated": false,
+                "omitted_count": 0,
+                "limits": []
+              },
+              "limitations": [],
+              "evidence_ids": []
+            },
+            "observation_id": "jag_observation_4a2e6b7b99730c836ad5fd1474a866ec64655e045a8ad5ed93b34f8f071ae397",
+            "identifier_strategy": {
+              "strategy": "semantic-content-sha256",
+              "stability": "observation-exact"
+            }
+          }
+        },
+        {
+          "relation": "imports",
+          "properties": {
+            "module_link_kind": "import",
+            "specifier": "../chunks/iTEJ16On.js",
+            "imported_name": "bl",
+            "imported_path": [
+              "bl"
+            ],
+            "local_name": "He",
+            "exported_name": null,
+            "resolved_path": "chunks/iTEJ16On.js",
+            "resolution_status": "resolved",
+            "target_file_kind": "javascript",
+            "target_json_status": null
+          },
+          "evidence": {
+            "authority": "static-relationship-inference",
+            "state": "inferred",
+            "confidence": "high",
+            "artifact": {
+              "available": true,
+              "artifact_id": "art_aefb3eeb25f08333446c5b67c0731d9d3352a7915f1cf21b8268778aecc84d94",
+              "sha256": "aefb3eeb25f08333446c5b67c0731d9d3352a7915f1cf21b8268778aecc84d94"
+            },
+            "location": {
+              "available": true,
+              "value": {
+                "kind": "source-range",
+                "source": "nodes/0.BjG-yHQV.js",
+                "start": {
+                  "line": 1,
+                  "column": 1532
+                },
+                "end": {
+                  "line": 1,
+                  "column": 1540
+                }
+              }
+            },
+            "extractor": {
+              "name": "rea-javascript-artifact-reconstruction",
+              "version": "1",
+              "operation": "resolve-semantic-module-relationship",
+              "executable_sha256": null
+            },
+            "coverage": {
+              "status": "complete",
+              "truncated": false,
+              "omitted_count": 0,
+              "limits": []
+            },
+            "limitations": [
+              "Cross-function mutation and dynamic property resolution remain unknown.",
+              "Local call, argument, return, and closure relations are static candidates and do not prove runtime invocation.",
+              "Promise ownership covers explicit unshadowed Promise construction, static factories, aggregation, chaining, and await syntax only.",
+              "Return sites include only direct callable returns; nested callable returns remain separate.",
+              "Static syntax does not prove that this relationship executes at runtime.",
+              "Values and aliases were recovered from inert syntax only; no JavaScript was executed."
+            ],
+            "evidence_ids": []
+          },
+          "source_labels": [
+            "nodes/0.BjG-yHQV.js"
+          ],
+          "target_labels": [
+            "chunks/iTEJ16On.js"
+          ]
+        },
+        {
+          "relation": "imports",
+          "properties": {
+            "module_link_kind": "import",
+            "specifier": "../chunks/iTEJ16On.js",
+            "imported_name": "z",
+            "imported_path": [
+              "z"
+            ],
+            "local_name": "Aa",
+            "exported_name": null,
+            "resolved_path": "chunks/iTEJ16On.js",
+            "resolution_status": "resolved",
+            "target_file_kind": "javascript",
+            "target_json_status": null
+          },
+          "evidence": {
+            "authority": "static-relationship-inference",
+            "state": "inferred",
+            "confidence": "high",
+            "artifact": {
+              "available": true,
+              "artifact_id": "art_aefb3eeb25f08333446c5b67c0731d9d3352a7915f1cf21b8268778aecc84d94",
+              "sha256": "aefb3eeb25f08333446c5b67c0731d9d3352a7915f1cf21b8268778aecc84d94"
+            },
+            "location": {
+              "available": true,
+              "value": {
+                "kind": "source-range",
+                "source": "nodes/0.BjG-yHQV.js",
+                "start": {
+                  "line": 1,
+                  "column": 1524
+                },
+                "end": {
+                  "line": 1,
+                  "column": 1531
+                }
+              }
+            },
+            "extractor": {
+              "name": "rea-javascript-artifact-reconstruction",
+              "version": "1",
+              "operation": "resolve-semantic-module-relationship",
+              "executable_sha256": null
+            },
+            "coverage": {
+              "status": "complete",
+              "truncated": false,
+              "omitted_count": 0,
+              "limits": []
+            },
+            "limitations": [
+              "Cross-function mutation and dynamic property resolution remain unknown.",
+              "Local call, argument, return, and closure relations are static candidates and do not prove runtime invocation.",
+              "Promise ownership covers explicit unshadowed Promise construction, static factories, aggregation, chaining, and await syntax only.",
+              "Return sites include only direct callable returns; nested callable returns remain separate.",
+              "Static syntax does not prove that this relationship executes at runtime.",
+              "Values and aliases were recovered from inert syntax only; no JavaScript was executed."
+            ],
+            "evidence_ids": []
+          },
+          "source_labels": [
+            "nodes/0.BjG-yHQV.js"
+          ],
+          "target_labels": [
+            "chunks/iTEJ16On.js"
+          ]
+        }
+      ]
+    }
+  ]
+}
