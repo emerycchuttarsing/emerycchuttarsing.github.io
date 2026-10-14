@@ -265,6 +265,7 @@ export function createMediaManager(
       update();
     },
     setSceneAvailable(available: boolean) {
+      if (sceneAvailable === available) return;
       sceneAvailable = available;
       update();
     },

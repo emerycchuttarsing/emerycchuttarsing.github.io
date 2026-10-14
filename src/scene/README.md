@@ -35,11 +35,10 @@ priority, and hover never opens the modal or changes history.
   attenuated colored light contributions and edge fading.
 - `lighting.ts`: samples local precomputed sRGB video-color curves, converts to
   linear light and interpolates by currentTime. Accents serve as still fallbacks.
-- `postprocessing.ts`: RenderPass, restrained UnrealBloomPass, vignette, OutputPass.
-  Text stays in HTML above the canvas. Mobile omits bloom. Transparent hero/reveal
-  uses direct rendering; the settled dark scene uses the effects chain.
-  Its half-float targets explicitly enable up to 4 supported MSAA samples;
-  the canvas antialias flag alone does not apply to these offscreen targets.
+- `postprocessing.ts`: one full-resolution HDR/MSAA scene target, quarter-resolution
+  Gaussian glow and a combined vignette/OutputPass. Only geometry uses up to four
+  supported MSAA samples. Text stays in HTML; mobile omits glow. Transparent
+  hero/reveal uses direct rendering; settled dark scenes use the effects pipeline.
 - `renderer.ts`: camera interpolation, projected visibility, panel materials,
   finite highlight/selection transitions and complete GPU cleanup.
 - `config.ts`: camera poses, point density, lights, timing, DPR and media budget.
@@ -92,3 +91,23 @@ and removes the canvas/context. DOM diagnostics expose projected panel bounds an
 renderer.info.memory for the browser validation script, without global mutable APIs.
 
 See `docs/validation/mirage-correction/README.md` for evidence and limitations.
+
+## Performance du rendu orbital
+
+`postprocessing.ts` rend une seule fois la géométrie dans une cible HDR MSAA
+à pleine résolution. Deux textures à un quart de la largeur et de la hauteur
+reçoivent le halo, filtré horizontalement puis verticalement. La composition,
+la vignette et la conversion des couleurs partagent la passe de sortie.
+Le buffer MSAA peut être abandonné après résolution : aucune passe ne réécrit
+dedans pour mélanger la lumière. L’image résolue reste disponible jusqu’à la
+composition finale. Les trois cibles et leurs matériaux sont libérés à la sortie.
+
+Le renderer regroupe les cinq faces de cadre en un seul dessin, masque les
+points du hero lorsqu’ils sont transparents, mesure les sections sur scroll ou
+resize et évite les mutations DOM identiques. Les diagnostics géométriques
+sont publiés au plus dix fois par seconde pendant la rotation ; les changements
+d’état et la dernière pose restent publiés immédiatement. La caméra et
+l’orbite continuent d’être mises à jour à chaque frame.
+
+Mesures et commande reproductible :
+[validation de performance](../../docs/validation/orbit-performance/README.md).

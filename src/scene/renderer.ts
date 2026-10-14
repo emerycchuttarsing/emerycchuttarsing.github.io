@@ -63,6 +63,16 @@ export function createPortfolioScene(
   const orbit = createOrbit(projects.length);
   let motionEnabled = true;
   const geometry = new THREE.BoxGeometry(1, 1, 1);
+  // All five frame faces share one draw, with the image as a separate face.
+  const indices = Array.from(geometry.index!.array);
+  geometry.setIndex([
+    ...indices.slice(0, 24),
+    ...indices.slice(30),
+    ...indices.slice(24, 30),
+  ]);
+  geometry.clearGroups();
+  geometry.addGroup(0, 30, 0);
+  geometry.addGroup(30, 6, 1);
   const edgeGeometry = new THREE.EdgesGeometry(geometry);
   const materials: THREE.Material[] = [terrain.material];
   const textures: THREE.Texture[] = [];
@@ -80,14 +90,7 @@ export function createPortfolioScene(
       transparent: true,
       opacity: 0.32,
     });
-    const mesh = new THREE.Mesh(geometry, [
-      frame,
-      frame,
-      frame,
-      frame,
-      front,
-      frame,
-    ]);
+    const mesh = new THREE.Mesh(geometry, [frame, front]);
     mesh.add(new THREE.LineSegments(edgeGeometry, border));
     mesh.visible = false;
     scene.add(mesh);
@@ -130,6 +133,13 @@ export function createPortfolioScene(
     destinationScale = new THREE.Vector3();
   const quaternion = new THREE.Quaternion();
   const color = new THREE.Color();
+  let layoutDirty = true;
+  let sectionRect = section.getBoundingClientRect();
+  let heroBounds = hero?.getBoundingClientRect();
+  let lastDiagnostics = -Infinity;
+  function data(element: HTMLElement, name: string, value: string) {
+    if (element.dataset[name] !== value) element.dataset[name] = value;
+  }
   function placeAtPixel(
     x: number,
     y: number,
@@ -153,13 +163,18 @@ export function createPortfolioScene(
   function render(now: number) {
     frameId = 0;
     if (disposed || paused) return;
-    const rect = section.getBoundingClientRect();
-    const heroRect = hero?.getBoundingClientRect();
+    if (layoutDirty) {
+      sectionRect = section.getBoundingClientRect();
+      heroBounds = hero?.getBoundingClientRect();
+      layoutDirty = false;
+    }
+    const rect = sectionRect;
+    const heroRect = heroBounds;
     const visible =
       Boolean(selected) ||
       (heroRect ? heroRect.bottom > 0 : false) ||
       (rect.top < height && rect.bottom > 0);
-    root.hidden = !visible;
+    if (root.hidden === visible) root.hidden = !visible;
     if (!visible) {
       onVisibility([]);
       lastTime = 0;
@@ -191,15 +206,19 @@ export function createPortfolioScene(
       sceneConfig.timing.selectionDurationMs,
     );
     const travel = smooth(progress);
-    root.dataset['state'] = selected
-      ? 'selected'
-      : progress === 0
-        ? 'hero'
-        : progress === 1
-          ? 'overview'
-          : 'reveal';
-    root.dataset['progress'] = progress.toFixed(3);
-    root.dataset['selectionProgress'] = selectionMix.toFixed(3);
+    data(
+      root,
+      'state',
+      selected
+        ? 'selected'
+        : progress === 0
+          ? 'hero'
+          : progress === 1
+            ? 'overview'
+            : 'reveal',
+    );
+    data(root, 'progress', progress.toFixed(3));
+    data(root, 'selectionProgress', selectionMix.toFixed(3));
     const mobile = width < 640;
     const poses = sceneConfig.camera[mobile ? 'compact' : 'desktop'];
     target.fromArray(poses.overview.position);
@@ -259,6 +278,8 @@ export function createPortfolioScene(
       (1 - smooth((progress - 0.2) / 0.6)) *
       (1 - selectionMix);
     terrain.material.uniforms['overview']!.value = travel;
+    terrain.points.visible =
+      terrain.material.uniforms['opacity']!.value > 0.001;
     ground.uniforms.opacity.value =
       smooth((progress - 0.18) / 0.56) * (1 - selectionMix * 0.88);
     ground.mesh.visible = ground.uniforms.opacity.value > 0.001;
@@ -266,9 +287,7 @@ export function createPortfolioScene(
     const orbitEnabled =
       motionEnabled && !selected && selectionMix === 0 && progress > 0.96;
     const orbitMoving = orbit.update(dt / 1000, orbitEnabled);
-    root.dataset['orbitAngle'] = orbit.angle.toFixed(6);
-    root.dataset['orbitVelocity'] = orbit.velocity.toFixed(6);
-    root.dataset['orbitState'] = !motionEnabled
+    const orbitState = !motionEnabled
       ? 'paused'
       : selected
         ? 'preview'
@@ -277,7 +296,17 @@ export function createPortfolioScene(
             ? 'focused'
             : 'focusing'
           : 'drifting';
-    const end = preview.getBoundingClientRect();
+    const previousOrbitState = root.dataset['orbitState'];
+    data(root, 'orbitState', orbitState);
+    const diagnosticsDue =
+      now - lastDiagnostics >= 100 ||
+      previousOrbitState !== orbitState ||
+      !orbitMoving;
+    if (diagnosticsDue) {
+      data(root, 'orbitAngle', orbit.angle.toFixed(6));
+      data(root, 'orbitVelocity', orbit.velocity.toFixed(6));
+    }
+    const end = selectionMix > 0 ? preview.getBoundingClientRect() : undefined;
     let highlighting = false;
     const showPanels =
       texturesReady && (panelProgress > 0.02 || Boolean(selected));
@@ -312,7 +341,7 @@ export function createPortfolioScene(
       mesh.position.y += (1 - panelProgress) * -0.35 + panel.emphasis * 0.06;
       mesh.scale.copy(layout.scale).multiplyScalar(1 + panel.emphasis * 0.035);
       mesh.quaternion.copy(layout.quaternion);
-      if (amount > 0) {
+      if (amount > 0 && end) {
         const unit = placeAtPixel(
           end.left + end.width / 2,
           end.top + end.height / 2,
@@ -363,16 +392,15 @@ export function createPortfolioScene(
         renderer.setClearColor(0x000000, 0);
         renderer.render(scene, camera);
       }
-      html.dataset['terrainReady'] = 'true';
-      html.dataset['panelsReady'] = String(showPanels);
-      html.dataset['selectedReady'] = String(showPanels && Boolean(selected));
-      scene.updateMatrixWorld(true);
+      data(html, 'terrainReady', 'true');
+      data(html, 'panelsReady', String(showPanels));
+      data(html, 'selectedReady', String(showPanels && Boolean(selected)));
       const bounds = panels.map((p) => ({
         id: p.project.id,
         visible: p.mesh.visible && p.front.opacity > 0.1,
         ...projectedPanel(p.mesh, camera, width, height),
       }));
-      root.dataset['panelBounds'] = JSON.stringify(bounds);
+      if (diagnosticsDue) data(root, 'panelBounds', JSON.stringify(bounds));
       // A sliver at the viewport edge must not keep the carousel or videos alive.
       const visibleBounds = bounds.filter((p) => {
         const area = Math.max(1, (p.right - p.left) * (p.bottom - p.top));
@@ -382,14 +410,21 @@ export function createPortfolioScene(
         return p.visible && visibleArea / area >= 0.25;
       });
       onVisibility(visibleBounds.map((p) => p.id));
-      root.dataset['gpuResources'] = JSON.stringify(renderer.info.memory);
-      root.dataset['panelFocus'] = JSON.stringify(
-        panels.map((p) => ({
-          id: p.project.id,
-          blur: p.surface.blur.value,
-          emphasis: p.emphasis,
-        })),
-      );
+      if (diagnosticsDue) {
+        lastDiagnostics = now;
+        data(root, 'gpuResources', JSON.stringify(renderer.info.memory));
+        data(
+          root,
+          'panelFocus',
+          JSON.stringify(
+            panels.map((p) => ({
+              id: p.project.id,
+              blur: p.surface.blur.value,
+              emphasis: p.emphasis,
+            })),
+          ),
+        );
+      }
       if (orbitMoving && visibleBounds.length > 0) invalidate();
     } catch {
       controller.setState({ kind: 'fallback', reason: 'load-error' });
@@ -414,16 +449,25 @@ export function createPortfolioScene(
     nextHeight = window.innerHeight,
   ) {
     if (disposed) return;
-    width = Math.max(1, nextWidth);
-    height = Math.max(1, nextHeight);
+    layoutDirty = true;
+    const newWidth = Math.max(1, nextWidth);
+    const newHeight = Math.max(1, nextHeight);
     const ratio = Math.min(
       window.devicePixelRatio || 1,
       sceneConfig.quality.maxPixelRatio,
-      Math.sqrt(sceneConfig.quality.maxRenderPixels / (width * height)),
+      Math.sqrt(sceneConfig.quality.maxRenderPixels / (newWidth * newHeight)),
     );
-    renderer.setPixelRatio(ratio);
-    renderer.setSize(width, height, false);
-    effects.resize(width, height, ratio);
+    if (
+      width !== newWidth ||
+      height !== newHeight ||
+      renderer.getPixelRatio() !== ratio
+    ) {
+      width = newWidth;
+      height = newHeight;
+      renderer.setPixelRatio(ratio);
+      renderer.setSize(width, height, false);
+      effects.resize(width, height, ratio);
+    }
     terrain.material.uniforms['pixelRatio']!.value = ratio;
     invalidate();
   }
@@ -473,9 +517,12 @@ export function createPortfolioScene(
         panel.video.minFilter = THREE.LinearMipmapLinearFilter;
         textures.push(panel.video);
       }
-      panel.front.map =
+      const nextMap =
         video && panel.video ? panel.video : (panel.poster ?? null);
-      panel.front.needsUpdate = true;
+      if (panel.front.map !== nextMap) {
+        panel.front.map = nextMap;
+        panel.front.needsUpdate = true;
+      }
       invalidate();
     },
     invalidate,
@@ -510,11 +557,15 @@ export function createPortfolioScene(
       renderer.domElement.remove();
     },
   };
-  window.addEventListener('scroll', invalidate, {
+  function scroll() {
+    layoutDirty = true;
+    invalidate();
+  }
+  window.addEventListener('scroll', scroll, {
     passive: true,
     signal: events.signal,
   });
-  dialog.addEventListener('scroll', invalidate, {
+  dialog.addEventListener('scroll', scroll, {
     passive: true,
     signal: events.signal,
   });

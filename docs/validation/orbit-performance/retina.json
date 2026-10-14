@@ -1,0 +1,55 @@
+{
+  "browser": "155.0.8059.79",
+  "layouts": [
+    {
+      "viewport": [1440, 900],
+      "dpr": 2,
+      "canvas": [2880, 1800],
+      "samples": [4],
+      "canvasCount": 1,
+      "overflow": false,
+      "rows": 7,
+      "gpu": {
+        "geometries": 4,
+        "textures": 13
+      },
+      "videoSizes": [
+        [1536, 960],
+        [1536, 960]
+      ]
+    },
+    {
+      "viewport": [768, 1024],
+      "dpr": 2,
+      "canvas": [1536, 2048],
+      "samples": [4],
+      "canvasCount": 1,
+      "overflow": false,
+      "rows": 7,
+      "gpu": {
+        "geometries": 4,
+        "textures": 12
+      },
+      "videoSizes": [[1536, 960]]
+    },
+    {
+      "viewport": [390, 844],
+      "dpr": 3,
+      "canvas": [780, 1688],
+      "samples": [4],
+      "canvasCount": 1,
+      "overflow": false,
+      "rows": 7,
+      "gpu": {
+        "geometries": 4,
+        "textures": 10
+      },
+      "videoSizes": [[1536, 960]]
+    }
+  ],
+  "errors": [],
+  "fallback": {
+    "source": "http://127.0.0.1:4321/media/works-still-desktop@2x.webp",
+    "loaded": true
+  }
+}

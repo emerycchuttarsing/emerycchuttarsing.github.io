@@ -1,0 +1,142 @@
+{
+  "browser": "155.0.8059.79",
+  "phase": "before",
+  "layouts": [
+    {
+      "width": 1440,
+      "height": 900,
+      "dpr": 2,
+      "gpu": "ANGLE (Apple, ANGLE Metal Renderer: Apple M3, Unspecified Version)",
+      "timerSupported": true,
+      "renderFps": 31.834925079587308,
+      "intervalMs": {
+        "n": 191,
+        "mean": 31.41204188481676,
+        "p50": 33.30000000000018,
+        "p95": 33.400000000000546,
+        "max": 50.100000000000364
+      },
+      "cpuCallbackMs": {
+        "n": 192,
+        "mean": 1.2437499991307657,
+        "p50": 1.0999999940395355,
+        "p95": 2.800000011920929,
+        "max": 7.800000011920929
+      },
+      "gpuMs": {
+        "n": 188,
+        "mean": 55.37324905319146,
+        "p50": 60.172458,
+        "p95": 73.101,
+        "max": 79.904916
+      },
+      "draws": {
+        "n": 192,
+        "mean": 66,
+        "p50": 66,
+        "p95": 66,
+        "max": 66
+      },
+      "over25ms": 165,
+      "mutationsPerSecond": 544.3333333333334,
+      "mainThread": {
+        "taskMs": 569.082,
+        "layoutMs": 34.535,
+        "styleMs": 6.519,
+        "layoutCount": 192,
+        "styleCount": 192
+      }
+    },
+    {
+      "width": 768,
+      "height": 1024,
+      "dpr": 2,
+      "gpu": "ANGLE (Apple, ANGLE Metal Renderer: Apple M3, Unspecified Version)",
+      "timerSupported": true,
+      "renderFps": 54.168472282409425,
+      "intervalMs": {
+        "n": 325,
+        "mean": 18.460923076923073,
+        "p50": 16.699999999999818,
+        "p95": 33.30000000000018,
+        "max": 33.5
+      },
+      "cpuCallbackMs": {
+        "n": 326,
+        "mean": 0.8619631902754672,
+        "p50": 0.800000011920929,
+        "p95": 1.5,
+        "max": 2
+      },
+      "gpuMs": {
+        "n": 322,
+        "mean": 23.060294798136646,
+        "p50": 21.794958,
+        "p95": 31.443,
+        "max": 36.100833
+      },
+      "draws": {
+        "n": 326,
+        "mean": 66,
+        "p50": 66,
+        "p95": 66,
+        "max": 66
+      },
+      "over25ms": 35,
+      "mutationsPerSecond": 923.8333333333334,
+      "mainThread": {
+        "taskMs": 622.6320000000001,
+        "layoutMs": 42.940999999999995,
+        "styleMs": 8.271,
+        "layoutCount": 326,
+        "styleCount": 326
+      }
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "dpr": 2,
+      "gpu": "ANGLE (Apple, ANGLE Metal Renderer: Apple M3, Unspecified Version)",
+      "timerSupported": true,
+      "renderFps": 60.00233992411958,
+      "intervalMs": {
+        "n": 359,
+        "mean": 16.666016713091928,
+        "p50": 16.699999999999818,
+        "p95": 16.799999999999272,
+        "max": 16.800000000000182
+      },
+      "cpuCallbackMs": {
+        "n": 360,
+        "mean": 1.1036111103991668,
+        "p50": 1.0999999940395355,
+        "p95": 2,
+        "max": 3
+      },
+      "gpuMs": {
+        "n": 359,
+        "mean": 8.093249498607248,
+        "p50": 7.82625,
+        "p95": 14.198374,
+        "max": 15.271083
+      },
+      "draws": {
+        "n": 360,
+        "mean": 53,
+        "p50": 53,
+        "p95": 53,
+        "max": 53
+      },
+      "over25ms": 0,
+      "mutationsPerSecond": 1020.1666666666666,
+      "mainThread": {
+        "taskMs": 845.438,
+        "layoutMs": 69.19200000000001,
+        "styleMs": 13.256999999999998,
+        "layoutCount": 360,
+        "styleCount": 360
+      }
+    }
+  ],
+  "errors": []
+}

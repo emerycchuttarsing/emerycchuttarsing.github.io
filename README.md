@@ -164,3 +164,12 @@ images en arrière-plan. Le bouton Pause motion fige la scène et les vidéos.
 La [recette orbitale](docs/validation/orbit-gallery/README.md) et
 `scripts/check-orbit-browser.mjs` couvrent ces interactions ; le contrôle Retina
 reste dans `scripts/check-scene-quality-browser.mjs`.
+
+### Fluidité de la galerie
+
+Le rendu orbital utilise une seule cible MSAA à pleine résolution, un halo
+à résolution réduite et une passe finale commune. Les images restent en Retina.
+Les faces de cadre sont regroupées et la boucle évite les mesures de page
+répétées. Le [bilan de performance](docs/validation/orbit-performance/README.md)
+contient les mesures avant/après. `scripts/profile-scene-browser.mjs` permet
+une nouvelle mesure locale avec les mêmes dimensions et les vidéos actives.
