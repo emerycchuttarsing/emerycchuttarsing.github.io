@@ -2,21 +2,28 @@
 import { render } from 'astro:content';
 import type { GetStaticPaths, InferGetStaticPropsType } from 'astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectHeader from '../../components/ProjectHeader.astro';
+import ProjectFigure from '../../components/ProjectFigure.astro';
+import TableOfContents from '../../components/TableOfContents.astro';
+import MethodDiagram from '../../components/MethodDiagram.astro';
+import Prose from '../../components/Prose.astro';
+import ProjectResources from '../../components/ProjectResources.astro';
+import ProjectNavigation from '../../components/ProjectNavigation.astro';
 import { getProjects } from '../../lib/projects';
 export const getStaticPaths = (async () => {
-  return (await getProjects()).map((project) => ({
+  const projects = await getProjects();
+  return projects.map((project, index) => ({
     params: { id: project.id },
-    props: { project },
+    props: {
+      project,
+      previous: projects[index - 1],
+      next: projects[index + 1],
+    },
   }));
 }) satisfies GetStaticPaths;
 type Props = InferGetStaticPropsType<typeof getStaticPaths>;
-const { project } = Astro.props;
-const { Content } = await render(project);
-const links = [
-  { label: 'View code', href: project.data.links.code },
-  { label: 'Read report', href: project.data.links.report },
-  { label: 'Try demo', href: project.data.links.demo },
-].filter((link) => link.href !== undefined);
+const { project, previous, next } = Astro.props;
+const { Content, headings } = await render(project);
 ---
 
 <BaseLayout title={project.data.title} description={project.data.summary}>
@@ -24,56 +31,53 @@ const links = [
     <a class="back-link" href="/projects/">
       ← All projects
     </a>
-    <header class="page-heading">
-      <p class="eyebrow">
-        Study {String(project.data.order).padStart(2, '0')} /{' '}
-        {project.data.categories.join(' / ')}
-      </p>
-      <h1>{project.data.title}</h1>
-      <p class="lead">{project.data.summary}</p>
-      <p class="project-tags">{project.data.technologies.join(' · ')}</p>
-    </header>
-    <figure class="case-poster">
-      <img
-        src={project.data.poster.src}
-        alt={project.data.poster.alt}
-        width="960"
-        height="600"
-      />
-      <figcaption>
-        Conceptual illustration / experimental figures to follow.
-      </figcaption>
-    </figure>
-    <div class="case-body">
+    <ProjectHeader project={project} />
+    <ProjectFigure {...project.data.poster} />
+    <div class="case-reading-layout">
       <aside>
-        <p class="eyebrow">Research notes</p>
-        <p class="project-tags">{project.data.categories.join(' / ')}</p>
+        <TableOfContents headings={headings} />
       </aside>
-      <div>
+      <div class="case-content">
         {project.data.editorialStatus === 'draft' && (
           <p class="editorial-note">
-            Draft case study. Results and supporting figures are being prepared.
+            Working case study · Methods and contributions are outlined here.
+            Quantitative results and experimental figures are reserved for a
+            later review.
           </p>
         )}
-        <div class="prose">
+        <MethodDiagram steps={project.data.workflow} />
+        <Prose>
           <Content />
-        </div>
-        {links.length > 0 && (
-          <nav class="actions" aria-label="Project resources">
-            {links.map(({ label, href }) => (
-              <a class="text-link" href={href}>
-                {label}
-                <span aria-hidden="true">↗</span>
-              </a>
-            ))}
-          </nav>
-        )}
+        </Prose>
+        <ProjectResources links={project.data.links} />
       </div>
     </div>
-    <div class="case-ending">
-      <a class="text-link" href="/#projects">
-        Back to the project collection <span aria-hidden="true">↗</span>
-      </a>
-    </div>
+    <ProjectNavigation previous={previous} next={next} />
   </article>
 </BaseLayout>
+<style>
+  .case-reading-layout {
+    display: grid;
+    grid-template-columns: 13.5rem minmax(0, 1fr);
+    gap: clamp(2.5rem, 5vw, 5rem);
+    border-top: 1px solid var(--color-line);
+    margin-top: 2.75rem;
+    padding-top: 2.5rem;
+  }
+  .case-reading-layout aside {
+    min-width: 0;
+  }
+  .case-content {
+    min-width: 0;
+  }
+  .case-content > .editorial-note {
+    margin: 0 0 2.5rem;
+    max-width: 78ch;
+  }
+  @media (max-width: 900px) {
+    .case-reading-layout {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+  }
+</style>

@@ -1,0 +1,49 @@
+---
+interface Props {
+  groups: readonly { title: string; items: readonly string[] }[];
+}
+const { groups } = Astro.props;
+---
+
+<div class="skill-groups">
+  {groups.map((group) => (
+    <section>
+      <h3>{group.title}</h3>
+      <ul>
+        {group.items.map((item) => (
+          <li>{item}</li>
+        ))}
+      </ul>
+    </section>
+  ))}
+</div>
+<style>
+  .skill-groups {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2rem 3rem;
+  }
+  .skill-groups section {
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--color-line);
+  }
+  .skill-groups h3 {
+    font-size: 1.65rem;
+    margin: 0 0 1rem;
+  }
+  .skill-groups ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .skill-groups li {
+    font-size: 0.86rem;
+    color: var(--color-muted);
+    margin-bottom: 0.5rem;
+  }
+  @media (max-width: 500px) {
+    .skill-groups {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

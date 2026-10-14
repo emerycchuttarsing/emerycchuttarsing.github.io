@@ -23,8 +23,8 @@ L'accueil et l'index utilisent la même liste. `getStaticPaths()` génère les s
 en une vue sérialisable pour la scène, sans fichiers privés ni accès disque.
 
 Les brouillons sont visibles et identifiés. Les liens facultatifs absents ne
-créent pas de boutons actifs. Les corps actuels reprennent les méthodes du brief ;
-ils ne revendiquent pas de performances numériques non vérifiées.
+créent pas de boutons actifs. Les corps actuels reprennent les méthodes du brief
+et des sources locales ; ils ne revendiquent pas de performances numériques.
 
 ## Traduction des analyses REA
 
@@ -58,8 +58,39 @@ contexte WebGL. Les ressources GPU sont libérées à la sortie de l’accueil.
 Les styles sont répartis entre `tokens.css`, `global.css` (navigation et gabarits
 éditoriaux), `home.css` (accueil et galerie), et le style propre à l’index.
 Les posters sont sept SVG originaux et illustratifs. Les études restent des
-brouillons : les figures expérimentales et résultats seront repris au jalon 3.
+brouillons. Le périmètre adopté au jalon 3 conserve les illustrations conceptuelles
+et reporte l’intégration des résultats chiffrés à une revue ultérieure.
 Les types `reveal` et `selected`, durées et budgets vidéo préparent le jalon 4.
+
+## Réalisation du jalon 3
+
+`ProjectHeader` expose contexte, rôle, technologies et contributions issus du
+frontmatter. `ProjectFigure` affiche le poster et sa légende conceptuelle.
+`render(project)` fournit le contenu Markdown et ses titres : `TableOfContents`
+construit des liens d’ancrage natifs depuis les titres de niveau 2.
+`MethodDiagram` présente les trois étapes du frontmatter sous forme de liste HTML.
+`Prose` définit la colonne de lecture, les listes, tableaux, figures et encadrés.
+
+`ProjectNavigation` reçoit les voisins calculés à partir de l’ordre de la collection.
+Le premier projet n’a pas de précédent, le dernier n’a pas de suivant. Les liens
+vers l’index et la galerie restent présents aux deux extrémités.
+`ProjectResources` est partagé par l’index et les études ; les destinations
+manquantes ne génèrent aucun bouton.
+
+Le sommaire reste latéral et sticky au-dessus de 900 px, puis précède le texte.
+Les étapes de méthode passent de trois colonnes à une sous 700 px. La galerie
+et le contrat `SceneProject` ne reçoivent pas les longs contenus éditoriaux.
+Aucun de ces composants ne nécessite de JavaScript ni de nouvelle dépendance.
+
+`site.ts` centralise biographie, formations, expériences, compétences et liens.
+`ProfileTimeline`, `SkillGroups` et `ProfileLinks` les présentent dans About ;
+les liens du pied de page et le texte court de l’accueil utilisent cette source.
+Le CV est une copie inchangée du document fourni, servie depuis `public/resume/`.
+Le champ LinkedIn reste disponible mais vide.
+
+Les contenus, leur provenance et les emplacements de remplacement sont décrits
+[dans le guide éditorial](CONTENT_SOURCES.md). La recette du jalon 3 couvre
+également les parcours, les contenus statiques et le téléchargement.
 
 ## Vérification et hébergement
 

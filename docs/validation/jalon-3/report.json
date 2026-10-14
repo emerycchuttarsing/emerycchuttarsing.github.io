@@ -1,0 +1,1006 @@
+{
+  "checkedAt": "2026-10-14T06:09:23.737Z",
+  "browser": "155.0.8059.79",
+  "viewports": [
+    {
+      "width": 1440,
+      "height": 900,
+      "checks": [
+        {
+          "path": "/projects/rl-path-signatures/",
+          "overflow": false,
+          "elementsOutsideViewport": [],
+          "tocPosition": "sticky",
+          "methodSteps": [
+            {
+              "left": 388,
+              "right": 705.328125,
+              "top": 1624.3125,
+              "bottom": 1789.890625
+            },
+            {
+              "left": 705.328125,
+              "right": 1022.65625,
+              "top": 1624.3125,
+              "bottom": 1789.890625
+            },
+            {
+              "left": 1022.65625,
+              "right": 1340,
+              "top": 1624.3125,
+              "bottom": 1789.890625
+            }
+          ]
+        },
+        {
+          "path": "/projects/signature-deep-hedging/",
+          "overflow": false,
+          "elementsOutsideViewport": [],
+          "tocPosition": "sticky",
+          "methodSteps": [
+            {
+              "left": 388,
+              "right": 705.328125,
+              "top": 1537.234375,
+              "bottom": 1702.8125
+            },
+            {
+              "left": 705.328125,
+              "right": 1022.65625,
+              "top": 1537.234375,
+              "bottom": 1702.8125
+            },
+            {
+              "left": 1022.65625,
+              "right": 1340,
+              "top": 1537.234375,
+              "bottom": 1702.8125
+            }
+          ]
+        },
+        {
+          "path": "/projects/music-recommendation/",
+          "overflow": false,
+          "elementsOutsideViewport": [],
+          "tocPosition": "sticky",
+          "methodSteps": [
+            {
+              "left": 388,
+              "right": 705.328125,
+              "top": 1639.984375,
+              "bottom": 1805.5625
+            },
+            {
+              "left": 705.328125,
+              "right": 1022.65625,
+              "top": 1639.984375,
+              "bottom": 1805.5625
+            },
+            {
+              "left": 1022.65625,
+              "right": 1340,
+              "top": 1639.984375,
+              "bottom": 1805.5625
+            }
+          ]
+        },
+        {
+          "path": "/projects/tinystories-transformer/",
+          "overflow": false,
+          "elementsOutsideViewport": [],
+          "tocPosition": "sticky",
+          "methodSteps": [
+            {
+              "left": 388,
+              "right": 705.328125,
+              "top": 1624.3125,
+              "bottom": 1789.890625
+            },
+            {
+              "left": 705.328125,
+              "right": 1022.65625,
+              "top": 1624.3125,
+              "bottom": 1789.890625
+            },
+            {
+              "left": 1022.65625,
+              "right": 1340,
+              "top": 1624.3125,
+              "bottom": 1789.890625
+            }
+          ]
+        },
+        {
+          "path": "/projects/link-prediction/",
+          "overflow": false,
+          "elementsOutsideViewport": [],
+          "tocPosition": "sticky",
+          "methodSteps": [
+            {
+              "left": 388,
+              "right": 705.328125,
+              "top": 1537.234375,
+              "bottom": 1702.8125
+            },
+            {
+              "left": 705.328125,
+              "right": 1022.65625,
+              "top": 1537.234375,
+              "bottom": 1702.8125
+            },
+            {
+              "left": 1022.65625,
+              "right": 1340,
+              "top": 1537.234375,
+              "bottom": 1702.8125
+            }
+          ]
+        },
+        {
+          "path": "/projects/visual-learning/",
+          "overflow": false,
+          "elementsOutsideViewport": [],
+          "tocPosition": "sticky",
+          "methodSteps": [
+            {
+              "left": 388,
+              "right": 705.328125,
+              "top": 1537.234375,
+              "bottom": 1702.8125
+            },
+            {
+              "left": 705.328125,
+              "right": 1022.65625,
+              "top": 1537.234375,
+              "bottom": 1702.8125
+            },
+            {
+              "left": 1022.65625,
+              "right": 1340,
+              "top": 1537.234375,
+              "bottom": 1702.8125
+            }
+          ]
+        },
+        {
+          "path": "/projects/retail-forecasting/",
+          "overflow": false,
+          "elementsOutsideViewport": [],
+          "tocPosition": "sticky",
+          "methodSteps": [
+            {
+              "left": 388,
+              "right": 705.328125,
+              "top": 1537.234375,
+              "bottom": 1702.8125
+            },
+            {
+              "left": 705.328125,
+              "right": 1022.65625,
+              "top": 1537.234375,
+              "bottom": 1702.8125
+            },
+            {
+              "left": 1022.65625,
+              "right": 1340,
+              "top": 1537.234375,
+              "bottom": 1702.8125
+            }
+          ]
+        },
+        {
+          "path": "/projects/",
+          "overflow": false,
+          "elementsOutsideViewport": [],
+          "tocPosition": null,
+          "methodSteps": []
+        },
+        {
+          "path": "/about/",
+          "overflow": false,
+          "elementsOutsideViewport": [],
+          "tocPosition": null,
+          "methodSteps": []
+        }
+      ]
+    },
+    {
+      "width": 1280,
+      "height": 800,
+      "checks": [
+        {
+          "path": "/projects/rl-path-signatures/",
+          "overflow": false,
+          "elementsOutsideViewport": [],
+          "tocPosition": "sticky",
+          "methodSteps": [
+            {
+              "left": 344,
+              "right": 634.65625,
+              "top": 1622.015625,
+              "bottom": 1787.59375
+            },
+            {
+              "left": 634.65625,
+              "right": 925.328125,
+              "top": 1622.015625,
+              "bottom": 1787.59375
+            },
+            {
+              "left": 925.328125,
+              "right": 1215.984375,
+              "top": 1622.015625,
+              "bottom": 1787.59375
+            }
+          ]
+        },
+        {
+          "path": "/projects/signature-deep-hedging/",
+          "overflow": false,
+          "elementsOutsideViewport": [],
+          "tocPosition": "sticky",
+          "methodSteps": [
+            {
+              "left": 344,
+              "right": 634.65625,
+              "top": 1537.84375,
+              "bottom": 1725.171875
+            },
+            {
+              "left": 634.65625,
+              "right": 925.328125,
+              "top": 1537.84375,
+              "bottom": 1725.171875
+            },
+            {
+              "left": 925.328125,
+              "right": 1215.984375,
+              "top": 1537.84375,
+              "bottom": 1725.171875
+            }
+          ]
+        },
+        {
+          "path": "/projects/music-recommendation/",
+          "overflow": false,
+          "elementsOutsideViewport": [],
+          "tocPosition": "sticky",
+          "methodSteps": [
+            {
+              "left": 344,
+              "right": 634.65625,
+              "top": 1637.6875,
+              "bottom": 1803.265625
+            },
+            {
+              "left": 634.65625,
+              "right": 925.328125,
+              "top": 1637.6875,
+              "bottom": 1803.265625
+            },
+            {
+              "left": 925.328125,
+              "right": 1215.984375,
+              "top": 1637.6875,
+              "bottom": 1803.265625
+            }
+          ]
+        },
+        {
+          "path": "/projects/tinystories-transformer/",
+          "overflow": false,
+          "elementsOutsideViewport": [],
+          "tocPosition": "sticky",
+          "methodSteps": [
+            {
+              "left": 344,
+              "right": 634.65625,
+              "top": 1615.265625,
+              "bottom": 1780.84375
+            },
+            {
+              "left": 634.65625,
+              "right": 925.328125,
+              "top": 1615.265625,
+              "bottom": 1780.84375
+            },
+            {
+              "left": 925.328125,
+              "right": 1215.984375,
+              "top": 1615.265625,
+              "bottom": 1780.84375
+            }
+          ]
+        },
+        {
+          "path": "/projects/link-prediction/",
+          "overflow": false,
+          "elementsOutsideViewport": [],
+          "tocPosition": "sticky",
+          "methodSteps": [
+            {
+              "left": 344,
+              "right": 634.65625,
+              "top": 1522.171875,
+              "bottom": 1687.75
+            },
+            {
+              "left": 634.65625,
+              "right": 925.328125,
+              "top": 1522.171875,
+              "bottom": 1687.75
+            },
+            {
+              "left": 925.328125,
+              "right": 1215.984375,
+              "top": 1522.171875,
+              "bottom": 1687.75
+            }
+          ]
+        },
+        {
+          "path": "/projects/visual-learning/",
+          "overflow": false,
+          "elementsOutsideViewport": [],
+          "tocPosition": "sticky",
+          "methodSteps": [
+            {
+              "left": 344,
+              "right": 634.65625,
+              "top": 1522.171875,
+              "bottom": 1687.75
+            },
+            {
+              "left": 634.65625,
+              "right": 925.328125,
+              "top": 1522.171875,
+              "bottom": 1687.75
+            },
+            {
+              "left": 925.328125,
+              "right": 1215.984375,
+              "top": 1522.171875,
+              "bottom": 1687.75
+            }
+          ]
+        },
+        {
+          "path": "/projects/retail-forecasting/",
+          "overflow": false,
+          "elementsOutsideViewport": [],
+          "tocPosition": "sticky",
+          "methodSteps": [
+            {
+              "left": 344,
+              "right": 634.65625,
+              "top": 1522.171875,
+              "bottom": 1687.75
+            },
+            {
+              "left": 634.65625,
+              "right": 925.328125,
+              "top": 1522.171875,
+              "bottom": 1687.75
+            },
+            {
+              "left": 925.328125,
+              "right": 1215.984375,
+              "top": 1522.171875,
+              "bottom": 1687.75
+            }
+          ]
+        },
+        {
+          "path": "/projects/",
+          "overflow": false,
+          "elementsOutsideViewport": [],
+          "tocPosition": null,
+          "methodSteps": []
+        },
+        {
+          "path": "/about/",
+          "overflow": false,
+          "elementsOutsideViewport": [],
+          "tocPosition": null,
+          "methodSteps": []
+        }
+      ]
+    },
+    {
+      "width": 768,
+      "height": 1024,
+      "checks": [
+        {
+          "path": "/projects/rl-path-signatures/",
+          "overflow": false,
+          "elementsOutsideViewport": [],
+          "tocPosition": "static",
+          "methodSteps": [
+            {
+              "left": 38.40625,
+              "right": 268.796875,
+              "top": 1839.65625,
+              "bottom": 2026.984375
+            },
+            {
+              "left": 268.796875,
+              "right": 499.1875,
+              "top": 1839.65625,
+              "bottom": 2026.984375
+            },
+            {
+              "left": 499.1875,
+              "right": 729.578125,
+              "top": 1839.65625,
+              "bottom": 2026.984375
+            }
+          ]
+        },
+        {
+          "path": "/projects/signature-deep-hedging/",
+          "overflow": false,
+          "elementsOutsideViewport": [],
+          "tocPosition": "static",
+          "methodSteps": [
+            {
+              "left": 38.40625,
+              "right": 268.796875,
+              "top": 1791.28125,
+              "bottom": 2004.515625
+            },
+            {
+              "left": 268.796875,
+              "right": 499.1875,
+              "top": 1791.28125,
+              "bottom": 2004.515625
+            },
+            {
+              "left": 499.1875,
+              "right": 729.578125,
+              "top": 1791.28125,
+              "bottom": 2004.515625
+            }
+          ]
+        },
+        {
+          "path": "/projects/music-recommendation/",
+          "overflow": false,
+          "elementsOutsideViewport": [],
+          "tocPosition": "static",
+          "methodSteps": [
+            {
+              "left": 38.40625,
+              "right": 268.796875,
+              "top": 1862.078125,
+              "bottom": 2075.3125
+            },
+            {
+              "left": 268.796875,
+              "right": 499.1875,
+              "top": 1862.078125,
+              "bottom": 2075.3125
+            },
+            {
+              "left": 499.1875,
+              "right": 729.578125,
+              "top": 1862.078125,
+              "bottom": 2075.3125
+            }
+          ]
+        },
+        {
+          "path": "/projects/tinystories-transformer/",
+          "overflow": false,
+          "elementsOutsideViewport": [],
+          "tocPosition": "static",
+          "methodSteps": [
+            {
+              "left": 38.40625,
+              "right": 268.796875,
+              "top": 1796.9375,
+              "bottom": 1984.265625
+            },
+            {
+              "left": 268.796875,
+              "right": 499.1875,
+              "top": 1796.9375,
+              "bottom": 1984.265625
+            },
+            {
+              "left": 499.1875,
+              "right": 729.578125,
+              "top": 1796.9375,
+              "bottom": 1984.265625
+            }
+          ]
+        },
+        {
+          "path": "/projects/link-prediction/",
+          "overflow": false,
+          "elementsOutsideViewport": [],
+          "tocPosition": "static",
+          "methodSteps": [
+            {
+              "left": 38.40625,
+              "right": 268.796875,
+              "top": 1748.5625,
+              "bottom": 1961.796875
+            },
+            {
+              "left": 268.796875,
+              "right": 499.1875,
+              "top": 1748.5625,
+              "bottom": 1961.796875
+            },
+            {
+              "left": 499.1875,
+              "right": 729.578125,
+              "top": 1748.5625,
+              "bottom": 1961.796875
+            }
+          ]
+        },
+        {
+          "path": "/projects/visual-learning/",
+          "overflow": false,
+          "elementsOutsideViewport": [],
+          "tocPosition": "static",
+          "methodSteps": [
+            {
+              "left": 38.40625,
+              "right": 268.796875,
+              "top": 1748.5625,
+              "bottom": 1935.890625
+            },
+            {
+              "left": 268.796875,
+              "right": 499.1875,
+              "top": 1748.5625,
+              "bottom": 1935.890625
+            },
+            {
+              "left": 499.1875,
+              "right": 729.578125,
+              "top": 1748.5625,
+              "bottom": 1935.890625
+            }
+          ]
+        },
+        {
+          "path": "/projects/retail-forecasting/",
+          "overflow": false,
+          "elementsOutsideViewport": [],
+          "tocPosition": "static",
+          "methodSteps": [
+            {
+              "left": 38.40625,
+              "right": 268.796875,
+              "top": 1748.5625,
+              "bottom": 1940.046875
+            },
+            {
+              "left": 268.796875,
+              "right": 499.1875,
+              "top": 1748.5625,
+              "bottom": 1940.046875
+            },
+            {
+              "left": 499.1875,
+              "right": 729.578125,
+              "top": 1748.5625,
+              "bottom": 1940.046875
+            }
+          ]
+        },
+        {
+          "path": "/projects/",
+          "overflow": false,
+          "elementsOutsideViewport": [],
+          "tocPosition": null,
+          "methodSteps": []
+        },
+        {
+          "path": "/about/",
+          "overflow": false,
+          "elementsOutsideViewport": [],
+          "tocPosition": null,
+          "methodSteps": []
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "checks": [
+        {
+          "path": "/projects/rl-path-signatures/",
+          "overflow": false,
+          "elementsOutsideViewport": [],
+          "tocPosition": "static",
+          "methodSteps": [
+            {
+              "left": 22.40625,
+              "right": 367.59375,
+              "top": 2076.453125,
+              "bottom": 2237.234375
+            },
+            {
+              "left": 22.40625,
+              "right": 367.59375,
+              "top": 2237.234375,
+              "bottom": 2398.015625
+            },
+            {
+              "left": 22.40625,
+              "right": 367.59375,
+              "top": 2398.015625,
+              "bottom": 2558.796875
+            }
+          ]
+        },
+        {
+          "path": "/projects/signature-deep-hedging/",
+          "overflow": false,
+          "elementsOutsideViewport": [],
+          "tocPosition": "static",
+          "methodSteps": [
+            {
+              "left": 22.40625,
+              "right": 367.59375,
+              "top": 1921.421875,
+              "bottom": 2082.203125
+            },
+            {
+              "left": 22.40625,
+              "right": 367.59375,
+              "top": 2082.203125,
+              "bottom": 2242.984375
+            },
+            {
+              "left": 22.40625,
+              "right": 367.59375,
+              "top": 2242.984375,
+              "bottom": 2403.765625
+            }
+          ]
+        },
+        {
+          "path": "/projects/music-recommendation/",
+          "overflow": false,
+          "elementsOutsideViewport": [],
+          "tocPosition": "static",
+          "methodSteps": [
+            {
+              "left": 22.40625,
+              "right": 367.59375,
+              "top": 1972.3125,
+              "bottom": 2133.09375
+            },
+            {
+              "left": 22.40625,
+              "right": 367.59375,
+              "top": 2133.09375,
+              "bottom": 2293.875
+            },
+            {
+              "left": 22.40625,
+              "right": 367.59375,
+              "top": 2293.875,
+              "bottom": 2454.65625
+            }
+          ]
+        },
+        {
+          "path": "/projects/tinystories-transformer/",
+          "overflow": false,
+          "elementsOutsideViewport": [],
+          "tocPosition": "static",
+          "methodSteps": [
+            {
+              "left": 22.40625,
+              "right": 367.59375,
+              "top": 1921.890625,
+              "bottom": 2082.671875
+            },
+            {
+              "left": 22.40625,
+              "right": 367.59375,
+              "top": 2082.671875,
+              "bottom": 2221.703125
+            },
+            {
+              "left": 22.40625,
+              "right": 367.59375,
+              "top": 2221.703125,
+              "bottom": 2382.484375
+            }
+          ]
+        },
+        {
+          "path": "/projects/link-prediction/",
+          "overflow": false,
+          "elementsOutsideViewport": [],
+          "tocPosition": "static",
+          "methodSteps": [
+            {
+              "left": 22.40625,
+              "right": 367.59375,
+              "top": 1839.90625,
+              "bottom": 2000.6875
+            },
+            {
+              "left": 22.40625,
+              "right": 367.59375,
+              "top": 2000.6875,
+              "bottom": 2161.46875
+            },
+            {
+              "left": 22.40625,
+              "right": 367.59375,
+              "top": 2161.46875,
+              "bottom": 2322.25
+            }
+          ]
+        },
+        {
+          "path": "/projects/visual-learning/",
+          "overflow": false,
+          "elementsOutsideViewport": [],
+          "tocPosition": "static",
+          "methodSteps": [
+            {
+              "left": 22.40625,
+              "right": 367.59375,
+              "top": 1902.4375,
+              "bottom": 2063.21875
+            },
+            {
+              "left": 22.40625,
+              "right": 367.59375,
+              "top": 2063.21875,
+              "bottom": 2224
+            },
+            {
+              "left": 22.40625,
+              "right": 367.59375,
+              "top": 2224,
+              "bottom": 2384.78125
+            }
+          ]
+        },
+        {
+          "path": "/projects/retail-forecasting/",
+          "overflow": false,
+          "elementsOutsideViewport": [],
+          "tocPosition": "static",
+          "methodSteps": [
+            {
+              "left": 22.40625,
+              "right": 367.59375,
+              "top": 1880.015625,
+              "bottom": 2040.796875
+            },
+            {
+              "left": 22.40625,
+              "right": 367.59375,
+              "top": 2040.796875,
+              "bottom": 2201.578125
+            },
+            {
+              "left": 22.40625,
+              "right": 367.59375,
+              "top": 2201.578125,
+              "bottom": 2362.359375
+            }
+          ]
+        },
+        {
+          "path": "/projects/",
+          "overflow": false,
+          "elementsOutsideViewport": [],
+          "tocPosition": null,
+          "methodSteps": []
+        },
+        {
+          "path": "/about/",
+          "overflow": false,
+          "elementsOutsideViewport": [],
+          "tocPosition": null,
+          "methodSteps": []
+        }
+      ]
+    }
+  ],
+  "studies": [
+    {
+      "id": "rl-path-signatures",
+      "words": 678,
+      "toc": [
+        "#method-overview",
+        "#the-research-question",
+        "#my-contribution",
+        "#data-and-assumptions",
+        "#policy-design",
+        "#evaluation-approach",
+        "#limitations-and-next-evidence"
+      ],
+      "previous": null,
+      "next": "/projects/signature-deep-hedging/",
+      "resources": []
+    },
+    {
+      "id": "signature-deep-hedging",
+      "words": 674,
+      "toc": [
+        "#method-overview",
+        "#the-research-question",
+        "#my-contribution",
+        "#market-and-payoff-assumptions",
+        "#two-representations-one-benchmark",
+        "#evaluation-approach",
+        "#limitations-and-next-evidence"
+      ],
+      "previous": "/projects/rl-path-signatures/",
+      "next": "/projects/music-recommendation/",
+      "resources": []
+    },
+    {
+      "id": "music-recommendation",
+      "words": 706,
+      "toc": [
+        "#method-overview",
+        "#the-engineering-question",
+        "#my-contribution",
+        "#data-and-task-definition",
+        "#a-staged-recommendation-architecture",
+        "#evaluation-approach",
+        "#limitations-and-next-evidence"
+      ],
+      "previous": "/projects/signature-deep-hedging/",
+      "next": "/projects/tinystories-transformer/",
+      "resources": []
+    },
+    {
+      "id": "tinystories-transformer",
+      "words": 335,
+      "toc": [
+        "#method-overview",
+        "#the-engineering-question",
+        "#my-contribution",
+        "#model-and-data-flow",
+        "#evaluation-approach",
+        "#limitations-and-next-evidence"
+      ],
+      "previous": "/projects/music-recommendation/",
+      "next": "/projects/link-prediction/",
+      "resources": []
+    },
+    {
+      "id": "link-prediction",
+      "words": 332,
+      "toc": [
+        "#method-overview",
+        "#the-modeling-question",
+        "#my-contribution",
+        "#objective-and-method",
+        "#evaluation-approach",
+        "#limitations-and-next-evidence"
+      ],
+      "previous": "/projects/tinystories-transformer/",
+      "next": "/projects/visual-learning/",
+      "resources": []
+    },
+    {
+      "id": "visual-learning",
+      "words": 325,
+      "toc": [
+        "#method-overview",
+        "#the-practical-question",
+        "#my-contribution",
+        "#from-pixels-to-predictions",
+        "#evaluation-approach",
+        "#limitations-and-next-evidence"
+      ],
+      "previous": "/projects/link-prediction/",
+      "next": "/projects/retail-forecasting/",
+      "resources": []
+    },
+    {
+      "id": "retail-forecasting",
+      "words": 336,
+      "toc": [
+        "#method-overview",
+        "#the-business-question",
+        "#my-contribution",
+        "#method-and-assumptions",
+        "#evaluation-approach",
+        "#limitations-and-next-evidence"
+      ],
+      "previous": "/projects/visual-learning/",
+      "next": null,
+      "resources": []
+    }
+  ],
+  "navigation": {
+    "next": [
+      "signature-deep-hedging",
+      "music-recommendation",
+      "tinystories-transformer",
+      "link-prediction",
+      "visual-learning",
+      "retail-forecasting"
+    ],
+    "previous": [
+      "visual-learning",
+      "link-prediction",
+      "tinystories-transformer",
+      "music-recommendation",
+      "signature-deep-hedging",
+      "rl-path-signatures"
+    ],
+    "index": true,
+    "gallery": [
+      {
+        "id": "rl-path-signatures",
+        "top": 211.546875,
+        "bottom": 539.9375
+      },
+      {
+        "id": "signature-deep-hedging",
+        "top": 211.546875,
+        "bottom": 539.9375
+      },
+      {
+        "id": "music-recommendation",
+        "top": 211.546875,
+        "bottom": 539.9375
+      },
+      {
+        "id": "tinystories-transformer",
+        "top": 571.9375,
+        "bottom": 827.84375
+      },
+      {
+        "id": "link-prediction",
+        "top": 571.9375,
+        "bottom": 827.84375
+      },
+      {
+        "id": "visual-learning",
+        "top": 571.9375,
+        "bottom": 827.84375
+      },
+      {
+        "id": "retail-forecasting",
+        "top": 571.9375,
+        "bottom": 827.84375
+      }
+    ],
+    "keyboardAnchors": [
+      "#method-overview",
+      "#the-research-question",
+      "#my-contribution",
+      "#data-and-assumptions",
+      "#policy-design",
+      "#evaluation-approach",
+      "#limitations-and-next-evidence"
+    ]
+  },
+  "noJavaScript": [
+    "rl-path-signatures",
+    "signature-deep-hedging",
+    "music-recommendation",
+    "tinystories-transformer",
+    "link-prediction",
+    "visual-learning",
+    "retail-forecasting"
+  ],
+  "resume": {
+    "filename": "emeryc-chuttarsing-resume.pdf",
+    "bytes": 156179,
+    "sha256": "f631314864111a11db84a022e44a49d282e00e0002cfa17fc65a142152a239ba",
+    "contentType": "application/pdf",
+    "email": "mailto:emeryc.chuttarsing@berkeley.edu"
+  },
+  "errors": []
+}

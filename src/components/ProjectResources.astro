@@ -1,0 +1,23 @@
+---
+import type { Project } from '../lib/projects';
+interface Props {
+  links: Project['data']['links'];
+}
+const { links } = Astro.props;
+const resources = [
+  { label: 'View code', href: links.code },
+  { label: 'Read report', href: links.report },
+  { label: 'Try demo', href: links.demo },
+].filter((resource) => resource.href !== undefined);
+---
+
+{resources.length > 0 && (
+  <nav class="project-resources actions" aria-label="Project resources">
+    {resources.map(({ label, href }) => (
+      <a class="text-link" href={href}>
+        {label}
+        <span aria-hidden="true">↗</span>
+      </a>
+    ))}
+  </nav>
+)}

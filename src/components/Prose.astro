@@ -1,0 +1,106 @@
+<div class="prose editorial-prose">
+  <slot />
+</div>
+<style>
+  .editorial-prose {
+    max-width: 70ch;
+  }
+  .editorial-prose :global(h2) {
+    margin-block: 3rem 1.25rem;
+    line-height: 1.2;
+    scroll-margin-top: 2rem;
+  }
+  .editorial-prose :global(h2:first-child) {
+    margin-top: 0;
+  }
+  .editorial-prose :global(h3) {
+    font-size: 1.4rem;
+    margin-block: 2rem 1rem;
+    line-height: 1.3;
+    scroll-margin-top: 2rem;
+  }
+  .editorial-prose :global(p),
+  .editorial-prose :global(li) {
+    color: #4d4d46;
+  }
+  .editorial-prose :global(li) {
+    margin-bottom: 0.65rem;
+  }
+  .editorial-prose :global(ul),
+  .editorial-prose :global(ol) {
+    padding-left: 1.3rem;
+    margin-block: 1.5rem;
+  }
+  .editorial-prose :global(strong) {
+    color: var(--color-ink);
+    font-weight: 600;
+  }
+  .editorial-prose :global(blockquote) {
+    margin: 2rem 0;
+    padding: 1.25rem 1.5rem;
+    border-left: 2px solid var(--color-accent);
+    background: #e9e4d9;
+    font-size: 0.9rem;
+  }
+  .editorial-prose :global(blockquote p:last-child) {
+    margin: 0;
+  }
+  .editorial-prose :global(table) {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+    margin-block: 1.75rem;
+    font-size: 0.84rem;
+    line-height: 1.65;
+  }
+  .editorial-prose :global(th),
+  .editorial-prose :global(td) {
+    text-align: left;
+    vertical-align: top;
+    padding: 0.9rem 0.8rem;
+    border-bottom: 1px solid var(--color-line);
+    overflow-wrap: anywhere;
+  }
+  .editorial-prose :global(th) {
+    font-weight: 500;
+    background: #e8e5db;
+    color: var(--color-ink);
+  }
+  .editorial-prose :global(td) {
+    color: var(--color-muted);
+  }
+  .editorial-prose :global(code) {
+    font-family: var(--font-label);
+    font-size: 0.84em;
+    overflow-wrap: anywhere;
+  }
+  .editorial-prose :global(pre) {
+    overflow-x: auto;
+    padding: 1rem;
+    max-width: 100%;
+  }
+  .editorial-prose :global(figure) {
+    margin-block: 2rem;
+  }
+  .editorial-prose :global(img) {
+    width: auto;
+    height: auto;
+  }
+  .editorial-prose :global(figcaption) {
+    font: 0.65rem/1.7 var(--font-label);
+    color: var(--color-muted);
+    padding-block: 0.9rem;
+  }
+  @media (max-width: 500px) {
+    .editorial-prose :global(table) {
+      font-size: 0.76rem;
+    }
+    .editorial-prose :global(th),
+    .editorial-prose :global(td) {
+      padding: 0.7rem 0.45rem;
+    }
+    .editorial-prose :global(blockquote) {
+      padding: 1rem;
+    }
+  }
+</style>

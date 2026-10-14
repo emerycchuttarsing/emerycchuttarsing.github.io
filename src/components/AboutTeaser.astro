@@ -1,3 +1,7 @@
+---
+import { site } from '../data/site';
+---
+
 <section class="about-teaser" aria-labelledby="about-title">
   <div class="about-teaser-inner wrap">
     <p class="eyebrow">02 / A little context</p>
@@ -8,11 +12,7 @@
         <em>Rigor is the method.</em>
       </h2>
       <div class="about-teaser-details">
-        <p>
-          Trained in engineering at Arts et Métiers and in financial technology
-          at UC Berkeley, I explore how mathematical ideas become useful models,
-          tools and decisions.
-        </p>
+        <p>{site.shortBiography}</p>
         <a class="text-link" href="/about/">
           More about me <span aria-hidden="true">↗</span>
         </a>

@@ -1,0 +1,49 @@
+---
+import { site } from '../data/site';
+interface Props {
+  compact?: boolean;
+  label?: string;
+}
+const { compact = false, label = 'Profile and contact' } = Astro.props;
+const links = [
+  { label: 'Download CV', href: site.links.resume, download: true },
+  { label: 'GitHub', href: site.links.github, download: false },
+  {
+    label: 'Email',
+    href: site.links.email ? `mailto:${site.links.email}` : null,
+    download: false,
+  },
+  { label: 'LinkedIn', href: site.links.linkedin, download: false },
+].filter((link) => link.href);
+---
+
+<nav
+  class:list={['profile-links', { compact, actions: !compact }]}
+  aria-label={label}
+>
+  {links.map(({ label, href, download }) => (
+    <a
+      class:list={{ 'text-link': !compact }}
+      href={href!}
+      download={download || undefined}
+    >
+      {label} <span aria-hidden="true">{download ? '↓' : '↗'}</span>
+    </a>
+  ))}
+</nav>
+<style>
+  .profile-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.2rem 2rem;
+  }
+  .profile-links.compact {
+    gap: 1.5rem;
+  }
+  .compact a {
+    text-decoration: none;
+  }
+  .profile-links .text-link {
+    gap: 1.5rem;
+  }
+</style>

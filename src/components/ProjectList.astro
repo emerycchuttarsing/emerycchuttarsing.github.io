@@ -1,5 +1,6 @@
 ---
 import { projectPath, type Project } from '../lib/projects';
+import ProjectResources from './ProjectResources.astro';
 interface Props {
   projects: Project[];
 }
@@ -40,7 +41,12 @@ const { projects } = Astro.props;
           </a>
         </h2>
         <p class="index-summary">{project.data.summary}</p>
+        <p class="index-context">{project.data.context}</p>
+        <p class="index-role">
+          <span>My role</span> {project.data.role}
+        </p>
         <p class="project-tags">{project.data.technologies.join(' · ')}</p>
+        <ProjectResources links={project.data.links} />
       </article>
     </li>
   ))}
@@ -90,6 +96,18 @@ const { projects } = Astro.props;
     font-size: 0.85rem;
     color: var(--color-muted);
     max-width: 65ch;
+  }
+  .index-context,
+  .index-role {
+    font-size: 0.75rem;
+    color: var(--color-muted);
+    margin-bottom: 0.5rem;
+  }
+  .index-role span {
+    font: 0.56rem var(--font-label);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-right: 0.5rem;
   }
   .project-tags {
     margin-bottom: 0;

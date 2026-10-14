@@ -8,7 +8,7 @@ pour les fonctionnalités et le mélange Ing Tian × Mirage.
 | ----- | ------------------------------------------------------------------ | ------- |
 | 1     | Structure du projet, dépendances, données, routes et vérifications | Terminé |
 | 2     | Mise en page et squelette visuel, composition Ing Tian × Mirage    | Terminé |
-| 3     | Composants de contenu principaux, panneaux et études de cas        | À venir |
+| 3     | Composants de contenu principaux, études de cas et About           | Terminé |
 | 4     | Interactivité, états de scène et connexions API si nécessaires     | À venir |
 | 5     | Responsive design, finitions CSS et recette finale                 | À venir |
 
@@ -73,3 +73,24 @@ Les captures, mesures et limites sont dans [la recette du jalon 2](validation/ja
 
 Les animations de transition, les aperçus sélectionnés et les vidéos seront
 implémentés au jalon 4 ; les finitions responsive et performances au jalon 5.
+
+## Jalon 3 — réalisé
+
+- Dix composants éditoriaux et de profil réutilisables, sans JavaScript requis.
+- Sept études provisoires : trois textes de 674 à 706 mots et quatre de 325 à
+  336 mots, avec contexte collectif, rôle personnel, méthode, évaluation et limites.
+- Sommaires natifs, étapes de méthode, figures légendées, tableaux et encadrés.
+- Navigation précédent/suivant sans boucle, retours vers l’index et la galerie.
+- About développé à partir du CV : Berkeley, Arts et Métiers, Dauphine, EquitX,
+  CCHE, compétences et contact. CV public identique à la source, e-mail et GitHub.
+- `npm run verify` réussi : 36 fichiers contrôlés par Astro Check sans diagnostic, onze pages
+  et 236 références internes validées.
+- Neuf pages éditoriales vérifiées aux quatre dimensions, sept sommaires,
+  parcours complets dans les deux sens, clavier, lecture sans JavaScript et
+  téléchargement du CV. Galerie inchangée : sept projets visibles à 1440 × 900.
+
+Commit de contrôle : `feat: complete milestone 3 content components`.
+La [recette et les captures](validation/jalon-3/README.md) détaillent ces contrôles ;
+le [guide des contenus](CONTENT_SOURCES.md) indique leurs sources et emplacements.
+Les études restent provisoires et les posters conceptuels, selon le périmètre
+retenu : aucun audit de résultats ni nouvel entraînement dans ce jalon.

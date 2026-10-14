@@ -1,0 +1,71 @@
+---
+import type { ProfileEntry } from '../data/site';
+interface Props {
+  entries: readonly ProfileEntry[];
+}
+const { entries } = Astro.props;
+---
+
+<ol class="profile-timeline">
+  {entries.map((entry) => (
+    <li>
+      <div class="timeline-date eyebrow">{entry.date}</div>
+      <article>
+        <p class="eyebrow timeline-location">{entry.location}</p>
+        <h3>{entry.organization}</h3>
+        <p class="timeline-role">{entry.title}</p>
+        {entry.description.map((paragraph) => (
+          <p class="timeline-description">{paragraph}</p>
+        ))}
+      </article>
+    </li>
+  ))}
+</ol>
+<style>
+  .profile-timeline {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .profile-timeline li {
+    display: grid;
+    grid-template-columns: 11rem minmax(0, 1fr);
+    gap: 2rem;
+    padding-block: 2rem;
+    border-top: 1px solid var(--color-line);
+  }
+  .timeline-date {
+    padding-top: 0.15rem;
+    letter-spacing: 0.03em;
+  }
+  .timeline-location {
+    font-size: 0.56rem;
+    margin-bottom: 0.7rem;
+  }
+  .profile-timeline h3 {
+    font-size: 2rem;
+    margin: 0 0 0.8rem;
+    letter-spacing: -0.025em;
+  }
+  .timeline-role {
+    font-size: 0.93rem;
+    margin-bottom: 1rem;
+  }
+  .timeline-description {
+    max-width: 64ch;
+    font-size: 0.86rem;
+    color: var(--color-muted);
+  }
+  .timeline-description:last-child {
+    margin-bottom: 0;
+  }
+  @media (max-width: 700px) {
+    .profile-timeline li {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    .profile-timeline h3 {
+      font-size: 1.7rem;
+    }
+  }
+</style>
