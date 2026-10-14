@@ -376,7 +376,8 @@ export function createPortfolioScene(
     height = Math.max(1, nextHeight);
     const ratio = Math.min(
       window.devicePixelRatio || 1,
-      width < 1000 ? 1 : sceneConfig.quality.maxPixelRatio,
+      sceneConfig.quality.maxPixelRatio,
+      Math.sqrt(sceneConfig.quality.maxRenderPixels / (width * height)),
     );
     renderer.setPixelRatio(ratio);
     renderer.setSize(width, height, false);
@@ -492,7 +493,7 @@ export function createPortfolioScene(
       }
       texture.colorSpace = THREE.SRGBColorSpace;
       texture.anisotropy = Math.min(
-        4,
+        8,
         renderer.capabilities.getMaxAnisotropy(),
       );
       textures.push(texture);

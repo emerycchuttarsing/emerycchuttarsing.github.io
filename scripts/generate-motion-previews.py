@@ -3,18 +3,36 @@ import math
 import os
 from pathlib import Path
 import subprocess
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw
 
 W, H, FPS, SECONDS = 768, 480, 24, 6
 OUT = Path(__file__).resolve().parents[1] / 'public/media'
-FONT = ImageFont.load_default(size=13)
-SMALL = ImageFont.load_default(size=10)
+RENDER_SCALE = 3
+VIDEO_W, VIDEO_H = W * 2, H * 2
+
+
+class VectorDraw:
+    """Render logical coordinates above delivery resolution for smooth curves."""
+    def __init__(self, image):
+        self.draw = ImageDraw.Draw(image)
+
+    def coordinates(self, values):
+        return [(x*RENDER_SCALE, y*RENDER_SCALE) for x,y in values] if isinstance(values[0], tuple) else tuple(v*RENDER_SCALE for v in values)
+
+    def line(self, values, fill, width=1):
+        self.draw.line(self.coordinates(values), fill=fill, width=width*RENDER_SCALE)
+
+    def rectangle(self, values, outline, width=1):
+        self.draw.rectangle(self.coordinates(values), outline=outline, width=width*RENDER_SCALE)
+
+    def ellipse(self, values, fill):
+        self.draw.ellipse(self.coordinates(values), fill=fill)
 TAU = math.tau
 
 
 def base(label, color):
-    im = Image.new('RGB', (W, H), '#172127')
-    d = ImageDraw.Draw(im)
+    im = Image.new('RGB', (W*RENDER_SCALE, H*RENDER_SCALE), '#172127')
+    d = VectorDraw(im)
     for y in range(H):
         v = 1 - abs(y / H - .5) * 2
         d.line((0, y, W, y), fill=(23 + int(v * 6), 33 + int(v * 8), 39 + int(v * 8)))
@@ -61,12 +79,12 @@ def draw(kind, phase):
             x=210+n*4.6
             h=10+30*abs(math.sin(n*.28+phase))*math.sin(math.pi*n/76)
             d.line((x,235-h,x,235+h), fill='#c5c395', width=2)
-    return im
+    return im.resize((VIDEO_W, VIDEO_H), Image.Resampling.LANCZOS)
 
 
 for name in ['rl-path-signatures','signature-deep-hedging','music-recommendation']:
     destination = OUT / f'{name}.mp4'
-    cmd = [os.environ.get('FFMPEG', 'ffmpeg'), '-y', '-hide_banner', '-loglevel', 'error', '-f', 'rawvideo', '-pix_fmt', 'rgb24', '-s', f'{W}x{H}', '-r', str(FPS), '-i', '-', '-an', '-c:v', 'libx264', '-preset', 'slow', '-crf', '25', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', str(destination)]
+    cmd = [os.environ.get('FFMPEG', 'ffmpeg'), '-y', '-hide_banner', '-loglevel', 'error', '-f', 'rawvideo', '-pix_fmt', 'rgb24', '-s', f'{VIDEO_W}x{VIDEO_H}', '-r', str(FPS), '-i', '-', '-an', '-c:v', 'libx264', '-preset', 'slow', '-crf', '18', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', str(destination)]
     process = subprocess.Popen(cmd, stdin=subprocess.PIPE)
     for frame in range(FPS*SECONDS):
         process.stdin.write(draw(name, TAU*frame/(FPS*SECONDS)).tobytes())

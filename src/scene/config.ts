@@ -21,7 +21,7 @@ export const sceneConfig: SceneConfig = {
   },
   lighting: { ambient: 1.2, key: 3.2, rim: 2.4 },
   media: { desktopPlayingLimit: 2, constrainedPlayingLimit: 1 },
-  quality: { maxPixelRatio: 1.3, targetFps: 60 },
+  quality: { maxPixelRatio: 2, maxRenderPixels: 8_388_608, targetFps: 60 },
   timing: {
     cameraDurationMs: 900,
     revealDurationMs: 650,

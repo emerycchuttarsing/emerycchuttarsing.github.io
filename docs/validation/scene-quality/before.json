@@ -1,0 +1,51 @@
+{
+  "browser": "155.0.8059.79",
+  "layouts": [
+    {
+      "viewport": [1440, 900],
+      "dpr": 2,
+      "canvas": [1872, 1170],
+      "samples": [],
+      "canvasCount": 1,
+      "overflow": false,
+      "rows": 7,
+      "gpu": {
+        "geometries": 5,
+        "textures": 23
+      },
+      "videoSizes": [
+        [768, 480],
+        [768, 480]
+      ]
+    },
+    {
+      "viewport": [768, 1024],
+      "dpr": 2,
+      "canvas": [768, 1024],
+      "samples": [],
+      "canvasCount": 1,
+      "overflow": false,
+      "rows": 7,
+      "gpu": {
+        "geometries": 5,
+        "textures": 22
+      },
+      "videoSizes": [[768, 480]]
+    },
+    {
+      "viewport": [390, 844],
+      "dpr": 3,
+      "canvas": [390, 844],
+      "samples": [],
+      "canvasCount": 1,
+      "overflow": false,
+      "rows": 7,
+      "gpu": {
+        "geometries": 5,
+        "textures": 11
+      },
+      "videoSizes": [[768, 480]]
+    }
+  ],
+  "errors": []
+}

@@ -5,17 +5,17 @@
 Les posters SVG du jalon 2 restent les visuels immédiats et les replis des sept
 projets. Trois boucles originales les complètent pour les projets phares :
 
-| Fichier dans `public/media/` | Contenu conceptuel                           |         Taille |
-| ---------------------------- | -------------------------------------------- | -------------: |
-| `rl-path-signatures.mp4`     | Trajectoires et points parcourant un chemin  | 231 999 octets |
-| `signature-deep-hedging.mp4` | Surface maillée et déplacement sur le relief | 208 502 octets |
-| `music-recommendation.mp4`   | Réseau pulsant et onde sonore stylisée       |  90 577 octets |
+| Fichier dans `public/media/` | Contenu conceptuel                           |           Taille |
+| ---------------------------- | -------------------------------------------- | ---------------: |
+| `rl-path-signatures.mp4`     | Trajectoires et points parcourant un chemin  | 1 227 282 octets |
+| `signature-deep-hedging.mp4` | Surface maillée et déplacement sur le relief | 1 089 419 octets |
+| `music-recommendation.mp4`   | Réseau pulsant et onde sonore stylisée       |   297 931 octets |
 
-Total : **531 078 octets**. Chaque boucle dure six secondes, en 768 × 480 à
+Total : **2 614 632 octets**. Chaque boucle dure six secondes, en 1536 × 960 à
 24 images/s, H.264, pixels `yuv420p`, sans piste audio, avec les métadonnées MP4
 placées au début du fichier (`faststart`). Ces dessins n’utilisent aucune donnée
 expérimentale, aucun résultat financier et aucun média propriétaire des références.
-Ils sont identifiés comme conceptuels dans le visuel et dans l’aperçu.
+Leur statut conceptuel est indiqué dans l’aperçu et les études.
 
 ## Remplacement
 
@@ -43,8 +43,9 @@ python3 scripts/generate-motion-previews.py
 FFMPEG=/chemin/vers/ffmpeg python3 scripts/generate-motion-previews.py
 ```
 
-Une version récente de Pillow prenant en charge `ImageFont.load_default(size=…)`
-est nécessaire. Les fichiers MP4 sont versionnés et directement servis par
+Le dessin est calculé à 2304 × 1440 puis réduit avec un filtre Lanczos avant
+encodage H.264 CRF 18, pour préserver les courbes fines. Pillow avec
+`Image.Resampling.LANCZOS` est nécessaire. Les fichiers MP4 sont versionnés et directement servis par
 GitHub Pages ; aucun service vidéo externe ni API fictive n’est utilisé.
 
 ## Réglages et responsabilités
@@ -55,7 +56,7 @@ GitHub Pages ; aucun service vidéo externe ni API fictive n’est utilisé.
   visibilité, pause utilisateur, préférences et erreurs de lecture.
 - `src/scene/selection.ts` : dialogue, clavier, focus et historique navigateur.
 - `src/scene/renderer.ts` : interpolation, lumière d’accent et textures vidéo.
-- `src/components/ProjectPreview.astro` et `src/styles/home.css` : composition et
+- `src/components/ProjectPreview.astro` et `src/styles/preview.css` : composition et
   commandes de l’aperçu. Les titres et résumés viennent toujours de la collection.
 
 La sélection n’ajoute pas d’URL publique : elle ajoute une entrée d’historique
@@ -75,7 +76,10 @@ interpolées selon le temps des vidéos, en espace linéaire. Les accents serven
 de secours. Après remplacement des vidéos, exécuter `scripts/prepare-scene-assets.py`
 avec Python standard et FFmpeg (`FFMPEG` permet d’indiquer le binaire).
 
-Les trois `works-still-*.webp` sont des captures de notre scène en pause, sans la
-couche de textes HTML. `scripts/capture-works-stills.mjs` prépare les PNG dans
-`test-results/works-stills` ; convertir en WebP avec Pillow ou un outil équivalent.
+Les `works-still-*.webp` sont des captures de notre scène en pause, sans la
+couche de textes HTML. Chaque format dispose de versions 1× et 2× sélectionnées
+par `picture/srcset`. `scripts/capture-works-stills.mjs` prépare les PNG à DPR 2
+dans `test-results/works-stills` ; convertir en WebP qualité 95 et produire la
+version 1× par réduction Lanczos. Les faces SVG gardent leur viewBox original
+mais déclarent 1920 × 1200 pour leur rasterisation WebGL.
 Ce sont des médias locaux originaux, utilisés avant chargement et dans les replis.

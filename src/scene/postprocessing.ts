@@ -10,7 +10,25 @@ export function createPostprocessing(
   scene: THREE.Scene,
   camera: THREE.Camera,
 ) {
-  const composer = new EffectComposer(renderer);
+  // Renderer antialiasing only covers the default framebuffer. The lighting
+  // pipeline needs its own multisampled target to keep panel edges smooth.
+  const gl = renderer.getContext();
+  const supported =
+    gl instanceof WebGL2RenderingContext
+      ? (gl.getInternalformatParameter(
+          gl.RENDERBUFFER,
+          gl.RGBA16F,
+          gl.SAMPLES,
+        ) as Int32Array)
+      : new Int32Array();
+  const samples = Array.from(supported).filter((n) => n <= 4);
+  const target = new THREE.WebGLRenderTarget(1, 1, {
+    type: THREE.HalfFloatType,
+    samples: Math.max(0, ...samples),
+    // No pass samples depth; retain color because bloom composites additively.
+    resolveDepthBuffer: false,
+  });
+  const composer = new EffectComposer(renderer, target);
   const render = new RenderPass(scene, camera);
   const bloom = new UnrealBloomPass(new THREE.Vector2(1, 1), 0.22, 0.6, 0.62);
   const vignette = new ShaderPass({

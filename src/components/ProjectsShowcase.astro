@@ -21,14 +21,15 @@ const Heading = mode === 'index' ? 'h1' : 'h2';
     <picture>
       <source
         media="(max-width: 639px)"
-        srcset="/media/works-still-mobile.webp"
+        srcset="/media/works-still-mobile.webp 1x, /media/works-still-mobile@2x.webp 2x"
       />
       <source
         media="(max-width: 999px)"
-        srcset="/media/works-still-tablet.webp"
+        srcset="/media/works-still-tablet.webp 1x, /media/works-still-tablet@2x.webp 2x"
       />
       <img
         src="/media/works-still-desktop.webp"
+        srcset="/media/works-still-desktop.webp 1x, /media/works-still-desktop@2x.webp 2x"
         alt=""
         width="1440"
         height="900"

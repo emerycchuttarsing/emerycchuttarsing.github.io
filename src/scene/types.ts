@@ -42,7 +42,11 @@ export interface SceneConfig {
   };
   lighting: { ambient: number; key: number; rim: number };
   media: { desktopPlayingLimit: number; constrainedPlayingLimit: number };
-  quality: { maxPixelRatio: number; targetFps: number };
+  quality: {
+    maxPixelRatio: number;
+    maxRenderPixels: number;
+    targetFps: number;
+  };
   timing: {
     cameraDurationMs: number;
     revealDurationMs: number;

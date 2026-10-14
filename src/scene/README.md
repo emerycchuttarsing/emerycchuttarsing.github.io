@@ -32,6 +32,8 @@ priority, and hover never opens the modal or changes history.
 - `postprocessing.ts`: RenderPass, restrained UnrealBloomPass, vignette, OutputPass.
   Text stays in HTML above the canvas. Mobile omits bloom. Transparent hero/reveal
   uses direct rendering; the settled dark scene uses the effects chain.
+  Its half-float targets explicitly enable up to 4 supported MSAA samples;
+  the canvas antialias flag alone does not apply to these offscreen targets.
 - `renderer.ts`: camera interpolation, projected visibility, panel materials,
   finite highlight/selection transitions and complete GPU cleanup.
 - `config.ts`: camera poses, point density, lights, timing, DPR and media budget.
@@ -40,6 +42,11 @@ Works uses an 18° desktop camera; distance expands when needed to fit the world
 layout. A view offset follows native document scroll. Only the explicit dialog
 uses DOM alignment: the selected panel advances into its measured media slot.
 The same canvas joins the native dialog top layer and returns to its scene root.
+
+Rendering uses up to DPR 2 at every breakpoint, bounded by 8,388,608 drawing
+pixels on very large displays. Ground grain and ripples fade below a pixel
+using shader derivatives, avoiding noisy undersampling in the distance.
+Scene posters rasterize at 1920 × 1200; video sources are 1536 × 960.
 
 ## HTML, selection and media
 
@@ -64,6 +71,7 @@ A responsive picture of our own rendered scene is shown before textures are read
 without JS/WebGL, after context loss and with reduced motion. Seven links and the
 Featured hierarchy survive. With JS, the dialog remains usable without WebGL.
 The mobile fallback retains the same dark exhibition and natural HTML list.
+Each desktop/tablet/mobile still has a 2× srcset candidate for Retina screens.
 
 Disposal cancels listeners, observers, timers and video callbacks; restores moved
 videos; disposes every texture, material, geometry and postprocessing render target;

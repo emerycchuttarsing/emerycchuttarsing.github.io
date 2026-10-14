@@ -18,6 +18,9 @@ ET.register_namespace('', 'http://www.w3.org/2000/svg')
 (p/'public/media/scene').mkdir(exist_ok=True)
 for file in (p/'src/content/projects').glob('*.md'):
     root=ET.fromstring((p/f'public/media/{file.stem}.svg').read_text())
+    # Rasterize vector faces at Retina resolution when Three uploads them.
+    root.set('width', '1920')
+    root.set('height', '1200')
     for parent in root.iter():
         for element in list(parent):
             if element.tag=='{http://www.w3.org/2000/svg}text': parent.remove(element)

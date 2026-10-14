@@ -10,7 +10,10 @@ for (const [label, width, height] of [
   ['tablet', 768, 1024],
   ['mobile', 390, 844],
 ]) {
-  const page = await browser.newPage({ viewport: { width, height } });
+  const page = await browser.newPage({
+    viewport: { width, height },
+    deviceScaleFactor: 2,
+  });
   await page.goto(
     (process.env['PORTFOLIO_BASE_URL'] ?? 'http://127.0.0.1:4321') +
       '/projects/',
