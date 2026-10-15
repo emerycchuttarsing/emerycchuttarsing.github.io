@@ -125,11 +125,11 @@
     filter 0.3s ease;
 }
 .project-row[data-active='true']::before,
-.project-row:focus-within::before {
+.project-rows:not([data-preview-ready]) .project-row:focus-within::before {
   opacity: 1;
 }
 .project-row[data-active='true'] > *,
-.project-row:focus-within > * {
+.project-rows:not([data-preview-ready]) .project-row:focus-within > * {
   filter: brightness(1.1);
 }
 .project-rows:has(.project-row[data-active='true'])

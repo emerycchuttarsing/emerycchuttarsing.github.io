@@ -19,9 +19,9 @@ const ids = [
   'rl-path-signatures',
   'signature-deep-hedging',
   'music-recommendation',
-  'tinystories-transformer',
-  'link-prediction',
   'visual-learning',
+  'link-prediction',
+  'tinystories-transformer',
   'retail-forecasting',
 ];
 const context = await browser.newContext({
@@ -123,8 +123,8 @@ try {
   await page.locator('.project-row').nth(6).hover();
   assert.equal(
     (await state()).active,
-    ids[1],
-    'keyboard focus wins over hover',
+    ids[6],
+    'pointer interaction takes over from retained keyboard focus',
   );
   await page.locator('h1').click();
   await page.mouse.move(5, 5);
@@ -173,7 +173,7 @@ try {
     ids[4],
     'rapid changes settle on the latest target',
   );
-  await page.locator('[data-preview="link-prediction"]').click();
+  await page.locator('.row-title[data-preview="link-prediction"]').click();
   await page.waitForFunction(
     () =>
       document.querySelector('[data-scene-root]').dataset.selectionProgress ===
@@ -185,8 +185,26 @@ try {
     'preview stays sharp',
   );
   await page.keyboard.press('Escape');
-  await page.locator('h1').click();
+  assert.equal(
+    await page
+      .locator('.row-title')
+      .nth(4)
+      .evaluate((el) => el === document.activeElement),
+    true,
+    'closing the preview restores focus to its trigger',
+  );
+  await page.locator('.project-row').nth(1).hover();
+  assert.equal(
+    (await state()).active,
+    ids[1],
+    'hover selects another project immediately after closing a preview',
+  );
   await page.mouse.move(5, 5);
+  assert.equal(
+    (await state()).active,
+    '',
+    'leaving clears the retained selection',
+  );
   for (const [width, height] of [
     [1440, 900],
     [1280, 800],

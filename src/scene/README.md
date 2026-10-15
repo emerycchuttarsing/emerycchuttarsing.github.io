@@ -14,8 +14,9 @@ imports. Pagehide disposes renderer, highlight, media and selection; a persisted
 pageshow creates a fresh set. One document owns one canvas/context.
 
 The journey remains hero → reveal → overview → selected, or fallback. A separate
-active project identifies the row under keyboard focus or the pointer. Focus has
-priority, and hover never opens the modal or changes history.
+active project follows the latest keyboard or pointer interaction. Restoring
+dialog focus preserves keyboard navigation without overriding subsequent hover.
+Hover never opens the modal or changes history.
 
 ## Spatial scene
 
@@ -73,8 +74,8 @@ priority has a cancellable 120 ms delay and does not invoke modal selection.
 Selection separately reparents the chosen source video into the dialog.
 
 The gallery’s Pause motion control freezes rotation and videos, showing sharp
-stills. Leaving a row resumes the slow orbit; keyboard focus has priority over
-pointer hover. Active rows receive a faint accent wash and 10% brighter content;
+stills. Leaving the list after pointer interaction resumes the slow orbit.
+Keyboard navigation follows focus; moving the pointer switches back to hover. Active rows receive a faint accent wash and 10% brighter content;
 other rows retain 76% content opacity. These changes fade over 300 ms, without
 changing layout, and CSS transitions are disabled for reduced motion. Active
 panels sharpen and brighten slightly; others retain 82% of their normal opacity.
