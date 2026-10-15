@@ -137,6 +137,10 @@
   > * {
   opacity: 0.76;
 }
+/* Keep restored focus for the keyboard without a stale pointer-mode ring. */
+.project-rows[data-input-mode='pointer'] :focus-visible {
+  outline: none;
+}
 @media (prefers-reduced-motion: reduce) {
   .project-row::before,
   .project-row > * {
@@ -198,7 +202,7 @@
   cursor: pointer;
 }
 .row-preview:hover,
-.row-preview:focus-visible {
+.project-rows:not([data-input-mode='pointer']) .row-preview:focus-visible {
   background: #e6e4da;
   color: #161b1c;
 }

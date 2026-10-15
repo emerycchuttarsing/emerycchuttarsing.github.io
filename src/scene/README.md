@@ -16,7 +16,9 @@ pageshow creates a fresh set. One document owns one canvas/context.
 The journey remains hero → reveal → overview → selected, or fallback. A separate
 active project follows the latest keyboard or pointer interaction. Restoring
 dialog focus preserves keyboard navigation without overriding subsequent hover.
-Hover never opens the modal or changes history.
+Hover never opens the modal or changes history. The same input mode controls
+focus rings: pointer interaction hides the restored ring without blurring its
+control; the next keyboard interaction makes the focus indicator visible again.
 
 ## Spatial scene
 

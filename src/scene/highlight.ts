@@ -14,6 +14,8 @@ export function createHighlight(
       ? target.closest<HTMLElement>('[data-project-id]')?.dataset['projectId']
       : undefined;
   function update() {
+    if (list)
+      list.dataset['inputMode'] = keyboardNavigation ? 'keyboard' : 'pointer';
     const next = keyboardNavigation ? focus : pointer;
     if (next === active) return;
     active = next;
@@ -78,12 +80,14 @@ export function createHighlight(
     },
     { signal: events.signal },
   );
+  update();
   return {
     get active() {
       return active;
     },
     dispose() {
       events.abort();
+      if (list) delete list.dataset['inputMode'];
       rows.forEach((row) => delete row.dataset['active']);
     },
   };

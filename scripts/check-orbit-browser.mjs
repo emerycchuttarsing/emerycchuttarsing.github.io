@@ -199,6 +199,24 @@ try {
     ids[1],
     'hover selects another project immediately after closing a preview',
   );
+  assert.equal(
+    await page
+      .locator('.row-title')
+      .nth(4)
+      .evaluate((el) => getComputedStyle(el).outlineStyle),
+    'none',
+    'pointer takeover hides the focus ring on the restored trigger',
+  );
+  await page.locator('.row-title').nth(4).press('Tab');
+  assert.notEqual(
+    await page
+      .locator('.row-preview')
+      .nth(4)
+      .evaluate((el) => getComputedStyle(el).outlineStyle),
+    'none',
+    'keyboard navigation restores the visible focus indicator',
+  );
+  await page.locator('.project-row').nth(1).hover();
   await page.mouse.move(5, 5);
   assert.equal(
     (await state()).active,
