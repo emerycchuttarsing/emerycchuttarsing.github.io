@@ -15,7 +15,7 @@ export function panelLayout(
 ) {
   const theta = angle + orbitOffset(index, count);
   const mobile = width < 640;
-  const scale = (mobile ? 0.62 : 1) * revealScale;
+  const scale = (mobile ? 0.62 : 1) * 1.12 * revealScale;
   const x = Math.sin(theta) * (mobile ? 2.8 : 6.05) * radius;
   const z = Math.cos(theta) * (mobile ? 2.2 : 3.9) * radius - 0.6;
   const w = (project.featured ? 3.65 : 3.15) * scale;
