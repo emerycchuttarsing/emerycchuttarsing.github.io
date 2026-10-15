@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="360" viewBox="0 0 1180 360" role="img"><title>Monthly features, CatBoost trees and six-month-ahead sales</title><defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10" fill="none" stroke="#446a79" stroke-width="1.5"/></marker></defs><rect width="100%" height="100%" fill="#f5f1e9"/>
+<text x="24" y="33" font-family="Arial,sans-serif" font-size="13" fill="#446a79" text-anchor="start" font-weight="600">01 / MONTHLY FEATURES</text>
+<rect x="24" y="58" width="260" height="168" rx="5" fill="#e6e7e0" stroke="#bcc4bf"/>
+<text x="154" y="92" font-family="Arial,sans-serif" font-size="16" fill="#282c2c" text-anchor="middle" font-weight="400">Store · product · month</text>
+<text x="154" y="126" font-family="Arial,sans-serif" font-size="16" fill="#282c2c" text-anchor="middle" font-weight="400">Sales + 1 / 2 / 3-month lags</text>
+<text x="154" y="160" font-family="Arial,sans-serif" font-size="16" fill="#282c2c" text-anchor="middle" font-weight="400">Prices · temperature · events</text>
+<text x="154" y="194" font-family="Arial,sans-serif" font-size="16" fill="#282c2c" text-anchor="middle" font-weight="400">Market indicators</text>
+<path d="M296 142H338" fill="none" stroke="#446a79" stroke-width="1.7" marker-end="url(#arrow)"/>
+<text x="356" y="33" font-family="Arial,sans-serif" font-size="13" fill="#446a79" text-anchor="start" font-weight="600">02 / ONE SHARED CATBOOST MODEL</text>
+<rect x="350" y="58" width="490" height="168" rx="5" fill="#e5e8e5" stroke="#bcc4bf"/>
+<path d="M430 88L406 116M430 88L454 116M406 116L394 141M406 116L418 141M454 116L442 141M454 116L466 141" fill="none" stroke="#446a79" stroke-width="1.5"/>
+<circle cx="430" cy="88" r="4" fill="#446a79"/>
+<circle cx="406" cy="116" r="4" fill="#446a79"/>
+<circle cx="454" cy="116" r="4" fill="#446a79"/>
+<circle cx="394" cy="141" r="4" fill="#446a79"/>
+<circle cx="418" cy="141" r="4" fill="#446a79"/>
+<circle cx="442" cy="141" r="4" fill="#446a79"/>
+<circle cx="466" cy="141" r="4" fill="#446a79"/>
+<text x="430" y="170" font-family="Arial,sans-serif" font-size="14" fill="#6a706d" text-anchor="middle" font-weight="400">Tree 1</text>
+<path d="M590 88L566 116M590 88L614 116M566 116L554 141M566 116L578 141M614 116L602 141M614 116L626 141" fill="none" stroke="#446a79" stroke-width="1.5"/>
+<circle cx="590" cy="88" r="4" fill="#446a79"/>
+<circle cx="566" cy="116" r="4" fill="#446a79"/>
+<circle cx="614" cy="116" r="4" fill="#446a79"/>
+<circle cx="554" cy="141" r="4" fill="#446a79"/>
+<circle cx="578" cy="141" r="4" fill="#446a79"/>
+<circle cx="602" cy="141" r="4" fill="#446a79"/>
+<circle cx="626" cy="141" r="4" fill="#446a79"/>
+<text x="590" y="170" font-family="Arial,sans-serif" font-size="14" fill="#6a706d" text-anchor="middle" font-weight="400">Tree 2</text>
+<path d="M760 88L736 116M760 88L784 116M736 116L724 141M736 116L748 141M784 116L772 141M784 116L796 141" fill="none" stroke="#446a79" stroke-width="1.5"/>
+<circle cx="760" cy="88" r="4" fill="#446a79"/>
+<circle cx="736" cy="116" r="4" fill="#446a79"/>
+<circle cx="784" cy="116" r="4" fill="#446a79"/>
+<circle cx="724" cy="141" r="4" fill="#446a79"/>
+<circle cx="748" cy="141" r="4" fill="#446a79"/>
+<circle cx="772" cy="141" r="4" fill="#446a79"/>
+<circle cx="796" cy="141" r="4" fill="#446a79"/>
+<text x="760" y="170" font-family="Arial,sans-serif" font-size="14" fill="#6a706d" text-anchor="middle" font-weight="400">Tree 500</text>
+<text x="510" y="122" font-family="Arial,sans-serif" font-size="25" fill="#aa6a56" text-anchor="middle" font-weight="400">+</text>
+<text x="674" y="122" font-family="Arial,sans-serif" font-size="25" fill="#aa6a56" text-anchor="middle" font-weight="400">···</text>
+<text x="595" y="209" font-family="Arial,sans-serif" font-size="16" fill="#282c2c" text-anchor="middle" font-weight="400">Base prediction + weighted tree outputs</text>
+<path d="M852 142H895" fill="none" stroke="#446a79" stroke-width="1.7" marker-end="url(#arrow)"/>
+<text x="918" y="33" font-family="Arial,sans-serif" font-size="13" fill="#aa6a56" text-anchor="start" font-weight="600">03 / PREDICT</text>
+<rect x="908" y="90" width="248" height="105" rx="5" fill="#eadbd2" stroke="#c3a699"/>
+<text x="1032" y="128" font-family="Arial,sans-serif" font-size="21" fill="#282c2c" text-anchor="middle" font-weight="600">Sales at t + 6 months</text>
+<text x="1032" y="159" font-family="Arial,sans-serif" font-size="14" fill="#6a706d" text-anchor="middle" font-weight="400">One forecast per input row</text>
+<path d="M1032 209V282H595V239" fill="none" stroke="#446a79" stroke-width="1.7" marker-end="url(#arrow)" stroke-dasharray="5 5"/>
+<text x="814" y="318" font-family="Arial,sans-serif" font-size="15" fill="#446a79" text-anchor="middle" font-weight="400">Training: compare with actual sales; fit the next tree to remaining errors.</text>
+<text x="154" y="280" font-family="Arial,sans-serif" font-size="16" fill="#282c2c" text-anchor="middle" font-weight="400">32 inputs · 12 lag features</text>
+<text x="154" y="307" font-family="Arial,sans-serif" font-size="12" fill="#6a706d" text-anchor="middle" font-weight="400">Schematic trees · RMSE objective</text>
+</svg>

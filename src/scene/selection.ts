@@ -8,9 +8,8 @@ export function createSelection(
   projects: SceneProject[],
   onChange: (project: SceneProject | undefined) => void,
 ) {
-  const triggers = [
-    ...section.querySelectorAll<HTMLButtonElement>('[data-preview]'),
-  ];
+  const triggers = [...section.querySelectorAll<HTMLElement>('[data-preview]')];
+  const list = section.querySelector<HTMLElement>('[data-project-rows]');
   const events = new AbortController();
   let selected: SceneProject | undefined;
   let trigger: HTMLElement | undefined;
@@ -20,11 +19,11 @@ export function createSelection(
     '[data-preview-poster]',
   )!;
   const link = dialog.querySelector<HTMLAnchorElement>('[data-preview-study]')!;
-  function show(project: SceneProject) {
+  function show(project: SceneProject, source?: HTMLElement) {
     selected = project;
-    trigger = triggers.find(
-      (element) => element.dataset['preview'] === project.id,
-    );
+    trigger =
+      source ??
+      triggers.find((element) => element.dataset['preview'] === project.id);
     title.textContent = project.title;
     summary.textContent = project.summary;
     image.src = project.poster.src;
@@ -34,9 +33,24 @@ export function createSelection(
       `${String(projects.indexOf(project) + 1).padStart(2, '0')} / ${String(projects.length).padStart(2, '0')}`;
     dialog.querySelector('[data-preview-category]')!.textContent =
       project.featured ? 'Featured research' : 'Further exploration';
-    dialog.querySelector('[data-preview-caption]')!.textContent = project.video
-      ? 'Conceptual motion study · No experimental results.'
-      : 'Conceptual illustration · No experimental results.';
+    dialog.querySelector('[data-preview-caption]')!.textContent =
+      project.animation === 'bitcoin-price'
+        ? 'Simulated Bitcoin price path · No market data.'
+        : project.animation === 'hedge-rebalancing'
+          ? 'Illustrative hedge rebalancing · Not model output.'
+          : project.animation === 'music-sorting'
+            ? 'Illustrative playlist matching · Black notes selected, grey notes set aside.'
+            : project.animation === 'embedding-space'
+              ? 'Illustrative embedding space · Positions are not trained model coordinates.'
+              : project.animation === 'link-signal'
+                ? 'Illustrative signal flow · Orange: active edge; red: recently visited.'
+                : project.animation === 'vision-features'
+                  ? 'Four regions of a project satellite image · Original, Sobel edges and LBP texture.'
+                  : project.animation === 'retail-demand'
+                    ? 'Illustrative demand planning for AKO · Animated values are not model forecasts.'
+                    : project.video
+                      ? 'Conceptual motion study · No experimental results.'
+                      : 'Conceptual illustration · No experimental results.';
     document.documentElement.classList.add('preview-open');
     if (!dialog.open) dialog.showModal();
     dialog.scrollTop = 0;
@@ -61,21 +75,45 @@ export function createSelection(
     if (project) show(project);
     else if (selected) hide();
   }
-  for (const button of triggers) {
-    button.hidden = false;
-    button.addEventListener(
-      'click',
-      () => {
-        const project = projects.find(
-          (item) => item.id === button.dataset['preview'],
-        );
-        if (!project) return;
-        history.pushState({ ...history.state, [historyKey]: project.id }, '');
-        show(project);
-      },
-      { signal: events.signal },
-    );
+  for (const control of triggers) {
+    control.hidden = false;
+    // Keep the case-study href as a no-JS fallback; with JS the title is a
+    // dialog trigger, including Space activation and focus restoration.
+    if (control instanceof HTMLAnchorElement) {
+      control.setAttribute('role', 'button');
+      control.setAttribute('aria-haspopup', 'dialog');
+      control.setAttribute('aria-controls', dialog.id);
+      control.addEventListener(
+        'keydown',
+        (event) => {
+          if (event.key !== ' ') return;
+          event.preventDefault();
+          control.click();
+        },
+        { signal: events.signal },
+      );
+    }
   }
+  if (list) list.dataset['previewReady'] = 'true';
+  list?.addEventListener(
+    'click',
+    (event) => {
+      if (!(event.target instanceof Element)) return;
+      const row = event.target.closest<HTMLElement>('[data-project-id]');
+      const project = projects.find(
+        (item) => item.id === row?.dataset['projectId'],
+      );
+      if (!row || !project) return;
+      event.preventDefault();
+      const source =
+        event.target.closest<HTMLElement>('[data-preview]') ??
+        row.querySelector<HTMLElement>('.row-title') ??
+        undefined;
+      history.pushState({ ...history.state, [historyKey]: project.id }, '');
+      show(project, source);
+    },
+    { signal: events.signal },
+  );
   dialog
     .querySelector('[data-preview-close]')!
     .addEventListener('click', close, { signal: events.signal });
@@ -119,8 +157,14 @@ export function createSelection(
     dispose() {
       events.abort();
       hide(false);
-      triggers.forEach((button) => {
-        button.hidden = true;
+      if (list) delete list.dataset['previewReady'];
+      triggers.forEach((control) => {
+        if (control instanceof HTMLButtonElement) control.hidden = true;
+        else {
+          control.removeAttribute('role');
+          control.removeAttribute('aria-haspopup');
+          control.removeAttribute('aria-controls');
+        }
       });
     },
   };

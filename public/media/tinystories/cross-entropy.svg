@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 230" role="img" aria-labelledby="title desc"><title id="title">Confidence is not correctness</title><desc id="desc">Illustrative distributions over four tokens. The correct target is B. Both put probability 0.9 on one token and 1/30 on each remaining token: both have entropy 0.435 nats. Cross-entropy is 0.105 when B receives 0.9 and 3.401 when B receives 1/30. These are mathematical examples, not measured model predictions.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#766084"/></marker></defs>
+<rect width="700" height="230" fill="#f6f2ea"/>
+<style>text{font-family:Arial,sans-serif} .mono{font-family:monospace}</style>
+<text x="175" y="28" font-size="17" fill="#28242c" text-anchor="middle" font-weight="bold" class="">Confident + correct</text>
+<rect x="70" y="138.0" width="34" height="3.0" rx="1" fill="#766084" stroke="#766084"/>
+<text x="87" y="129.0" font-size="11" fill="#68616b" text-anchor="middle" font-weight="normal" class="">1/30</text>
+<text x="87" y="161" font-size="13" fill="#28242c" text-anchor="middle" font-weight="normal" class="">A</text>
+<rect x="127" y="60.0" width="34" height="81.0" rx="1" fill="#60745d" stroke="#60745d"/>
+<text x="144" y="51.0" font-size="11" fill="#68616b" text-anchor="middle" font-weight="normal" class="">0.9</text>
+<text x="144" y="161" font-size="13" fill="#60745d" text-anchor="middle" font-weight="bold" class="">B</text>
+<rect x="184" y="138.0" width="34" height="3.0" rx="1" fill="#766084" stroke="#766084"/>
+<text x="201" y="129.0" font-size="11" fill="#68616b" text-anchor="middle" font-weight="normal" class="">1/30</text>
+<text x="201" y="161" font-size="13" fill="#28242c" text-anchor="middle" font-weight="normal" class="">C</text>
+<rect x="241" y="138.0" width="34" height="3.0" rx="1" fill="#766084" stroke="#766084"/>
+<text x="258" y="129.0" font-size="11" fill="#68616b" text-anchor="middle" font-weight="normal" class="">1/30</text>
+<text x="258" y="161" font-size="13" fill="#28242c" text-anchor="middle" font-weight="normal" class="">D</text>
+<text x="175" y="190" font-size="15" fill="#766084" text-anchor="middle" font-weight="normal" class="mono">H = 0.435  ·  CE = 0.105</text>
+<text x="525" y="28" font-size="17" fill="#28242c" text-anchor="middle" font-weight="bold" class="">Confident + wrong</text>
+<rect x="420" y="60.0" width="34" height="81.0" rx="1" fill="#766084" stroke="#766084"/>
+<text x="437" y="51.0" font-size="11" fill="#68616b" text-anchor="middle" font-weight="normal" class="">0.9</text>
+<text x="437" y="161" font-size="13" fill="#28242c" text-anchor="middle" font-weight="normal" class="">A</text>
+<rect x="477" y="138.0" width="34" height="3.0" rx="1" fill="#60745d" stroke="#60745d"/>
+<text x="494" y="129.0" font-size="11" fill="#68616b" text-anchor="middle" font-weight="normal" class="">1/30</text>
+<text x="494" y="161" font-size="13" fill="#60745d" text-anchor="middle" font-weight="bold" class="">B</text>
+<rect x="534" y="138.0" width="34" height="3.0" rx="1" fill="#766084" stroke="#766084"/>
+<text x="551" y="129.0" font-size="11" fill="#68616b" text-anchor="middle" font-weight="normal" class="">1/30</text>
+<text x="551" y="161" font-size="13" fill="#28242c" text-anchor="middle" font-weight="normal" class="">C</text>
+<rect x="591" y="138.0" width="34" height="3.0" rx="1" fill="#766084" stroke="#766084"/>
+<text x="608" y="129.0" font-size="11" fill="#68616b" text-anchor="middle" font-weight="normal" class="">1/30</text>
+<text x="608" y="161" font-size="13" fill="#28242c" text-anchor="middle" font-weight="normal" class="">D</text>
+<text x="525" y="190" font-size="15" fill="#766084" text-anchor="middle" font-weight="normal" class="mono">H = 0.435  ·  CE = 3.401</text>
+<text x="350" y="220" font-size="12" fill="#68616b" text-anchor="middle" font-weight="normal" class="">Same entropy. Different loss. Target = B (green). Toy example, not model results.</text>
+</svg>

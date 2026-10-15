@@ -34,8 +34,24 @@ const projects = defineCollection({
       src: localMedia,
       alt: z.string().min(1),
       caption: z.string().min(1),
+      background: z
+        .string()
+        .regex(/^#[0-9a-fA-F]{6}$/)
+        .optional(),
     }),
     scenePoster: localMedia.optional(),
+    scenePosterAlt: z.string().min(1).optional(),
+    sceneAnimation: z
+      .enum([
+        'bitcoin-price',
+        'hedge-rebalancing',
+        'music-sorting',
+        'embedding-space',
+        'link-signal',
+        'vision-features',
+        'retail-demand',
+      ])
+      .optional(),
     video: localMedia.optional(),
     accent: z.string().regex(/^#[0-9a-fA-F]{6}$/),
     links: z

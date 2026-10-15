@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="316.8pt" height="273.6pt" viewBox="0 0 316.8 273.6" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.10.9, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 273.6 
+L 316.8 273.6 
+L 316.8 0 
+L 0 0 
+z
+" style="fill: #f6f2e9"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 22.176 218.88 
+L 304.128 218.88 
+L 304.128 24.624 
+L 22.176 24.624 
+z
+" style="fill: #f6f2e9"/>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1">
+      <path d="M 22.176 218.88 
+L 22.176 24.624 
+" clip-path="url(#p8311fb085f)" style="fill: none; stroke: #d9d1c2; stroke-width: 0.7; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_2"/>
+     <g id="text_1">
+      <text style="font-size: 12px; font-family: Arial, sans-serif; text-anchor: middle; fill: #6e6a60" x="22.176" y="235.998125" transform="rotate(-0 22.176 235.998125)">0.00</text>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_3">
+      <path d="M 92.664 218.88 
+L 92.664 24.624 
+" clip-path="url(#p8311fb085f)" style="fill: none; stroke: #d9d1c2; stroke-width: 0.7; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_4"/>
+     <g id="text_2">
+      <text style="font-size: 12px; font-family: Arial, sans-serif; text-anchor: middle; fill: #6e6a60" x="92.664" y="235.998125" transform="rotate(-0 92.664 235.998125)">0.25</text>
+     </g>
+    </g>
+    <g id="xtick_3">
+     <g id="line2d_5">
+      <path d="M 163.152 218.88 
+L 163.152 24.624 
+" clip-path="url(#p8311fb085f)" style="fill: none; stroke: #d9d1c2; stroke-width: 0.7; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_6"/>
+     <g id="text_3">
+      <text style="font-size: 12px; font-family: Arial, sans-serif; text-anchor: middle; fill: #6e6a60" x="163.152" y="235.998125" transform="rotate(-0 163.152 235.998125)">0.50</text>
+     </g>
+    </g>
+    <g id="xtick_4">
+     <g id="line2d_7">
+      <path d="M 233.64 218.88 
+L 233.64 24.624 
+" clip-path="url(#p8311fb085f)" style="fill: none; stroke: #d9d1c2; stroke-width: 0.7; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_8"/>
+     <g id="text_4">
+      <text style="font-size: 12px; font-family: Arial, sans-serif; text-anchor: middle; fill: #6e6a60" x="233.64" y="235.998125" transform="rotate(-0 233.64 235.998125)">0.75</text>
+     </g>
+    </g>
+    <g id="xtick_5">
+     <g id="line2d_9">
+      <path d="M 304.128 218.88 
+L 304.128 24.624 
+" clip-path="url(#p8311fb085f)" style="fill: none; stroke: #d9d1c2; stroke-width: 0.7; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_10"/>
+     <g id="text_5">
+      <text style="font-size: 12px; font-family: Arial, sans-serif; text-anchor: middle; fill: #6e6a60" x="304.128" y="235.998125" transform="rotate(-0 304.128 235.998125)">1.00</text>
+     </g>
+    </g>
+    <g id="text_6">
+     <text style="font-size: 11px; font-family: Arial, sans-serif; text-anchor: middle; fill: #6e6a60" x="163.152" y="255.852031" transform="rotate(-0 163.152 255.852031)">ROC-AUC · higher is better</text>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2"/>
+   <g id="line2d_11">
+    <path d="M 163.152 218.88 
+L 163.152 24.624 
+" clip-path="url(#p8311fb085f)" style="fill: none; stroke-dasharray: 4,4; stroke-dashoffset: 0; stroke: #6e6a60"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 22.176 83.352558 
+L 260.002512 83.352558 
+L 260.002512 65.282233 
+L 22.176 65.282233 
+z
+" clip-path="url(#p8311fb085f)" style="fill: #997039"/>
+   </g>
+   <g id="text_7">
+    <text style="font-weight: 700; font-size: 12px; font-family: Arial, sans-serif; text-anchor: start; fill: #997039" x="22.176" y="53.536521" transform="rotate(-0 22.176 53.536521)">Matrix factorization</text>
+   </g>
+   <g id="text_8">
+    <text style="font-weight: 700; font-size: 14px; font-family: Arial, sans-serif; text-anchor: end; fill: #997039" x="260.002512" y="53.536521" transform="rotate(-0 260.002512 53.536521)">0.8435</text>
+   </g>
+   <g id="patch_4">
+    <path d="M 22.176 173.704186 
+L 292.257821 173.704186 
+L 292.257821 155.63386 
+L 22.176 155.63386 
+z
+" clip-path="url(#p8311fb085f)" style="fill: #467c78"/>
+   </g>
+   <g id="text_9">
+    <text style="font-weight: 700; font-size: 12px; font-family: Arial, sans-serif; text-anchor: start; fill: #467c78" x="22.176" y="143.888149" transform="rotate(-0 22.176 143.888149)">GCN + MLP</text>
+   </g>
+   <g id="text_10">
+    <text style="font-weight: 700; font-size: 14px; font-family: Arial, sans-serif; text-anchor: end; fill: #467c78" x="292.257821" y="143.888149" transform="rotate(-0 292.257821 143.888149)">0.9579</text>
+   </g>
+   <g id="text_11">
+    <text style="font-size: 10px; font-family: Arial, sans-serif; text-anchor: start; fill: #6e6a60" x="164.56176" y="203.520223" transform="rotate(-0 164.56176 203.520223)">Random ranking</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p8311fb085f">
+   <rect x="22.176" y="24.624" width="281.952" height="194.256"/>
+  </clipPath>
+ </defs>
+</svg>

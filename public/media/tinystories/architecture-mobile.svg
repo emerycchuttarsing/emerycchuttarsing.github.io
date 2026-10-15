@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 700" role="img" aria-labelledby="title desc"><title id="title">Tokens, embeddings and the decoder</title><desc id="desc">Configured Transformer design. Token IDs select learned 256-dimensional embedding rows. Add fixed positional vectors. Five decoder blocks preserve T by 256 shape. Final normalization and tied projection produce T by 3000 logits.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#766084"/></marker></defs>
+<rect width="420" height="700" fill="#f6f2ea"/>
+<style>text{font-family:Arial,sans-serif} .mono{font-family:monospace}</style>
+<text x="22" y="29" font-size="12" fill="#68616b" text-anchor="start" font-weight="normal" class="mono">ONE SEQUENCE · T ≤ 256</text>
+<rect x="23" y="63" width="55" height="21" rx="5" fill="#e4dbe9" stroke="#cfc4d3"/>
+<text x="50" y="78" font-size="14" fill="#28242c" text-anchor="middle" font-weight="normal" class="mono">x1</text>
+<path d="M82 74H112" fill="none" stroke="#766084" stroke-width="1.7" marker-end="url(#arrow)"/>
+<rect x="23" y="87" width="55" height="21" rx="5" fill="#e4dbe9" stroke="#cfc4d3"/>
+<text x="50" y="102" font-size="14" fill="#28242c" text-anchor="middle" font-weight="normal" class="mono">x2</text>
+<path d="M82 98H112" fill="none" stroke="#766084" stroke-width="1.7" marker-end="url(#arrow)"/>
+<rect x="23" y="111" width="55" height="21" rx="5" fill="#e4dbe9" stroke="#cfc4d3"/>
+<text x="50" y="126" font-size="14" fill="#28242c" text-anchor="middle" font-weight="normal" class="mono">x3</text>
+<path d="M82 122H112" fill="none" stroke="#766084" stroke-width="1.7" marker-end="url(#arrow)"/>
+<rect x="23" y="135" width="55" height="21" rx="5" fill="#e4dbe9" stroke="#cfc4d3"/>
+<text x="50" y="150" font-size="14" fill="#28242c" text-anchor="middle" font-weight="normal" class="mono">x4</text>
+<path d="M82 146H112" fill="none" stroke="#766084" stroke-width="1.7" marker-end="url(#arrow)"/>
+<rect x="120" y="63" width="21" height="21" rx="1.5" fill="#766084" fill-opacity="0.23" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="144" y="63" width="21" height="21" rx="1.5" fill="#766084" fill-opacity="0.655" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="168" y="63" width="21" height="21" rx="1.5" fill="#766084" fill-opacity="0.4" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="192" y="63" width="21" height="21" rx="1.5" fill="#766084" fill-opacity="0.8250000000000001" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="216" y="63" width="21" height="21" rx="1.5" fill="#766084" fill-opacity="0.5700000000000001" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="240" y="63" width="21" height="21" rx="1.5" fill="#766084" fill-opacity="0.315" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="264" y="63" width="21" height="21" rx="1.5" fill="#766084" fill-opacity="0.74" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="288" y="63" width="21" height="21" rx="1.5" fill="#766084" fill-opacity="0.485" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="120" y="87" width="21" height="21" rx="1.5" fill="#766084" fill-opacity="0.485" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="144" y="87" width="21" height="21" rx="1.5" fill="#766084" fill-opacity="0.23" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="168" y="87" width="21" height="21" rx="1.5" fill="#766084" fill-opacity="0.655" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="192" y="87" width="21" height="21" rx="1.5" fill="#766084" fill-opacity="0.4" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="216" y="87" width="21" height="21" rx="1.5" fill="#766084" fill-opacity="0.8250000000000001" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="240" y="87" width="21" height="21" rx="1.5" fill="#766084" fill-opacity="0.5700000000000001" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="264" y="87" width="21" height="21" rx="1.5" fill="#766084" fill-opacity="0.315" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="288" y="87" width="21" height="21" rx="1.5" fill="#766084" fill-opacity="0.74" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="120" y="111" width="21" height="21" rx="1.5" fill="#766084" fill-opacity="0.74" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="144" y="111" width="21" height="21" rx="1.5" fill="#766084" fill-opacity="0.485" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="168" y="111" width="21" height="21" rx="1.5" fill="#766084" fill-opacity="0.23" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="192" y="111" width="21" height="21" rx="1.5" fill="#766084" fill-opacity="0.655" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="216" y="111" width="21" height="21" rx="1.5" fill="#766084" fill-opacity="0.4" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="240" y="111" width="21" height="21" rx="1.5" fill="#766084" fill-opacity="0.8250000000000001" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="264" y="111" width="21" height="21" rx="1.5" fill="#766084" fill-opacity="0.5700000000000001" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="288" y="111" width="21" height="21" rx="1.5" fill="#766084" fill-opacity="0.315" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="120" y="135" width="21" height="21" rx="1.5" fill="#766084" fill-opacity="0.315" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="144" y="135" width="21" height="21" rx="1.5" fill="#766084" fill-opacity="0.74" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="168" y="135" width="21" height="21" rx="1.5" fill="#766084" fill-opacity="0.485" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="192" y="135" width="21" height="21" rx="1.5" fill="#766084" fill-opacity="0.23" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="216" y="135" width="21" height="21" rx="1.5" fill="#766084" fill-opacity="0.655" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="240" y="135" width="21" height="21" rx="1.5" fill="#766084" fill-opacity="0.4" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="264" y="135" width="21" height="21" rx="1.5" fill="#766084" fill-opacity="0.8250000000000001" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="288" y="135" width="21" height="21" rx="1.5" fill="#766084" fill-opacity="0.5700000000000001" stroke="#cfc4d3" stroke-width=".4"/>
+<text x="204" y="48" font-size="17" fill="#28242c" text-anchor="middle" font-weight="bold" class="">Embedding lookup</text>
+<text x="205" y="169" font-size="14" fill="#766084" text-anchor="middle" font-weight="normal" class="mono">E[x] · T × 256</text>
+<path d="M205 181V212" fill="none" stroke="#766084" stroke-width="1.7" marker-end="url(#arrow)"/>
+<circle cx="205" cy="228" r="13" fill="#f6f2ea" stroke="#766084" stroke-width="1.5"/>
+<text x="205" y="234" font-size="20" fill="#766084" text-anchor="middle" font-weight="normal" class="">+</text>
+<rect x="261" y="207" width="140" height="42" rx="5" fill="#e3e7dd" stroke="#cfc4d3"/>
+<text x="331.0" y="225.0" font-size="16" fill="#28242c" text-anchor="middle" font-weight="bold" class="">Position P</text>
+<text x="331.0" y="246.0" font-size="12" fill="#68616b" text-anchor="middle" font-weight="normal" class="">fixed sinusoidal</text>
+<path d="M260 228H221" fill="none" stroke="#766084" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M205 242V274" fill="none" stroke="#766084" stroke-width="1.7" marker-end="url(#arrow)"/>
+<text x="221" y="264" font-size="13" fill="#766084" text-anchor="start" font-weight="normal" class="mono">H₀ = E[x] + P</text>
+<rect x="110" y="273" width="216" height="96" rx="5" fill="#e4dbe9" stroke="#cfc4d3"/>
+<rect x="104" y="279" width="216" height="96" rx="5" fill="#e4dbe9" stroke="#cfc4d3"/>
+<rect x="98" y="285" width="216" height="96" rx="5" fill="#e4dbe9" stroke="#cfc4d3"/>
+<text x="206" y="321" font-size="20" fill="#28242c" text-anchor="middle" font-weight="bold" class="">5 decoder blocks</text>
+<text x="206" y="348" font-size="13" fill="#68616b" text-anchor="middle" font-weight="normal" class="">8 heads · residual width 256</text>
+<text x="206" y="368" font-size="13" fill="#766084" text-anchor="middle" font-weight="normal" class="mono">T × 256 → T × 256</text>
+<path d="M205 382V412" fill="none" stroke="#766084" stroke-width="1.7" marker-end="url(#arrow)"/>
+<rect x="96" y="422" width="218" height="58" rx="5" fill="#e4dbe9" stroke="#cfc4d3"/>
+<text x="205.0" y="448.0" font-size="16" fill="#28242c" text-anchor="middle" font-weight="bold" class="">Final LayerNorm + Eᵀ</text>
+<text x="205.0" y="469.0" font-size="12" fill="#68616b" text-anchor="middle" font-weight="normal" class="">Shared embedding weights</text>
+<path d="M205 481V514" fill="none" stroke="#766084" stroke-width="1.7" marker-end="url(#arrow)"/>
+<rect x="96" y="524" width="218" height="57" rx="5" fill="#eee7d9" stroke="#cfc4d3"/>
+<text x="205.0" y="549.5" font-size="16" fill="#28242c" text-anchor="middle" font-weight="bold" class="">Next-token logits</text>
+<text x="205.0" y="570.5" font-size="12" fill="#68616b" text-anchor="middle" font-weight="normal" class="">T × 3,000</text>
+<path d="M205 582V615" fill="none" stroke="#766084" stroke-width="1.7" marker-end="url(#arrow)"/>
+<text x="205" y="639" font-size="17" fill="#28242c" text-anchor="middle" font-weight="bold" class="">softmax → p(next token)</text>
+<text x="205" y="669" font-size="12" fill="#68616b" text-anchor="middle" font-weight="normal" class="">Training uses logits; generation samples.</text>
+<path d="M308 105H391V450H318" fill="none" stroke="#766084" stroke-width="1.7" marker-end="url(#arrow)" stroke-dasharray="5 4"/>
+<text x="366" y="398" font-size="14" fill="#766084" text-anchor="start" font-weight="normal" class="mono">Eᵀ</text>
+</svg>

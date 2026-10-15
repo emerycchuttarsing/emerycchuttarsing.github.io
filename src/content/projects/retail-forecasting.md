@@ -1,13 +1,16 @@
 ---
 title: 'Retail Demand Forecasting'
 displayTitle: 'Retail Demand Forecasting'
-summary: 'A retail forecasting case study connecting product and store demand to temporal validation and business interpretation.'
+summary: 'A data-science case study for the startup AKO: turning retail transactions into monthly demand forecasts through exploratory analysis, lagged features and CatBoost.'
 order: 7
 featured: false
 categories: ['Forecasting', 'Applied data science']
-technologies: ['Python', 'Time series', 'Data analysis']
-editorialStatus: 'draft'
+technologies:
+  ['Python / pandas', 'CatBoost', 'scikit-learn', 'Matplotlib / seaborn']
+editorialStatus: 'reviewed'
 scenePoster: /media/scene/retail-forecasting.svg
+scenePosterAlt: 'AKO retail demand planning: sales bars, a copper forecast curve and three store indicators. Illustrative values.'
+sceneAnimation: retail-demand
 poster:
   {
     'caption': 'Conceptual seasonal series and forecast interval. The band is decorative and does not represent estimated uncertainty.',
@@ -15,13 +18,13 @@ poster:
     'alt': 'Illustrative seasonal series and forecast interval; not actual forecasts.',
   }
 accent: '#b9958b'
-context: 'AKO data-science case study · Fictional retail setting'
-role: 'Data preparation, feature engineering and forecasting implementation'
+context: 'Case study for AKO · Retail forecasting startup'
+role: 'Exploratory analysis, feature engineering & demand forecasting'
 contributions:
   [
-    'Prepared transaction records for monthly analysis by product and store.',
-    'Constructed lagged predictors and connected them to a CatBoost regression model.',
-    'Produced a forecast-output workflow and identified evaluation assumptions to revisit.',
+    'Prepared 11,986 transaction records and examined product, store and seasonal demand patterns.',
+    'Built a shared CatBoost model using categorical context and within-series lagged features.',
+    'Evaluated the saved experiment and exported 300 product–store–month forecasts.',
   ]
 workflow:
   [
@@ -40,30 +43,18 @@ workflow:
   ]
 ---
 
-## The business question
+## Connecting the model to a business decision
 
-Demand forecasts support purchasing, allocation and replenishment decisions. In this fictional retail case, the task is to estimate future monthly sales for products across several stores. The useful output is a forecast at the same product–store granularity as those decisions.
+For AKO’s use case, the useful unit is **one product, in one store, for one month**. That granularity makes forecasts relevant to purchasing and allocation. The work connects data cleaning, exploratory analysis, feature engineering, model fitting and a structured output that can feed those decisions.
 
-The case connects data preparation, exploratory analysis and regression modeling, with particular attention to the time relationship between a predictor and its target.
+<details class="retail-evidence">
+  <summary>Evaluation limits and implementation notes</summary>
+  <p><strong>Time-aware evaluation.</strong> The saved 70/30 random split uses 1,365 training rows and 585 test rows. Adjacent months from the same series can appear on both sides. A stronger next step is rolling-origin evaluation: keep training target dates before each cutoff and compare with a seasonal-naive baseline.</p>
+  <p><strong>Forecast horizon.</strong> The implementation predicts sales six months after each input row. The submitted January–June 2017 export uses July–December 2016 inputs. Forecasting all six horizons from one December cutoff would require an explicit multi-horizon setup.</p>
+  <p><strong>Aggregation semantics.</strong> The notebook sums two industry-volume fields within each product–store month. The source data repeats the same market-level values across transaction rows, so these sums depend on transaction count. Preserving one market value per month would be a correction to test in a revised model.</p>
+  <p><strong>Evidence.</strong> Metrics are transcribed from the saved notebook output, and forecasts come from the submitted CSV. No model was retrained for this page. Future actuals, prediction intervals and measured inventory improvements are unavailable; the graphs show point forecasts.</p>
+</details>
 
-## My contribution
+<p class="retail-sources">Plotted data: <a href="/data/retail-forecasting/demand-history.csv" download>Monthly sales ↓</a> · <a href="/data/retail-forecasting/correlations.csv" download>Correlations ↓</a> · <a href="/data/retail-forecasting/forecast-examples.csv" download>Forecast examples ↓</a> · <a href="/data/retail-forecasting/saved-metrics.json" download>Saved metrics ↓</a></p>
 
-I implemented the preparation and modeling workflow in the case-study notebook. The work includes cleaning transaction records, aggregating monthly information, constructing predictors and fitting a CatBoost regressor. It also connects the fitted model to the required forecast-output structure.
-
-The case uses product and store context alongside sales history and commercial variables. Handling those fields consistently is necessary to make the same transformations available when producing future predictions.
-
-## Method and assumptions
-
-The notebook constructs lagged features within product–store series and aligns them with a future sales target. CatBoost provides a way to combine numeric predictors with categorical identifiers. Feature availability at the forecast date remains a central assumption: a contextual value that is observed later cannot automatically be treated as known when the forecast is issued.
-
-The current notebook uses a random train/test split. That implementation choice is part of the provisional study and needs to be reconsidered before making claims about future-period forecasting quality.
-
-## Evaluation approach
-
-A stronger evaluation would move the cutoff forward through time, rebuild features using only available history and compare forecasts with a simple seasonal baseline. Errors should be examined by horizon, product and store, because aggregate summaries can hide important differences.
-
-## Limitations and next evidence
-
-Target alignment, missing months and the availability of external predictors can affect the validity of a forecast. The current workflow also needs a clearer distinction between a point prediction and an uncertainty estimate.
-
-Future figures should pair a documented temporal split with actual predictions and error analysis. The poster remains an illustration: its interval is not an estimated confidence band, and no business improvement is claimed here.
+<p class="retail-sources">Model reference: <a href="https://catboost.ai/docs/en/concepts/algorithm-main-stages">How CatBoost trains an ensemble</a> · <a href="https://catboost.ai/docs/en/concepts/python-reference_catboostregressor">CatBoostRegressor documentation</a>.</p>

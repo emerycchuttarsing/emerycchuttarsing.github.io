@@ -1,0 +1,4 @@
+model,recall100,recall1000,training_minutes,evaluation_scope
+Two-Tower,0.029,0.058,600,Not specified in final report
+Track2Vec,0.128,0.403,360,12800 test playlists per Stage 1 summary
+ALS,0.151,0.407,8,150000 test playlists

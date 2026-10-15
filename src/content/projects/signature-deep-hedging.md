@@ -1,28 +1,29 @@
 ---
 title: 'Signature-Based Deep Hedging'
 displayTitle: 'Signature-Based Deep Hedging'
-summary: 'Comparing raw price histories and path signatures for neural hedging of path-dependent options.'
+summary: 'Learning a cost-aware hedge for an Asian option. In a simulated benchmark, time-augmented signatures reduced extreme hedging shortfall versus raw price histories, using a smaller neural network.'
 order: 2
 featured: true
 categories: ['Quantitative finance', 'Deep learning']
-technologies: ['Python', 'PyTorch', 'Path signatures']
-editorialStatus: 'draft'
-video: '/media/signature-deep-hedging.mp4'
+technologies: ['Python', 'PyTorch', 'signatory', 'Matplotlib']
+editorialStatus: 'reviewed'
+sceneAnimation: hedge-rebalancing
 scenePoster: /media/scene/signature-deep-hedging.svg
+scenePosterAlt: 'Illustrative hedge: a grey price curve and green position adjustments on an anthracite background.'
 poster:
   {
     'caption': 'Conceptual wireframe surface for the hedging study. It is not an experimental loss or pricing surface.',
     'src': '/media/signature-deep-hedging.svg',
     'alt': 'Illustrative wireframe hedging surface; not experimental results.',
   }
-accent: '#c9ae7a'
+accent: '#719a80'
 context: 'UC Berkeley · INDENG 223 Financial Engineering Systems II'
 role: 'Benchmark implementation and experimental analysis'
 contributions:
   [
-    'Implemented a simulated Asian-option hedging benchmark with proportional transaction costs.',
-    'Compared neural policies using raw price histories and time-augmented path signatures.',
-    'Connected training, shortfall evaluation and diagnostic plots under a shared risk objective.',
+    'Built an Asian-option hedging benchmark with simulated prices and transaction costs.',
+    'Implemented raw-history and signature-based neural policies in PyTorch.',
+    'Compared tail risk and model size on 5,000 independent test paths.',
   ]
 workflow:
   [
@@ -41,47 +42,48 @@ workflow:
   ]
 ---
 
-## The research question
+## Results on unseen paths
 
-A path-dependent derivative connects its payoff to the history of an underlying asset. For an Asian call, that history enters through an average of observed prices. A hedging policy therefore needs useful information about the path as it decides how much of the underlying to hold over time.
+The objective was to reduce severe hedging losses. **99% CVaR** measures the average shortfall in the worst 1% of scenarios: here, the **50 worst outcomes among 5,000 test paths**. Both models were tested on the same paths after 100 training epochs.
 
-This project asks whether path signatures can provide that information in a compact form for a neural hedging policy. I compare a policy that receives raw price history with a policy that receives signature features. Both operate within the same simulated market, transaction-cost convention and terminal risk objective, making the representation the central design question.
+<figure>
+  <a href="/media/deep-hedging/tail-risk.svg" aria-label="Enlarge the comparison of test shortfall risk">
+    <picture>
+      <source media="(max-width: 600px)" srcset="/media/deep-hedging/tail-risk-mobile.svg" />
+      <img src="/media/deep-hedging/tail-risk.svg" width="900" height="470" loading="lazy" alt="Test 99 percent CVaR: 4.9669 for raw history and 3.6061 for signatures, a 27.4 percent reduction in the reported simulation run. Lower is better." />
+    </picture>
+  </a>
+  <figcaption>Redrawn from Table 1 of the report. One simulated market configuration; values are in the benchmark's price units. <a href="/data/deep-hedging/reported-results.csv">Download the reported values (CSV)</a>.</figcaption>
+</figure>
 
-## My contribution
+The signature model achieved **27.4% lower CVaR** with **23.8% fewer parameters**. Mean terminal P&L stayed close: −2.4822 for raw history and −2.4904 for signatures. The observed benefit was concentrated in the adverse tail.
 
-I implemented the benchmark in Python and PyTorch, from simulated trajectories to the final evaluation of hedging shortfall. The implementation brings together the option payoff, feature construction, neural policies, portfolio accounting and training objective. It also produces training diagnostics and distributions of terminal outcomes.
+<details>
+  <summary>Inspect the original training and test figures</summary>
+  <figure>
+    <a href="/media/deep-hedging/training-cvar.webp" aria-label="Enlarge the original training convergence plot">
+      <img src="/media/deep-hedging/training-cvar.webp" width="1440" height="800" loading="lazy" alt="Original 100-epoch training curves. Raw-FFNN in blue ends near 4.85 CVaR; Sig-FFNN in orange ends near 3.54, with fluctuations during training." />
+    </a>
+    <figcaption>Report, Figure 1. Full-training-set CVaR after each epoch. The signature model reaches a lower final loss in this run.</figcaption>
+  </figure>
+  <figure>
+    <a href="/media/deep-hedging/terminal-pnl.webp" aria-label="Enlarge the original terminal P and L distribution">
+      <img src="/media/deep-hedging/terminal-pnl.webp" width="1440" height="800" loading="lazy" alt="Original terminal P and L histogram on 5,000 test paths. The signature model's orange distribution is more concentrated around the similar negative mean than the raw-history model's blue distribution." />
+    </a>
+    <figcaption>Report, Figure 2. Similar means, different dispersion and adverse tails. No option premium is included in initial wealth.</figcaption>
+  </figure>
+</details>
 
-A useful part of this work was making the financial conventions explicit in the code. The hedge position carried from the previous date, the price at which trading occurs and the cost of changing the position all affect the terminal wealth. These details need to agree before a difference between models can be interpreted as a difference in representation quality.
+## What I built
 
-## Market and payoff assumptions
+The Python benchmark connects price simulation, feature construction, stock-and-cash accounting and evaluation. **signatory** computes the depth-3 signatures of each observed time–price path; **PyTorch** differentiates the shortfall objective through the sequence of trades. The code also includes a PyTorch signature fallback and Matplotlib diagnostics.
 
-The benchmark simulates geometric Brownian motion paths and uses a discretely monitored arithmetic Asian call. This creates a controlled environment in which the payoff depends on the sequence of observed prices. Trading is restricted to the underlying asset, with proportional costs applied when the hedge changes.
+Both policies use the same network design and trading rules. Changing the input from 60 price slots to 14 signature features reduces the first layer's size, while the previous position keeps transaction costs visible to the policy.
 
-The previous hedge position is included in the policy input because the cost of an action depends on the position already held. The model produces a bounded hedge ratio. These constraints define the decision problem and help keep both policies comparable, while also limiting the range of strategies the experiment can express.
+## Scope of the result
 
-## Two representations, one benchmark
+This is evidence from one seed and one GBM configuration, with constant costs and bounded positions. Multiple seeds, richer market dynamics and a **spot-plus-running-average baseline** would strengthen the comparison; the latter is particularly relevant for an Asian payoff. The experiment does not establish robustness on real markets.
 
-The raw-history policy receives the observed part of the price path in a fixed-size input. Unobserved future values are padded. The signature-based policy receives features of a time-augmented price path, built from the history available at each hedge date. Time augmentation makes the progression of the path explicit alongside price movement.
+**Accounting convention:** initial wealth excludes the option premium, so the negative mean P&L is not a pricing result. The supplied code charges rebalancing costs and marks final holdings to market without an additional liquidation fee.
 
-| Design choice    | Raw-history policy           | Signature-based policy                  |
-| ---------------- | ---------------------------- | --------------------------------------- |
-| Path information | Observed prices with padding | Signature features of the observed path |
-| Trading state    | Previous hedge position      | Previous hedge position                 |
-| Decision         | Bounded hedge ratio          | Bounded hedge ratio                     |
-| Training target  | Terminal shortfall risk      | Terminal shortfall risk                 |
-
-Both policies use feed-forward neural networks. The signature construction changes the input representation and therefore the parameterization of the first layer. A later numerical comparison should report those model sizes alongside the evaluation protocol, rather than attributing every difference in outcome to the representation alone.
-
-## Evaluation approach
-
-Terminal shortfall is defined from the option payoff and the wealth produced by the hedge. Training uses an empirical conditional value-at-risk objective, concentrating attention on adverse outcomes in the shortfall distribution. This makes the tail of that distribution a central diagnostic.
-
-Evaluation should read several views together: training behavior, the distribution of terminal outcomes on independent simulated paths, and the chosen tail-risk statistic. Mean outcomes provide additional context about the accounting convention. The plots need matching scales and clearly identified samples so that visual differences can be interpreted consistently.
-
-> **Accounting note.** The benchmark initializes the hedge without an explicit option premium. This convention affects absolute terminal profit and loss. The comparison concerns hedging policies under the same simulation and wealth convention.
-
-## Limitations and next evidence
-
-Geometric Brownian motion provides a tractable experiment, but real markets may include jumps, changing volatility and liquidity effects. Constant proportional costs and bounded positions simplify the trading problem further. Conclusions drawn from this setup therefore need to retain their simulation context.
-
-The next evidence layer should include results across different random seeds and market configurations, together with sensitivity to transaction costs and signature construction. This provisional study presents the benchmark and its interpretation. It leaves numerical performance comparisons to a separate review of the saved experiment outputs and the assumptions behind them.
+[Read the full report (PDF)](/reports/signature-deep-hedging-report.pdf) · [View the benchmark code](/code/deep-hedging.py)

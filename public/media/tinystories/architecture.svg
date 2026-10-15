@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 300" role="img" aria-labelledby="title desc"><title id="title">From token IDs to next-token probabilities</title><desc id="desc">For one sequence, symbolic token IDs select rows from an embedding table E of shape 3000 by 256. Add positional encodings. Five decoder blocks preserve T by 256. Final LayerNorm and projection using the transpose of E produce T by 3000 logits, followed by softmax. Colored cells are schematic.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#766084"/></marker></defs>
+<rect width="1180" height="300" fill="#f6f2ea"/>
+<style>text{font-family:Arial,sans-serif} .mono{font-family:monospace}</style>
+<text x="25" y="29" font-size="12" fill="#68616b" text-anchor="start" font-weight="normal" class="mono">01  TOKEN IDS</text>
+<text x="158" y="29" font-size="12" fill="#68616b" text-anchor="start" font-weight="normal" class="mono">02  EMBEDDING LOOKUP</text>
+<text x="524" y="29" font-size="12" fill="#68616b" text-anchor="start" font-weight="normal" class="mono">03  CAUSAL DECODER</text>
+<text x="822" y="29" font-size="12" fill="#68616b" text-anchor="start" font-weight="normal" class="mono">04  VOCABULARY OUTPUT</text>
+<rect x="28" y="70" width="52" height="18" rx="5" fill="#e4dbe9" stroke="#cfc4d3"/>
+<text x="54" y="84" font-size="14" fill="#28242c" text-anchor="middle" font-weight="normal" class="mono">x1</text>
+<path d="M87 79H148" fill="none" stroke="#766084" stroke-width="1.7" marker-end="url(#arrow)"/>
+<rect x="28" y="91" width="52" height="18" rx="5" fill="#e4dbe9" stroke="#cfc4d3"/>
+<text x="54" y="105" font-size="14" fill="#28242c" text-anchor="middle" font-weight="normal" class="mono">x2</text>
+<path d="M87 100H148" fill="none" stroke="#766084" stroke-width="1.7" marker-end="url(#arrow)"/>
+<rect x="28" y="112" width="52" height="18" rx="5" fill="#e4dbe9" stroke="#cfc4d3"/>
+<text x="54" y="126" font-size="14" fill="#28242c" text-anchor="middle" font-weight="normal" class="mono">x3</text>
+<path d="M87 121H148" fill="none" stroke="#766084" stroke-width="1.7" marker-end="url(#arrow)"/>
+<rect x="28" y="133" width="52" height="18" rx="5" fill="#e4dbe9" stroke="#cfc4d3"/>
+<text x="54" y="147" font-size="14" fill="#28242c" text-anchor="middle" font-weight="normal" class="mono">x4</text>
+<path d="M87 142H148" fill="none" stroke="#766084" stroke-width="1.7" marker-end="url(#arrow)"/>
+<rect x="160" y="70" width="18" height="18" rx="1.5" fill="#766084" fill-opacity="0.23" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="181" y="70" width="18" height="18" rx="1.5" fill="#766084" fill-opacity="0.655" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="202" y="70" width="18" height="18" rx="1.5" fill="#766084" fill-opacity="0.4" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="223" y="70" width="18" height="18" rx="1.5" fill="#766084" fill-opacity="0.8250000000000001" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="244" y="70" width="18" height="18" rx="1.5" fill="#766084" fill-opacity="0.5700000000000001" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="265" y="70" width="18" height="18" rx="1.5" fill="#766084" fill-opacity="0.315" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="286" y="70" width="18" height="18" rx="1.5" fill="#766084" fill-opacity="0.74" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="307" y="70" width="18" height="18" rx="1.5" fill="#766084" fill-opacity="0.485" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="160" y="91" width="18" height="18" rx="1.5" fill="#766084" fill-opacity="0.485" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="181" y="91" width="18" height="18" rx="1.5" fill="#766084" fill-opacity="0.23" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="202" y="91" width="18" height="18" rx="1.5" fill="#766084" fill-opacity="0.655" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="223" y="91" width="18" height="18" rx="1.5" fill="#766084" fill-opacity="0.4" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="244" y="91" width="18" height="18" rx="1.5" fill="#766084" fill-opacity="0.8250000000000001" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="265" y="91" width="18" height="18" rx="1.5" fill="#766084" fill-opacity="0.5700000000000001" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="286" y="91" width="18" height="18" rx="1.5" fill="#766084" fill-opacity="0.315" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="307" y="91" width="18" height="18" rx="1.5" fill="#766084" fill-opacity="0.74" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="160" y="112" width="18" height="18" rx="1.5" fill="#766084" fill-opacity="0.74" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="181" y="112" width="18" height="18" rx="1.5" fill="#766084" fill-opacity="0.485" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="202" y="112" width="18" height="18" rx="1.5" fill="#766084" fill-opacity="0.23" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="223" y="112" width="18" height="18" rx="1.5" fill="#766084" fill-opacity="0.655" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="244" y="112" width="18" height="18" rx="1.5" fill="#766084" fill-opacity="0.4" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="265" y="112" width="18" height="18" rx="1.5" fill="#766084" fill-opacity="0.8250000000000001" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="286" y="112" width="18" height="18" rx="1.5" fill="#766084" fill-opacity="0.5700000000000001" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="307" y="112" width="18" height="18" rx="1.5" fill="#766084" fill-opacity="0.315" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="160" y="133" width="18" height="18" rx="1.5" fill="#766084" fill-opacity="0.315" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="181" y="133" width="18" height="18" rx="1.5" fill="#766084" fill-opacity="0.74" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="202" y="133" width="18" height="18" rx="1.5" fill="#766084" fill-opacity="0.485" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="223" y="133" width="18" height="18" rx="1.5" fill="#766084" fill-opacity="0.23" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="244" y="133" width="18" height="18" rx="1.5" fill="#766084" fill-opacity="0.655" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="265" y="133" width="18" height="18" rx="1.5" fill="#766084" fill-opacity="0.4" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="286" y="133" width="18" height="18" rx="1.5" fill="#766084" fill-opacity="0.8250000000000001" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="307" y="133" width="18" height="18" rx="1.5" fill="#766084" fill-opacity="0.5700000000000001" stroke="#cfc4d3" stroke-width=".4"/>
+<text x="241" y="205" font-size="15" fill="#766084" text-anchor="middle" font-weight="normal" class="mono">E[x] : T × 256</text>
+<text x="241" y="226" font-size="12" fill="#68616b" text-anchor="middle" font-weight="normal" class="">E is learned · 3,000 × 256</text>
+<path d="M331 119H369" fill="none" stroke="#766084" stroke-width="1.7" marker-end="url(#arrow)"/>
+<circle cx="388" cy="119" r="13" fill="#f6f2ea" stroke="#766084" stroke-width="1.5"/>
+<text x="388" y="125" font-size="20" fill="#766084" text-anchor="middle" font-weight="normal" class="">+</text>
+<rect x="357" y="169" width="12" height="12" rx="1.5" fill="#60745d" fill-opacity="0.23" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="372" y="169" width="12" height="12" rx="1.5" fill="#60745d" fill-opacity="0.655" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="387" y="169" width="12" height="12" rx="1.5" fill="#60745d" fill-opacity="0.4" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="402" y="169" width="12" height="12" rx="1.5" fill="#60745d" fill-opacity="0.8250000000000001" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="357" y="184" width="12" height="12" rx="1.5" fill="#60745d" fill-opacity="0.485" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="372" y="184" width="12" height="12" rx="1.5" fill="#60745d" fill-opacity="0.23" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="387" y="184" width="12" height="12" rx="1.5" fill="#60745d" fill-opacity="0.655" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="402" y="184" width="12" height="12" rx="1.5" fill="#60745d" fill-opacity="0.4" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="357" y="199" width="12" height="12" rx="1.5" fill="#60745d" fill-opacity="0.74" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="372" y="199" width="12" height="12" rx="1.5" fill="#60745d" fill-opacity="0.485" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="387" y="199" width="12" height="12" rx="1.5" fill="#60745d" fill-opacity="0.23" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="402" y="199" width="12" height="12" rx="1.5" fill="#60745d" fill-opacity="0.655" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="357" y="214" width="12" height="12" rx="1.5" fill="#60745d" fill-opacity="0.315" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="372" y="214" width="12" height="12" rx="1.5" fill="#60745d" fill-opacity="0.74" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="387" y="214" width="12" height="12" rx="1.5" fill="#60745d" fill-opacity="0.485" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="402" y="214" width="12" height="12" rx="1.5" fill="#60745d" fill-opacity="0.23" stroke="#cfc4d3" stroke-width=".4"/>
+<path d="M388 164V137" fill="none" stroke="#766084" stroke-width="1.7" marker-end="url(#arrow)"/>
+<text x="388" y="245" font-size="12" fill="#60745d" text-anchor="middle" font-weight="normal" class="">Fixed position P</text>
+<path d="M403 119H502" fill="none" stroke="#766084" stroke-width="1.7" marker-end="url(#arrow)"/>
+<text x="451" y="100" font-size="16" fill="#766084" text-anchor="middle" font-weight="normal" class="">H₀</text>
+<rect x="532" y="54" width="205" height="121" rx="5" fill="#e4dbe9" stroke="#cfc4d3"/>
+<rect x="525" y="61" width="205" height="121" rx="5" fill="#e4dbe9" stroke="#cfc4d3"/>
+<rect x="518" y="68" width="205" height="121" rx="5" fill="#e4dbe9" stroke="#cfc4d3"/>
+<text x="620" y="110" font-size="20" fill="#28242c" text-anchor="middle" font-weight="bold" class="">5 decoder blocks</text>
+<text x="620" y="138" font-size="14" fill="#68616b" text-anchor="middle" font-weight="normal" class="">8 heads per block</text>
+<text x="620" y="162" font-size="14" fill="#766084" text-anchor="middle" font-weight="normal" class="mono">T × 256 → T × 256</text>
+<path d="M741 119H802" fill="none" stroke="#766084" stroke-width="1.7" marker-end="url(#arrow)"/>
+<rect x="814" y="73" width="161" height="92" rx="5" fill="#e4dbe9" stroke="#cfc4d3"/>
+<text x="894.5" y="116.0" font-size="16" fill="#28242c" text-anchor="middle" font-weight="bold" class="">LayerNorm + Eᵀ</text>
+<text x="894.5" y="137.0" font-size="12" fill="#68616b" text-anchor="middle" font-weight="normal" class="">256 → 3,000</text>
+<path d="M978 119H1004" fill="none" stroke="#766084" stroke-width="1.7" marker-end="url(#arrow)"/>
+<rect x="1014" y="144" width="11" height="17" rx="1" fill="#766084" stroke="#766084"/>
+<rect x="1033" y="113" width="11" height="48" rx="1" fill="#766084" stroke="#766084"/>
+<rect x="1052" y="132" width="11" height="29" rx="1" fill="#766084" stroke="#766084"/>
+<rect x="1071" y="94" width="11" height="67" rx="1" fill="#766084" stroke="#766084"/>
+<rect x="1090" y="139" width="11" height="22" rx="1" fill="#766084" stroke="#766084"/>
+<rect x="1109" y="150" width="11" height="11" rx="1" fill="#766084" stroke="#766084"/>
+<text x="1074" y="198" font-size="14" fill="#766084" text-anchor="middle" font-weight="normal" class="mono">T × 3,000 logits</text>
+<text x="1074" y="220" font-size="12" fill="#68616b" text-anchor="middle" font-weight="normal" class="">softmax → probabilities</text>
+<path d="M244 237V278H895V176" fill="none" stroke="#766084" stroke-width="1.7" marker-end="url(#arrow)" stroke-dasharray="5 4"/>
+<rect x="447" y="264" width="275" height="25" rx="0" fill="#f6f2ea" stroke="#f6f2ea"/>
+<text x="585" y="281" font-size="12" fill="#766084" text-anchor="middle" font-weight="normal" class="">Weight tying · same E at input and output</text>
+</svg>

@@ -3,13 +3,14 @@
 ## Ressources livrées
 
 Les posters SVG du jalon 2 restent les visuels immédiats et les replis des sept
-projets. Trois boucles originales les complètent pour les projets phares :
+projets. Les trois projets principaux utilisent désormais les animations
+procédurales décrites ci-dessous. Les anciens MP4 restent archivés :
 
-| Fichier dans `public/media/` | Contenu conceptuel                           |           Taille |
-| ---------------------------- | -------------------------------------------- | ---------------: |
-| `rl-path-signatures.mp4`     | Trajectoires et points parcourant un chemin  | 1 227 282 octets |
-| `signature-deep-hedging.mp4` | Surface maillée et déplacement sur le relief | 1 089 419 octets |
-| `music-recommendation.mp4`   | Réseau pulsant et onde sonore stylisée       |   297 931 octets |
+| Fichier dans `public/media/` | Contenu conceptuel                 |           Taille |
+| ---------------------------- | ---------------------------------- | ---------------: |
+| `rl-path-signatures.mp4`     | Ancien visuel, désormais inutilisé | 1 227 282 octets |
+| `signature-deep-hedging.mp4` | Ancien visuel, désormais inutilisé | 1 089 419 octets |
+| `music-recommendation.mp4`   | Ancien visuel, désormais inutilisé |   297 931 octets |
 
 Total : **2 614 632 octets**. Chaque boucle dure six secondes, en 1536 × 960 à
 24 images/s, H.264, pixels `yuv420p`, sans piste audio, avec les métadonnées MP4
@@ -86,3 +87,66 @@ dans `test-results/works-stills` ; convertir en WebP qualité 95 et produire la
 version 1× par réduction Lanczos. Les faces SVG gardent leur viewBox original
 mais déclarent 1920 × 1200 pour leur rasterisation WebGL.
 Ce sont des médias locaux originaux, utilisés avant chargement et dans les replis.
+
+## Courbe Bitcoin au survol
+
+La fiche RL utilise `sceneAnimation: bitcoin-price`, sans champ `video`.
+`bitcoin-path.ts` construit les mouvements et `bitcoin-texture.ts` dessine un
+canvas de 1536 × 960, injecté dans la scène existante à une cadence cible de
+60 images/s. Le curseur doit rester sur la ligne du projet ou sur son visuel
+dans le dialogue. La sortie fige la courbe ; l’entrée reprend sa progression.
+Le bouton Pause, les préférences et la visibilité conservent leur priorité.
+
+Les tendances ont une durée moyenne de 3 s, avec 60 % de hausses et 40 % de
+baisses. Elles résultent uniquement des amplitudes de petits mouvements
+(2/s en moyenne, directions marginales 50/50, intervalles irréguliers).
+Le texte indique explicitement qu’il s’agit d’un prix simulé.
+
+```bash
+node scripts/check-bitcoin-path.mjs
+node scripts/generate-bitcoin-poster.mjs
+```
+
+Le second script régénère `public/media/scene/rl-path-signatures.svg` à partir
+de l’état initial de l’animation. `scenePosterAlt` décrit ce visuel indépendamment
+de la figure pédagogique de l’étude. Le préparateur des autres médias préserve
+ce SVG ; les anciennes captures composites Works restent des vues générales
+de secours, antérieures au remplacement du panneau Bitcoin.
+
+## Couverture dynamique au survol
+
+La fiche Deep Hedging utilise `sceneAnimation: hedge-rebalancing`, sans vidéo.
+Sur fond anthracite, le prix gris défile au-dessus d'une position verte en
+paliers. Les points reliés marquent les rééquilibrages, espacés de 0,9 à 2,3 s.
+La fenêtre couvre 14 s ; le dessin vise 60 images/s uniquement au survol.
+Il reprend sans rattraper le temps passé hors survol. Pause, visibilité et
+préférences de mouvement utilisent les contrôles existants de la galerie.
+
+Le prix et la règle de couverture sont des illustrations déterministes,
+indépendantes du modèle et des résultats du projet. La légende de l'aperçu
+l'indique. Le poster SVG partage exactement le même état initial.
+
+```bash
+node scripts/check-hedging-animation.mjs
+node scripts/generate-hedging-poster.mjs
+```
+
+Le générateur général des médias préserve tous les posters `sceneAnimation`.
+
+## Notes musicales triées au survol
+
+La fiche Spotify utilise `sceneAnimation: music-sorting`, sans vidéo. Sur fond
+sauge, 16 notes suivent les connexions d'un grand réseau vert à trois couches.
+Les notes noires rejoignent la sortie playlist ; les grises arrivent à une
+seconde sortie. Les notes restent sur les connexions, sans dérive libre. Il s'agit
+d'une métaphore visuelle du classement pour une playlist, sans résultat de modèle.
+
+Le flux dure 12 s, vise 60 images/s et se fige hors survol. Le bouton Pause,
+la visibilité et les préférences de mouvement conservent leur priorité.
+Le cadrage central reste lisible sur les panneaux verticaux de la galerie.
+Le SVG de repli partage les positions initiales de l'animation.
+
+```bash
+node scripts/check-music-animation.mjs
+node scripts/generate-music-poster.mjs
+```

@@ -1,0 +1,801 @@
+---
+const cues = [
+  {
+    label: '01 / COLOR',
+    title: 'What tones dominate?',
+    image: 'satellite',
+    alt: 'Original Hurricane Matthew satellite scene from the EDA notebook, with vegetation, pale linear boundaries and scattered structures.',
+    description:
+      'RGB statistics describe the palette. Water, vegetation and exposed ground can produce different color distributions.',
+    method: 'Channel means or quartiles',
+  },
+  {
+    label: '02 / EDGES',
+    title: 'Where does contrast change?',
+    image: 'edges',
+    alt: 'Saved Sobel response of the same scene: strong intensity changes appear as bright lines against a dark background.',
+    description:
+      'An edge is a sharp change in brightness: for example, a roof against the ground or a riverbank. Sobel makes these transitions visible.',
+    method: 'Mean Sobel magnitude in each block',
+  },
+  {
+    label: '03 / TEXTURE',
+    title: 'How do nearby pixels vary?',
+    image: 'texture',
+    alt: 'Saved local binary pattern representation of the same satellite scene, showing local brightness patterns.',
+    description:
+      'Texture is the local pattern of light and dark: smooth water, repeated roof tiles or irregular vegetation. LBP compares each pixel with its neighbours.',
+    method: 'Quartiles of local binary pattern codes',
+  },
+];
+---
+
+<div class="visual-overview">
+  <section class="vision-task" aria-labelledby="reading-disaster-images">
+    <div>
+      <p class="eyebrow">Satellite imagery · xView2 subset</p>
+      <h2 id="reading-disaster-images">
+        What can an image
+        <br />
+        tell us after a <em>disaster?</em>
+      </h2>
+      <p>
+        The goal was to turn satellite images into useful information for
+        disaster assessment. We tested whether{' '}
+        <strong>explicit visual features</strong>
+        and lightweight classifiers could identify an event and distinguish
+        damage levels.
+      </p>
+      <p class="dataset-note">600 images · 200 per event · RGB imagery</p>
+    </div>
+    <div class="task-pair">
+      <div class="task-card">
+        <span class="eyebrow">Task A / 400 images</span>
+        <h3>Which disaster?</h3>
+        <div class="event-pair">
+          <span>Midwest flooding</span>
+          <b aria-hidden="true">↔</b>
+          <span>SoCal fire</span>
+        </div>
+        <p>Binary classification from scene appearance.</p>
+      </div>
+      <div class="task-card">
+        <span class="eyebrow">Task B / 200 images</span>
+        <h3>How much damage?</h3>
+        <div
+          class="damage-scale"
+          aria-label="Four damage classes: 0 no damage, 1 minor, 2 major, 3 destroyed"
+        >
+          <span>
+            <b>0</b>No damage
+          </span>
+          <span>
+            <b>1</b>Minor
+          </span>
+          <span>
+            <b>2</b>Major
+          </span>
+          <span>
+            <b>3</b>Destroyed
+          </span>
+        </div>
+        <p>Four damage categories within Hurricane Matthew.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="image-cues" aria-labelledby="image-features">
+    <header class="section-heading">
+      <div>
+        <p class="eyebrow">From pixels to measurements</p>
+        <h2 id="image-features">
+          One image.
+          <br />
+          Three ways to read it.
+        </h2>
+      </div>
+      <p>
+        Color, edges and texture describe different aspects of an image. These
+        are <strong>input features</strong>: a bright contour or a textured
+        region is not, by itself, evidence of damage.
+      </p>
+    </header>
+    <div class="cue-grid">
+      {cues.map((cue) => (
+        <figure class={`cue cue-${cue.image}`}>
+          <p class="eyebrow">{cue.label}</p>
+          <img
+            src={`/media/visual-learning/${cue.image}.png`}
+            width="370"
+            height="370"
+            alt={cue.alt}
+            loading="lazy"
+          />
+          <figcaption>
+            <h3>{cue.title}</h3>
+            <p>{cue.description}</p>
+            <span class="method-tag">{cue.method}</span>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+    <p class="source-note">
+      Same Hurricane Matthew scene and its saved transformations from the EDA
+      notebook. These are feature maps, not predicted damage masks.
+    </p>
+    <div class="pixel-examples">
+      <div>
+        <div
+          class="edge-example"
+          aria-label="Illustration: dark pixels next to light pixels create a boundary."
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+          <i></i>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <p>
+          <strong>Edge = a boundary.</strong> A dark-to-light transition gives a
+          strong gradient.
+        </p>
+      </div>
+      <div>
+        <div
+          class="texture-example"
+          aria-label="Illustration: a smooth patch compared with a repeated light and dark pattern."
+        >
+          <span></span>
+          <b aria-hidden="true">↔</b>
+          <span></span>
+        </div>
+        <p>
+          <strong>Texture = a neighbourhood pattern.</strong> Similar average
+          brightness can hide very different local arrangements.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="vision-pipeline" aria-labelledby="visual-learning-pipeline">
+    <header class="section-heading">
+      <div>
+        <p class="eyebrow">The modeling pipeline</p>
+        <h2 id="visual-learning-pipeline">
+          Summarize locally.
+          <br />
+          Learn the decision.
+        </h2>
+      </div>
+      <p>
+        A global average can hide a damaged corner. Dividing an image into
+        blocks retains a little spatial information while keeping the feature
+        vector small. The classifier learns how to combine those measurements.
+      </p>
+    </header>
+    <figure class="pipeline-figure">
+      <picture>
+        <source
+          media="(max-width: 700px)"
+          srcset="/media/visual-learning/pipeline-mobile.svg"
+        />
+        <img
+          src="/media/visual-learning/pipeline.svg"
+          width="1180"
+          height="340"
+          loading="lazy"
+          alt="Pipeline: RGB image, fixed color/Sobel/LBP feature extraction, compact vector, logistic regression and class probabilities. Training labels and classification loss update the classifier weights; the image filters remain fixed."
+        />
+      </picture>
+    </figure>
+    <div class="recipe-grid">
+      <div class="recipe">
+        <span class="eyebrow">Task A / Flood versus fire</span>
+        <h3>24 features → L2 logistic regression</h3>
+        <div class="feature-counts">
+          <span>
+            <b>3</b>RGB means
+          </span>
+          <span>
+            <b>9</b>Sobel · 3 × 3
+          </span>
+          <span>
+            <b>12</b>LBP · 2 × 2
+          </span>
+        </div>
+        <p>
+          One edge mean per block; three LBP quartiles per block. Five-fold
+          validation selects the regularization setting.
+        </p>
+      </div>
+      <div class="recipe">
+        <span class="eyebrow">Task B / Four damage classes</span>
+        <h3>25 features → weighted logistic regression</h3>
+        <div class="feature-counts">
+          <span>
+            <b>9</b>RGB quartiles
+          </span>
+          <span>
+            <b>4</b>Sobel · 2 × 2
+          </span>
+          <span>
+            <b>12</b>LBP · 2 × 2
+          </span>
+        </div>
+        <p>
+          <strong>StandardScaler</strong> aligns feature scales. Class weights
+          penalize errors on scarce classes; horizontal flips add training
+          examples for major damage.
+        </p>
+      </div>
+    </div>
+    <p class="model-choice">
+      For damage, we explored Random Forest and ordinal logistic regression
+      before using <strong>weighted multinomial logistic regression</strong>. It
+      learns one score per class, converted into probabilities by softmax.
+    </p>
+    <details class="correlation-evidence">
+      <summary>Feature checks: what the correlation matrix reveals</summary>
+      <div class="correlation-layout">
+        <div>
+          <h3>More features do not always mean more information.</h3>
+          <p>
+            The 25-feature matrix shows strong redundancy among color
+            statistics: the lower red and green quartiles correlate at{' '}
+            <strong>0.95</strong>. Local edge and texture measurements bring
+            different patterns of association.
+          </p>
+          <p>
+            We used distributions and correlations to inspect the
+            representation. Correlation alone does not establish predictive
+            importance or prove that a feature improves the model.
+          </p>
+          <p class="source-note">
+            Original notebook heatmap, also shown on presentation slide 16.
+            Blank cells indicate undefined correlations, not zero correlation.
+          </p>
+          <a href="/media/visual-learning/correlation.png">
+            Open the full matrix ↗
+          </a>
+        </div>
+        <img
+          src="/media/visual-learning/correlation.png"
+          width="1547"
+          height="1373"
+          loading="lazy"
+          alt="Original correlation matrix of 25 Hurricane Matthew features, with highly correlated RGB quartiles, local edge measurements and LBP statistics. One constant LBP statistic has undefined correlations."
+        />
+      </div>
+    </details>
+  </section>
+
+  <section class="vision-results" aria-labelledby="visual-learning-results">
+    <header class="section-heading">
+      <div>
+        <p class="eyebrow">Evaluation & findings</p>
+        <h2 id="visual-learning-results">
+          Recognizing the event
+          <br />
+          is easier than grading damage.
+        </h2>
+      </div>
+      <p>
+        Damage classes overlap visually and are unevenly represented. Hurricane
+        Matthew has only <strong>6 major-damage images out of 200</strong>.
+        Class-level results matter more than a single aggregate score.
+      </p>
+    </header>
+    <div class="score-grid">
+      <div>
+        <span class="eyebrow">Task A / Reported five-fold validation</span>
+        <strong class="score">
+          99.0<span>%</span>
+        </strong>
+        <p>
+          Mean accuracy · flood versus fire
+          <br />
+          Fold range: 97.5–100%.
+        </p>
+      </div>
+      <div>
+        <span class="eyebrow">Task B / Saved final notebook run</span>
+        <strong class="score">0.403</strong>
+        <p>
+          Test macro-F1 · 40 held-out images
+          <br />
+          Weighted F1: 0.57 · accuracy: 50%.
+        </p>
+      </div>
+    </div>
+    <div class="chart-grid">
+      <figure>
+        <h3>Choosing regularization</h3>
+        <img
+          src="/media/visual-learning/damage-validation.svg"
+          width="620"
+          height="380"
+          loading="lazy"
+          alt="Damage classification: training macro-F1 rises from 0.520 to 0.751 as C increases. Validation macro-F1 is 0.420, 0.533, 0.480, 0.518 and 0.524; C equals 0.1 is selected."
+        />
+        <figcaption>
+          Saved five-fold scores. Lower C means stronger regularization. C = 0.1
+          gives the highest validation macro-F1, 0.533.
+        </figcaption>
+      </figure>
+      <figure>
+        <h3>Reading class-level performance</h3>
+        <img
+          src="/media/visual-learning/damage-class-f1.svg"
+          width="620"
+          height="380"
+          loading="lazy"
+          alt="Final test F1 by damage class: no damage 0.43 with 6 examples, minor 0.45 with 14, major 0 with 1, destroyed 0.73 with 19."
+        />
+        <figcaption>
+          F1 balances precision and recall. Macro-F1 weights every class
+          equally; weighted F1 weights classes by their sample counts.
+        </figcaption>
+      </figure>
+    </div>
+    <div class="result-reading">
+      <p>
+        <strong>The useful result:</strong> a compact representation separates
+        the two event datasets well. It provides a transparent baseline with an
+        inspectable path from image to decision.
+      </p>
+      <p>
+        <strong>The unresolved challenge:</strong> the model misses the only
+        major-damage example in the test split. Its zero F1 is a warning, but
+        one example is too little to estimate performance reliably.
+      </p>
+    </div>
+  </section>
+</div>
+
+<style>
+  .visual-overview {
+    margin-block: 2.5rem;
+    --vision: #3f706e;
+    --vision-muted: #63746b;
+    --vision-line: #c9d0c5;
+    --vision-paper: #f5f3eb;
+  }
+  h2 {
+    font-size: clamp(1.9rem, 3.1vw, 3rem);
+    line-height: 1.13;
+    margin: 0.65rem 0 1.2rem;
+    scroll-margin-top: 2rem;
+  }
+  h3 {
+    font: 600 0.97rem/1.5 var(--font-body);
+    margin: 0 0 0.7rem;
+  }
+  p {
+    color: #61695f;
+    font-size: 0.86rem;
+    line-height: 1.8;
+  }
+  strong {
+    color: var(--color-ink);
+  }
+  figure {
+    margin: 0;
+    min-width: 0;
+  }
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .eyebrow {
+    color: var(--vision);
+  }
+  .vision-task {
+    display: grid;
+    grid-template-columns: 1fr 1.05fr;
+    gap: 3rem;
+    align-items: center;
+    padding: clamp(1.3rem, 3vw, 2.6rem);
+    background: #e5e9df;
+    border-top: 1px solid #8da39a;
+  }
+  .vision-task em {
+    color: var(--vision);
+    font-weight: 400;
+  }
+  .dataset-note {
+    margin: 1.3rem 0 0;
+    font: 0.65rem/1.7 var(--font-label);
+  }
+  .task-pair {
+    display: grid;
+    gap: 1rem;
+  }
+  .task-card {
+    padding: 1.2rem 1.4rem;
+    background: #f5f3eba6;
+    border: 1px solid var(--vision-line);
+  }
+  .task-card h3 {
+    margin-top: 0.5rem;
+  }
+  .task-card p {
+    font-size: 0.72rem;
+    margin-bottom: 0;
+  }
+  .event-pair {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-size: 0.77rem;
+  }
+  .event-pair span {
+    padding: 0.4rem 0.6rem;
+    background: #dce5df;
+    color: #3d6968;
+  }
+  .event-pair span:last-child {
+    background: #ebded0;
+    color: #936041;
+  }
+  .event-pair b {
+    font-weight: 400;
+    color: var(--color-muted);
+  }
+  .damage-scale {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.45rem;
+  }
+  .damage-scale span {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    font: 0.6rem/1.5 var(--font-label);
+  }
+  .damage-scale b {
+    display: block;
+    padding: 0.35rem;
+    background: #dae4d8;
+    color: #55735c;
+    font: 1.4rem/1 var(--font-display);
+  }
+  .damage-scale span:nth-child(2) b {
+    background: #e3e2ce;
+    color: #7e7f46;
+  }
+  .damage-scale span:nth-child(3) b {
+    background: #ead8bd;
+    color: #a37b38;
+  }
+  .damage-scale span:nth-child(4) b {
+    background: #e7cdc0;
+    color: #a35c41;
+  }
+  .image-cues,
+  .vision-pipeline,
+  .vision-results {
+    margin-top: 3rem;
+  }
+  .section-heading {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: end;
+    gap: 3rem;
+    margin-bottom: 1.4rem;
+  }
+  .section-heading h2 {
+    margin-bottom: 0;
+  }
+  .section-heading > p {
+    margin: 0;
+  }
+  .cue-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.2rem;
+  }
+  .cue {
+    background: var(--vision-paper);
+    padding: 1.1rem;
+    border: 1px solid var(--vision-line);
+  }
+  .cue > .eyebrow {
+    margin: 0 0 0.8rem;
+    font-size: 0.6rem;
+  }
+  .cue > img {
+    aspect-ratio: 1.35;
+    object-fit: cover;
+  }
+  .cue figcaption h3 {
+    margin: 1rem 0 0.55rem;
+    font-size: 0.87rem;
+  }
+  .cue figcaption p {
+    margin: 0;
+    font-size: 0.76rem;
+  }
+  .method-tag {
+    display: block;
+    border-top: 1px solid var(--vision-line);
+    margin-top: 1rem;
+    padding-top: 0.65rem;
+    font: 0.59rem/1.6 var(--font-label);
+    color: var(--vision);
+  }
+  .source-note {
+    font: 0.6rem/1.8 var(--font-label);
+    color: var(--color-muted);
+  }
+  .pixel-examples {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    border-bottom: 1px solid var(--vision-line);
+    padding: 1rem 0 1.2rem;
+  }
+  .pixel-examples > div {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .pixel-examples p {
+    font-size: 0.74rem;
+    margin: 0;
+  }
+  .edge-example {
+    display: flex;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .edge-example span {
+    width: 16px;
+    height: 42px;
+    background: #54685d;
+    border-right: 1px solid #6b7a6e;
+  }
+  .edge-example span:nth-last-child(-n + 3) {
+    background: #b8c9ad;
+    border-color: #cad6bf;
+  }
+  .edge-example i {
+    height: 54px;
+    width: 3px;
+    position: absolute;
+    top: -6px;
+    left: 46px;
+    background: #b67546;
+  }
+  .texture-example {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+  }
+  .texture-example span {
+    width: 45px;
+    height: 45px;
+    background: #90a08b;
+  }
+  .texture-example span:last-child {
+    background: repeating-conic-gradient(#54685d 0% 25%, #cbd8b9 0% 50%) 50% /
+      10px 10px;
+  }
+  .texture-example b {
+    color: #86917e;
+    font-weight: 400;
+  }
+  .pipeline-figure {
+    border: 1px solid var(--vision-line);
+    background: var(--vision-paper);
+    padding: 0.6rem;
+  }
+  .recipe-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 1.3rem;
+  }
+  .recipe {
+    border-top: 2px solid #69847a;
+    padding-top: 1rem;
+  }
+  .recipe:nth-child(2) {
+    border-color: #a17851;
+  }
+  .recipe h3 {
+    margin-top: 0.55rem;
+  }
+  .recipe p,
+  .model-choice {
+    font-size: 0.78rem;
+  }
+  .feature-counts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.6rem;
+    margin-block: 1rem;
+  }
+  .feature-counts span {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font: 0.6rem/1.6 var(--font-label);
+    color: #607369;
+  }
+  .feature-counts b {
+    font: 1.6rem/1 var(--font-display);
+    color: var(--vision);
+  }
+  .model-choice {
+    margin: 0.6rem 0 1.2rem;
+  }
+  .correlation-evidence {
+    border-block: 1px solid var(--vision-line);
+    padding: 1rem 1.2rem;
+    background: #e5e9df;
+  }
+  summary {
+    font: 500 0.8rem/1.6 var(--font-body);
+    color: var(--vision);
+    cursor: pointer;
+  }
+  .correlation-layout {
+    display: grid;
+    grid-template-columns: 1fr 1.25fr;
+    gap: 2rem;
+    align-items: center;
+    margin-top: 1.5rem;
+  }
+  .correlation-layout p {
+    font-size: 0.77rem;
+  }
+  .correlation-layout a {
+    font-size: 0.72rem;
+  }
+  .score-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .score-grid > div {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    column-gap: 1.7rem;
+    padding: 1.3rem 1.5rem;
+    background: #e5e9df;
+    border-top: 2px solid #69847a;
+  }
+  .score-grid > div:nth-child(2) {
+    background: #ebe3d7;
+    border-color: #a17851;
+  }
+  .score-grid .eyebrow {
+    grid-column: 1 / -1;
+    margin-bottom: 0.7rem;
+  }
+  .score {
+    font: 3.5rem/1 var(--font-display);
+    color: var(--vision);
+  }
+  .score span {
+    font-size: 1.8rem;
+  }
+  .score-grid p {
+    margin: 0;
+    font-size: 0.7rem;
+  }
+  .chart-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+  .chart-grid figure {
+    padding: 1.2rem;
+    border: 1px solid var(--vision-line);
+    background: var(--vision-paper);
+  }
+  .chart-grid h3 {
+    font-size: 0.86rem;
+  }
+  .chart-grid figcaption {
+    font: 0.6rem/1.8 var(--font-label);
+    color: var(--color-muted);
+  }
+  .result-reading {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 0.75rem;
+  }
+  .result-reading p {
+    font-size: 0.78rem;
+  }
+  @media (max-width: 1000px) {
+    .vision-task {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+    .task-pair {
+      grid-template-columns: 1fr 1fr;
+    }
+    .cue-grid {
+      gap: 0.75rem;
+    }
+    .cue {
+      padding: 0.8rem;
+    }
+    .section-heading {
+      gap: 1.5rem;
+    }
+    .score-grid > div {
+      grid-template-columns: 1fr;
+      gap: 0.6rem;
+    }
+    .pixel-examples {
+      gap: 1rem;
+    }
+    .pixel-examples > div {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  }
+  @media (max-width: 700px) {
+    .task-pair,
+    .section-heading,
+    .cue-grid,
+    .recipe-grid,
+    .correlation-layout,
+    .score-grid,
+    .chart-grid,
+    .result-reading,
+    .pixel-examples {
+      grid-template-columns: 1fr;
+    }
+    .vision-task {
+      padding: 1.2rem;
+    }
+    .task-card {
+      padding: 1rem;
+    }
+    .cue {
+      padding: 1rem;
+    }
+    .cue > img {
+      aspect-ratio: 1.5;
+    }
+    .pixel-examples > div {
+      flex-direction: row;
+      align-items: center;
+    }
+    .pixel-examples {
+      gap: 1.5rem;
+    }
+    .score-grid > div {
+      grid-template-columns: auto 1fr;
+      gap: 1rem;
+    }
+    .score {
+      font-size: 2.7rem;
+    }
+    .score-grid .eyebrow {
+      font-size: 0.55rem;
+    }
+    .chart-grid figure {
+      padding: 0.8rem;
+    }
+    .image-cues,
+    .vision-pipeline,
+    .vision-results {
+      margin-top: 2.2rem;
+    }
+    .result-reading {
+      gap: 0;
+    }
+  }
+</style>

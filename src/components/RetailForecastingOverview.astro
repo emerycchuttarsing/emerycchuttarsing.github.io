@@ -1,0 +1,632 @@
+---
+const examples = [
+  { city: 'New York', product: 'Flavour 03', image: 'newyork' },
+  { city: 'Phoenix', product: 'Flavour 01', image: 'phoenix' },
+  { city: 'Seattle', product: 'Flavour 02', image: 'seattle' },
+];
+---
+
+<div class="retail-overview">
+  <section
+    class="ako-brief"
+    id="forecasting-for-ako"
+    aria-labelledby="ako-business-question"
+  >
+    <div>
+      <div class="ako-label">
+        <span class="ako-name">AKO</span>
+        <span>
+          Startup
+          <br />
+          Data-science case study
+        </span>
+      </div>
+      <h2 id="ako-business-question">
+        What should each store
+        <br />
+        <em>stock next?</em>
+      </h2>
+      <p>
+        A case study completed for <strong>AKO</strong>, a startup working on
+        retail demand forecasting and inventory decisions. The task: predict
+        monthly sales for every product–store pair, to support purchasing,
+        allocation and replenishment.
+      </p>
+      <p class="source-note">
+        FashionDrink, the retailer in the brief, is fictional.
+      </p>
+    </div>
+    <div class="brief-data">
+      <p class="eyebrow">The forecasting brief</p>
+      <dl class="scope-grid">
+        <div>
+          <dd>5</dd>
+          <dt>products</dt>
+        </div>
+        <div>
+          <dd>10</dd>
+          <dt>US stores</dt>
+        </div>
+        <div>
+          <dd>48</dd>
+          <dt>months of history</dt>
+        </div>
+        <div>
+          <dd>300</dd>
+          <dt>exported forecasts</dt>
+        </div>
+      </dl>
+      <div class="date-range">
+        <span>
+          <b>2013–2016</b>Observed sales
+        </span>
+        <span aria-hidden="true">→</span>
+        <span>
+          <b>Jan–Jun 2017</b>Requested forecasts
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <section class="retail-eda" aria-labelledby="retail-demand-signals">
+    <header class="section-heading">
+      <div>
+        <p class="eyebrow">01 / Explore before predicting</p>
+        <h2 id="retail-demand-signals">
+          Different products.
+          <br />
+          Different demand signals.
+        </h2>
+      </div>
+      <p>
+        I checked missing values and outliers, encoded{' '}
+        <strong>10 event indicators</strong>, and compared sales across products
+        and stores. Unusual prices and high sales were investigated before
+        deciding to retain them.
+      </p>
+    </header>
+    <div class="eda-grid">
+      <figure>
+        <h3>Compare the sales trajectories</h3>
+        <img
+          src="/media/retail-forecasting/demand-history.svg"
+          width="640"
+          height="365"
+          loading="lazy"
+          alt="Observed monthly sales from 2013 to 2016, summed across ten stores, with a separate line for each of the five products."
+        />
+        <figcaption>
+          Monthly totals reveal different sales levels, seasonal patterns and
+          changes over time.
+        </figcaption>
+      </figure>
+      <figure>
+        <h3>Check associations product by product</h3>
+        <img
+          src="/media/retail-forecasting/correlations.svg"
+          width="640"
+          height="365"
+          loading="lazy"
+          alt="Pearson correlations with sales. Temperature: 0.53, 0.67, 0.47, 0.09 and 0.21 for Flavours 01 to 05. Price: −0.17, 0.18, 0.10, −0.50 and −0.28."
+        />
+        <figcaption>
+          Pearson correlations over 48 months: total sales versus mean
+          temperature or price across stores. Association does not establish
+          causation.
+        </figcaption>
+      </figure>
+    </div>
+    <p class="takeaway">
+      <strong>A useful modeling clue:</strong> temperature correlates with
+      Flavour 02 sales at <b>+0.67</b>, versus <b>+0.09</b> for Flavour 04.
+      Product identity matters when combining these predictors.
+    </p>
+  </section>
+
+  <section class="retail-model" aria-labelledby="retail-forecasting-model">
+    <header class="section-heading">
+      <div>
+        <p class="eyebrow">02 / From transactions to a model</p>
+        <h2 id="retail-forecasting-model">
+          Learn across stores.
+          <br />
+          Keep the sales history.
+        </h2>
+      </div>
+      <p>
+        One <strong>CatBoost regressor</strong> learns across all 50
+        product–store series. It combines categorical identifiers with numerical
+        context; lagged features provide the recent history for each series.
+      </p>
+    </header>
+    <div class="preparation-strip">
+      <span>
+        <b>11,986</b> transaction records
+      </span>
+      <i aria-hidden="true">→</i>
+      <span>
+        <b>2,400</b> monthly rows
+      </span>
+      <i aria-hidden="true">→</i>
+      <span>
+        <b>1,950</b> rows with lags and targets
+      </span>
+    </div>
+    <figure class="architecture">
+      <picture>
+        <source
+          media="(max-width: 700px)"
+          srcset="/media/retail-forecasting/architecture-mobile.svg"
+        />
+        <img
+          src="/media/retail-forecasting/architecture.svg"
+          width="1180"
+          height="360"
+          loading="lazy"
+          alt="32 monthly inputs, including 12 lag features, enter one shared CatBoost ensemble. Tree outputs combine into a sales forecast six months ahead. During training, actual target sales guide successive trees to correct remaining prediction errors. The drawn trees are schematic."
+        />
+      </picture>
+      <figcaption>
+        500 trees · depth 6 · learning rate 0.1 · RMSE training objective. Three
+        categorical inputs: store, product and source month.
+      </figcaption>
+    </figure>
+    <div class="model-notes">
+      <div>
+        <h3>Aggregate at the decision level</h3>
+        <p>
+          Sum sales by product, store and month; average prices and temperature;
+          mark an event present if it occurs during the month.
+        </p>
+      </div>
+      <div>
+        <h3>Align history with the target</h3>
+        <p>
+          Use 1-, 2- and 3-month lags of sales, discounts and two market
+          indicators. Each input row targets sales{' '}
+          <strong>six months later</strong>.
+        </p>
+      </div>
+    </div>
+    <div
+      class="horizon-example"
+      aria-label="The export maps July 2016 inputs to January 2017 sales, through December 2016 inputs to June 2017 sales."
+    >
+      <span class="eyebrow">How the export is built</span>
+      <span>
+        Jul 2016 inputs <b aria-hidden="true">→</b> Jan 2017 sales
+      </span>
+      <span>
+        Dec 2016 inputs <b aria-hidden="true">→</b> Jun 2017 sales
+      </span>
+    </div>
+  </section>
+
+  <section class="retail-results" aria-labelledby="retail-forecasting-results">
+    <header class="section-heading">
+      <div>
+        <p class="eyebrow">03 / Evaluate & deliver</p>
+        <h2 id="retail-forecasting-results">
+          Measure the error.
+          <br />
+          Make the forecast readable.
+        </h2>
+      </div>
+      <p>
+        The notebook reports three complementary metrics, then exports a
+        product–store–month forecast table. The figures below redraw the saved
+        predictions alongside the observed sales history.
+      </p>
+    </header>
+    <div class="evaluation">
+      <p class="eyebrow">
+        Saved evaluation · random 70/30 split · 585 test rows
+      </p>
+      <dl class="metric-grid">
+        <div>
+          <dt>WAPE</dt>
+          <dd>
+            13.25<span>%</span>
+          </dd>
+          <p>Total absolute error divided by total actual sales.</p>
+        </div>
+        <div>
+          <dt>RMSE</dt>
+          <dd>1,013.10</dd>
+          <p>Error in sales-volume units, with more weight on large misses.</p>
+        </div>
+        <div>
+          <dt>R²</dt>
+          <dd>0.93</dd>
+          <p>Fit relative to a constant prediction of the test-set mean.</p>
+        </div>
+      </dl>
+      <p class="evaluation-note">
+        <strong>Interpretation:</strong> the random split mixes time periods. A
+        chronological backtest is still needed to estimate future-period
+        accuracy.
+      </p>
+    </div>
+    <div class="forecast-grid">
+      {examples.map((example) => (
+        <figure>
+          <h3>
+            {example.city}
+            <span>{example.product}</span>
+          </h3>
+          <img
+            src={`/media/retail-forecasting/${example.image}-forecast.svg`}
+            width="420"
+            height="290"
+            loading="lazy"
+            alt={`${example.city}, ${example.product}: observed monthly sales in 2016 and saved forecasts for January to June 2017. Forecasts are dashed; 2017 actual sales are unavailable.`}
+          />
+        </figure>
+      ))}
+    </div>
+    <p class="source-note">
+      The three examples used in the notebook, from the largest stores by 2016
+      sales. Dashed lines are saved forecasts; 2017 actuals were not supplied.
+      All three charts share the same sales-volume scale.
+    </p>
+  </section>
+</div>
+
+<style>
+  .retail-overview {
+    margin-block: 2.5rem;
+    --retail-blue: #446a79;
+    --retail-rose: #aa6a56;
+    --retail-paper: #f5f1e9;
+  }
+  h2 {
+    font-size: clamp(1.9rem, 3.1vw, 3rem);
+    line-height: 1.13;
+    margin: 0.65rem 0 1.2rem;
+    scroll-margin-top: 2rem;
+  }
+  h3 {
+    font: 600 0.95rem/1.5 var(--font-body);
+    margin: 0 0 0.7rem;
+  }
+  p {
+    color: #67685f;
+    font-size: 0.85rem;
+    line-height: 1.8;
+  }
+  strong,
+  b {
+    color: var(--color-ink);
+  }
+  figure {
+    margin: 0;
+    min-width: 0;
+  }
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .eyebrow {
+    color: var(--retail-rose);
+  }
+  .ako-brief {
+    scroll-margin-top: 2rem;
+    display: grid;
+    grid-template-columns: 1.12fr 1fr;
+    gap: 3rem;
+    padding: clamp(1.4rem, 3vw, 2.6rem);
+    background: #eae0d7;
+    border-top: 1px solid #b58f7e;
+    align-items: center;
+  }
+  .ako-label {
+    display: flex;
+    gap: 1.1rem;
+    align-items: center;
+    margin-bottom: 1.8rem;
+  }
+  .ako-name {
+    font: 700 3.6rem/0.9 var(--font-body);
+    letter-spacing: -0.07em;
+    color: #4c6268;
+  }
+  .ako-label > span:last-child {
+    font: 0.63rem/1.8 var(--font-label);
+    color: #796859;
+    border-left: 1px solid #c5b6a6;
+    padding-left: 1.1rem;
+  }
+  .ako-brief em {
+    font-weight: 400;
+    color: var(--retail-rose);
+  }
+  .brief-data {
+    background: #f5f1e9bd;
+    padding: 1.7rem;
+  }
+  .brief-data > p {
+    margin-top: 0;
+  }
+  .scope-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.7rem 1rem;
+    margin: 1.2rem 0 1.7rem;
+  }
+  .scope-grid dd {
+    margin: 0;
+    font: 2.9rem/1.1 var(--font-display);
+    color: var(--retail-blue);
+  }
+  .scope-grid dt {
+    font-size: 0.72rem;
+    color: var(--color-muted);
+    margin-top: 0.3rem;
+  }
+  .date-range {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.7rem;
+    padding-top: 1rem;
+    border-top: 1px solid #cec5b8;
+  }
+  .date-range span {
+    font-size: 0.66rem;
+    color: var(--color-muted);
+  }
+  .date-range b {
+    display: block;
+    font: 0.68rem/1.8 var(--font-label);
+    color: var(--retail-rose);
+  }
+  .section-heading {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+    margin-bottom: 1.3rem;
+  }
+  .section-heading p {
+    margin: 0;
+  }
+  .section-heading h2 {
+    margin-bottom: 0;
+  }
+  .retail-eda,
+  .retail-model,
+  .retail-results {
+    margin-top: 3.5rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid var(--color-line);
+  }
+  .eda-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+  }
+  .eda-grid figure,
+  .forecast-grid figure {
+    background: var(--retail-paper);
+    padding: 1.1rem;
+    border: 1px solid #d7cfc3;
+  }
+  figcaption,
+  .source-note {
+    color: #777469;
+    font-size: 0.67rem;
+    line-height: 1.75;
+  }
+  .takeaway {
+    padding: 1rem 1.2rem;
+    border-left: 2px solid var(--retail-blue);
+    background: #e6e8e2;
+    margin-bottom: 0;
+  }
+  .preparation-strip {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    border-block: 1px solid var(--color-line);
+    padding: 1rem 1.2rem;
+    margin: 1.5rem 0;
+  }
+  .preparation-strip span {
+    font-size: 0.72rem;
+    color: var(--color-muted);
+  }
+  .preparation-strip b {
+    display: block;
+    font: 1.7rem/1.3 var(--font-display);
+    color: var(--retail-blue);
+  }
+  .preparation-strip i {
+    font-style: normal;
+    color: #8e958d;
+  }
+  .architecture {
+    padding: 0.7rem 0.7rem 1rem;
+    background: var(--retail-paper);
+    border: 1px solid #d7cfc3;
+  }
+  .architecture figcaption {
+    margin: 0.5rem 0.9rem 0;
+  }
+  .model-notes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+    margin: 1.5rem 0;
+  }
+  .model-notes p {
+    margin-bottom: 0;
+    font-size: 0.77rem;
+  }
+  .horizon-example {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 1.2rem;
+    background: #e8e4dc;
+  }
+  .horizon-example > span {
+    font-size: 0.69rem;
+  }
+  .horizon-example > .eyebrow {
+    font-size: 0.55rem;
+  }
+  .horizon-example b {
+    color: var(--retail-rose);
+    padding-inline: 0.35rem;
+  }
+  .evaluation {
+    background: #e5e8e2;
+    padding: 1.4rem 1.6rem 1rem;
+    border-top: 2px solid #7f9394;
+  }
+  .evaluation > .eyebrow {
+    margin-top: 0;
+    color: var(--retail-blue);
+  }
+  .metric-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin: 1.3rem 0 1rem;
+  }
+  .metric-grid dt {
+    font: 0.7rem/1.6 var(--font-label);
+    color: var(--retail-blue);
+  }
+  .metric-grid dd {
+    margin: 0.2rem 0 0.7rem;
+    font: clamp(1.8rem, 3vw, 2.8rem)/1.2 var(--font-display);
+  }
+  .metric-grid dd span {
+    font-size: 1.3rem;
+  }
+  .metric-grid p {
+    margin: 0;
+    font-size: 0.68rem;
+  }
+  .evaluation-note {
+    border-top: 1px solid #c4ccc0;
+    padding-top: 1rem;
+    font-size: 0.73rem;
+  }
+  .forecast-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+  .forecast-grid figure {
+    padding: 0.9rem 0.65rem 0.4rem;
+  }
+  .forecast-grid h3 {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    padding-inline: 0.3rem;
+    font-size: 0.82rem;
+  }
+  .forecast-grid h3 span {
+    font: 0.6rem/1.8 var(--font-label);
+    color: var(--retail-rose);
+  }
+  @media (max-width: 900px) {
+    .ako-brief,
+    .section-heading {
+      gap: 1.5rem;
+    }
+    .horizon-example {
+      flex-wrap: wrap;
+    }
+    .horizon-example > .eyebrow {
+      width: 100%;
+    }
+    .forecast-grid {
+      gap: 0.5rem;
+    }
+    .metric-grid {
+      gap: 1rem;
+    }
+  }
+  @media (max-width: 700px) {
+    .ako-brief,
+    .section-heading,
+    .eda-grid,
+    .model-notes,
+    .forecast-grid {
+      grid-template-columns: 1fr;
+    }
+    .ako-brief {
+      scroll-margin-top: 2rem;
+      gap: 1.4rem;
+    }
+    .brief-data {
+      padding: 1.2rem;
+    }
+    .section-heading {
+      gap: 1rem;
+    }
+    .retail-eda,
+    .retail-model,
+    .retail-results {
+      margin-top: 2.3rem;
+      padding-top: 1.8rem;
+    }
+    .preparation-strip {
+      padding: 0.9rem 0.3rem;
+      gap: 0.5rem;
+    }
+    .preparation-strip span {
+      font-size: 0.58rem;
+    }
+    .preparation-strip b {
+      font-size: 1.35rem;
+    }
+    .model-notes {
+      gap: 1.2rem;
+    }
+    .horizon-example {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.7rem;
+    }
+    .evaluation {
+      padding: 1.2rem;
+    }
+    .metric-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    .metric-grid > div {
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      align-items: baseline;
+      column-gap: 1rem;
+      border-bottom: 1px solid #c4ccc0;
+      padding-bottom: 0.8rem;
+    }
+    .metric-grid dd {
+      grid-column: 1;
+      font-size: 2rem;
+    }
+    .metric-grid p {
+      grid-column: 2;
+      grid-row: 1 / 3;
+    }
+    .evaluation-note {
+      border-top: 0;
+      padding-top: 0;
+    }
+    .forecast-grid {
+      gap: 1rem;
+    }
+  }
+</style>

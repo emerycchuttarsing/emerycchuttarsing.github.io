@@ -1,0 +1,20 @@
+{
+  "rmse": 1013.1,
+  "r_squared": 0.93,
+  "wape_percent": 13.25,
+  "source": "Saved notebook cell 31 output; no model rerun",
+  "evaluation": "Random 70/30 split, random_state=42; not an out-of-time backtest",
+  "usable_rows": 1950,
+  "training_rows": 1365,
+  "test_rows": 585,
+  "model": {
+    "type": "CatBoostRegressor",
+    "iterations": 500,
+    "depth": 6,
+    "learning_rate": 0.1,
+    "loss_function": "RMSE"
+  },
+  "feature_count": 32,
+  "lag_features": 12,
+  "target": "SalesVolume at t+6 months"
+}

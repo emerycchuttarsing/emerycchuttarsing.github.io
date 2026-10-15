@@ -1,0 +1,6 @@
+algo,configuration,run_id,is_score,oos_score,is_return_pct,oos_return_pct,training_episodes,seed,evaluation_episodes,train_start,train_end,test_start,test_end,source
+PPO,Selected setting,ppo_cash_best_oos_e200_s42_1c4d96,1.1491,0.6046,13.6233,2.7714,200,42,50,2014-01-01,2020-12-31,2021-01-01,2024-02-09,reports/experiments.md sections A-B
+PPO,Conservative,ppo_cash_tuned_conservative_e200_s42_3df81c,0.8889,-0.3400,73.2551,-12.0485,200,42,50,2014-01-01,2020-12-31,2021-01-01,2024-02-09,reports/experiments.md sections A-B
+SAC,Baseline,sac_cash_baseline_e200_s42_c4ef82,0.6955,-0.3844,61.8171,-13.3729,200,42,50,2014-01-01,2020-12-31,2021-01-01,2024-02-09,reports/experiments.md sections A-B
+SAC,Lower entropy,sac_cash_tuned_low_entropy_e200_s42_a848d1,0.7299,-0.3528,116.3273,-12.0744,200,42,50,2014-01-01,2020-12-31,2021-01-01,2024-02-09,reports/experiments.md sections A-B
+D3QN,6 actions,d3qn_cash_6act_exposure08_sellall_e200_s42_8864ec,0.8600,-0.3346,42.5904,-10.0104,200,42,50,2014-01-01,2020-12-31,2021-01-01,2024-02-09,reports/experiments.md sections A-B

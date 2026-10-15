@@ -95,23 +95,53 @@
   padding: 12px var(--works-gutter);
   border-top: 1px solid #ffffff17;
   background: linear-gradient(90deg, #05060788, #0506071a 45%, #05060744);
-  transition: background 0.28s;
 }
 .project-row:last-child {
   border-bottom: 1px solid #ffffff17;
 }
-.project-row[data-active='true'],
-.project-row:focus-within {
-  background: linear-gradient(90deg, #172021c7, #131a207a 65%, #080b0bb3);
+.project-rows[data-preview-ready] .project-row {
+  cursor: pointer;
+}
+.project-row::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--project-accent) 10%, transparent),
+    #ffffff09 55%,
+    #ffffff02
+  );
+  box-shadow: inset 0 1px
+    color-mix(in srgb, var(--project-accent) 35%, transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+.project-row > * {
+  position: relative;
+  transition:
+    opacity 0.3s ease,
+    filter 0.3s ease;
 }
 .project-row[data-active='true']::before,
 .project-row:focus-within::before {
-  content: '';
-  position: absolute;
-  inset: -1px 0 auto;
-  height: 1px;
-  background: linear-gradient(90deg, var(--project-accent), transparent 80%);
-  pointer-events: none;
+  opacity: 1;
+}
+.project-row[data-active='true'] > *,
+.project-row:focus-within > * {
+  filter: brightness(1.1);
+}
+.project-rows:has(.project-row[data-active='true'])
+  .project-row:not([data-active='true'])
+  > * {
+  opacity: 0.76;
+}
+@media (prefers-reduced-motion: reduce) {
+  .project-row::before,
+  .project-row > * {
+    transition: none;
+  }
 }
 .row-number {
   color: #a1aba9;

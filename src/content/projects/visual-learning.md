@@ -1,71 +1,64 @@
 ---
 title: 'Visual Learning & Image Analysis'
 displayTitle: 'Visual Learning & Image Analysis'
-summary: 'Exploring satellite imagery, image representations and classification for disaster and damage analysis.'
-order: 6
+summary: 'A data-science study of disaster imagery: designing visual features, comparing classifiers and evaluating predictions under class imbalance.'
+order: 4
 featured: false
 categories: ['Computer vision', 'Data science']
-technologies: ['Python', 'Image analysis', 'Classification']
-editorialStatus: 'draft'
-scenePoster: /media/scene/visual-learning.svg
+technologies:
+  ['NumPy / pandas', 'scikit-image', 'scikit-learn', 'Matplotlib / seaborn']
+editorialStatus: 'reviewed'
+scenePoster: /media/scene/visual-learning-mosaic.webp
+scenePosterAlt: 'Four satellite-image regions crossfading between the original image, Sobel edges and local binary pattern texture.'
+sceneAnimation: vision-features
 poster:
   {
     'caption': 'Conceptual image tiles and feature regions. These are original illustrations, not satellite samples or model outputs.',
     'src': '/media/visual-learning.svg',
     'alt': 'Illustrative image tiles and feature patterns; not model outputs.',
   }
-accent: '#92aaad'
-context: 'Data 100 · Satellite-imagery and computer-vision project'
-role: 'Feature engineering, exploratory analysis and classifier implementation'
+accent: '#78948b'
+context: 'UC Berkeley · Graduate data science project · With Xuanmian He & Zhongling Zhao'
+role: 'Exploratory analysis, feature engineering & damage-classification experiments'
 contributions:
   [
-    'Explored satellite imagery and labels across disaster contexts.',
-    'Constructed image representations using gradients, texture and color information.',
-    'Compared classification approaches and examined class-sensitive evaluation.',
+    'Examined visual distributions and correlations to understand the available signal.',
+    'Built compact image descriptors from color, local edges and texture.',
+    'Explored models, class weighting and augmentation, then interpreted validation and class-level results.',
   ]
 workflow:
   [
     {
-      'title': 'Inspect the imagery',
-      'description': 'Connect images, disaster context and damage labels.',
+      'title': 'Explore & represent',
+      'description': 'Inspect labels and image statistics, then build local and global descriptors.',
     },
     {
-      'title': 'Extract features',
-      'description': 'Represent visual patterns with explicit image descriptors.',
+      'title': 'Fit & validate',
+      'description': 'Tune regularization and account for unequal class frequencies.',
     },
     {
-      'title': 'Classify and inspect',
-      'description': 'Compare predictions and errors across the available classes.',
+      'title': 'Interpret errors',
+      'description': 'Compare held-out metrics and inspect failures on scarce damage classes.',
     },
   ]
 ---
 
-## The practical question
+## The data-science decisions behind the pipeline
 
-Satellite imagery can help describe the effects of a disaster, but translating pixels into damage categories requires choices about representation and evaluation. This project explores those choices using imagery associated with different disaster contexts.
+**Start with the data.** We checked image validity, visualized label frequencies and compared feature distributions. Correlation matrices helped identify redundant measurements; local blocks preserved information that an image-wide average could erase.
 
-The work focuses on an inspectable image-analysis pipeline: understand the images and labels, construct features, fit classifiers and examine the kinds of mistakes they make.
+**Keep training and evaluation distinct.** The damage experiment makes a stratified 80/20 split: 160 training images and 40 test images. Horizontal flips expand the five major-damage training images to ten. Scaling is fitted on training data; in cross-validation, it is fitted separately within each fold using a scikit-learn pipeline.
 
-## My contribution
+**Choose a metric that exposes the problem.** Five-fold validation tunes C using macro-F1, so each damage class has equal weight. Comparing training and validation scores makes overfitting visible. The final class-level analysis shows why a respectable weighted score can still hide failures on a rare class.
 
-I implemented exploratory analyses, image-feature extraction and classification experiments. The notebooks explore gradient, texture and color information, including Sobel-derived features, local binary patterns and related descriptor combinations. The modeling work includes logistic, ordinal and ensemble classification approaches.
+<details class="visual-evidence">
+  <summary>Experimental limits and source notes</summary>
+  <p><strong>What the validation establishes.</strong> The disaster score is reported five-fold accuracy on the two event datasets, not a test on a new geography or disaster. Generalization would need event- or geography-separated evaluation.</p>
+  <p><strong>One improvement to the damage protocol.</strong> Augmentation happens after the outer train/test split, so the held-out test images remain untouched. However, the saved cross-validation receives the already augmented training set: an original image and its flipped copy can fall into different folds. Augmenting inside each fold, or grouping related images, would give a cleaner validation estimate.</p>
+  <p><strong>Which result is shown?</strong> The page uses the final saved notebook run: C = 0.1, test macro-F1 = 0.4026 and rounded weighted F1 = 0.57. The report and slides summarize weighted F1 as 0.55; the report's per-class table matches an earlier notebook run. These are not treated as the same experiment. Earlier references to an ordinal final model are superseded by the implemented weighted multinomial model.</p>
+  <p><strong>Reproducibility.</strong> Figures use saved notebook outputs and report tables; no model was retrained for this page. Raw image archives are absent from the supplied local folder. The class counts are checked against the available label arrays.</p>
+</details>
 
-These representations make it possible to reason about what information is retained before fitting a classifier. They also expose limitations when visual differences are subtle or depend on context outside an image crop.
+<p class="visual-sources"><a href="/reports/visual-learning-report.pdf">Project report ↗</a> · <a href="/reports/visual-learning-presentation.pdf">Presentation ↗</a> · <a href="/data/visual-learning/damage-validation.csv" download>Validation scores ↓</a> · <a href="/data/visual-learning/damage-test.csv" download>Class-level results ↓</a></p>
 
-## From pixels to predictions
-
-Images and labels are prepared together so that transformations preserve their correspondence. Feature extraction turns each image into a numeric representation. Scaling and model fitting then connect those representations to the classification task.
-
-The notebooks explore several descriptor combinations and augmentation choices. Each choice changes the information presented to the model, so a comparison needs consistent treatment of preprocessing and the evaluation samples.
-
-## Evaluation approach
-
-Class-sensitive measures, confusion patterns and example predictions provide complementary views of the model. Overall accuracy alone can obscure poor behavior on less common damage categories.
-
-> **Evaluation note.** Nearby images and images from the same event can share visual conditions. A stronger test of transfer should examine separation by event or geography, alongside the label distribution.
-
-## Limitations and next evidence
-
-Damage labels summarize complex scenes, and a visual descriptor may respond to lighting, background or acquisition conditions as well as damage. Class imbalance and variation between events further complicate interpretation.
-
-A future evidence package should connect representative images to the feature pipeline, class-level evaluation and failure examples. The current illustrations are conceptual; they make no claim to display actual imagery or model predictions.
+<p class="visual-sources">Feature methods: <a href="https://scikit-image.org/docs/stable/auto_examples/edges/plot_edge_filter.html">Sobel edge operators</a> · <a href="https://scikit-image.org/docs/stable/auto_examples/features_detection/plot_local_binary_pattern.html">Local binary patterns</a>.</p>

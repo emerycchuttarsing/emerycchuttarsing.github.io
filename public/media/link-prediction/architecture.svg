@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="460" viewBox="0 0 1180 460" role="img" aria-labelledby="title desc"><title id="title">Two ways to score a missing link</title><desc id="desc">Matrix factorization learns node vectors directly and scores their dot product. The GCN aggregates neighbours through three layers, then an MLP scores pair features. Both receive feedback from their respective training losses.</desc>
+<rect width="1180" height="460" fill="#f6f2e9"/><defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#6e6a60"/></marker></defs>
+<text x="26" y="35" font-family="Arial,sans-serif" font-size="16" fill="#997039" text-anchor="start" font-weight="bold">01  MATRIX FACTORIZATION</text>
+<rect x="26" y="64" width="150" height="66" rx="5" fill="#997039" fill-opacity=".07" stroke="#997039" stroke-opacity=".5"/>
+<text x="101.0" y="94.0" font-family="Arial,sans-serif" font-size="18" fill="#997039" text-anchor="middle" font-weight="bold">User IDs</text>
+<text x="101.0" y="117.0" font-family="Arial,sans-serif" font-size="14" fill="#6e6a60" text-anchor="middle" font-weight="normal">u and v</text>
+<path d="M189 97H242" stroke="#6e6a60" stroke-width="1.6" fill="none" marker-end="url(#arrow)"/>
+<rect x="270" y="64" width="17" height="22" rx="2" fill="#997039" fill-opacity="0.2"/>
+<rect x="290" y="64" width="17" height="22" rx="2" fill="#997039" fill-opacity="0.4"/>
+<rect x="310" y="64" width="17" height="22" rx="2" fill="#997039" fill-opacity="0.6000000000000001"/>
+<rect x="330" y="64" width="17" height="22" rx="2" fill="#997039" fill-opacity="0.8"/>
+<rect x="350" y="64" width="17" height="22" rx="2" fill="#997039" fill-opacity="0.30000000000000004"/>
+<rect x="370" y="64" width="17" height="22" rx="2" fill="#997039" fill-opacity="0.5"/>
+<rect x="270" y="98" width="17" height="22" rx="2" fill="#997039" fill-opacity="0.5"/>
+<rect x="290" y="98" width="17" height="22" rx="2" fill="#997039" fill-opacity="0.7"/>
+<rect x="310" y="98" width="17" height="22" rx="2" fill="#997039" fill-opacity="0.2"/>
+<rect x="330" y="98" width="17" height="22" rx="2" fill="#997039" fill-opacity="0.4"/>
+<rect x="350" y="98" width="17" height="22" rx="2" fill="#997039" fill-opacity="0.6000000000000001"/>
+<rect x="370" y="98" width="17" height="22" rx="2" fill="#997039" fill-opacity="0.8"/>
+<text x="328.0" y="150" font-family="Arial,sans-serif" font-size="14" fill="#6e6a60" text-anchor="middle" font-weight="normal">Two 10D vectors</text>
+<path d="M415 97H485" stroke="#6e6a60" stroke-width="1.6" fill="none" marker-end="url(#arrow)"/>
+<rect x="501" y="64" width="230" height="66" rx="5" fill="#997039" fill-opacity=".07" stroke="#997039" stroke-opacity=".5"/>
+<text x="616.0" y="94.0" font-family="Arial,sans-serif" font-size="18" fill="#997039" text-anchor="middle" font-weight="bold">Dot product</text>
+<text x="616.0" y="117.0" font-family="Arial,sans-serif" font-size="14" fill="#6e6a60" text-anchor="middle" font-weight="normal">Vector similarity</text>
+<path d="M747 97H807" stroke="#6e6a60" stroke-width="1.6" fill="none" marker-end="url(#arrow)"/>
+<rect x="824" y="64" width="326" height="66" rx="5" fill="#997039" fill-opacity=".07" stroke="#997039" stroke-opacity=".5"/>
+<text x="987.0" y="94.0" font-family="Arial,sans-serif" font-size="18" fill="#997039" text-anchor="middle" font-weight="bold">Link score</text>
+<text x="987.0" y="117.0" font-family="Arial,sans-serif" font-size="14" fill="#6e6a60" text-anchor="middle" font-weight="normal">Raw similarity · sigmoid at evaluation</text>
+<path d="M987 143V175H404V123H394" stroke="#6e6a60" stroke-width="1.6" fill="none" marker-end="url(#arrow)" stroke-dasharray="5 4"/>
+<text x="655" y="198" font-family="Arial,sans-serif" font-size="17" fill="#997039" text-anchor="middle" font-weight="normal">Squared error + L₂  →  full-batch gradient descent  →  update U</text>
+<text x="1150" y="35" font-family="Arial,sans-serif" font-size="15" fill="#6e6a60" text-anchor="end" font-weight="normal">10 dimensions · 50 epochs</text>
+<path d="M26 227H1150" stroke="#d9d1c2"/>
+<text x="26" y="263" font-family="Arial,sans-serif" font-size="16" fill="#467c78" text-anchor="start" font-weight="bold">02  GCN + MLP</text>
+<path d="M46 304L67.6 323.44" stroke="#6e6a60" stroke-width="1.6" fill="none" marker-end="url(#arrow)"/>
+<circle cx="46" cy="304" r="8" fill="#a9c1b7"/>
+<path d="M107 307L84.68 324.28" stroke="#6e6a60" stroke-width="1.6" fill="none" marker-end="url(#arrow)"/>
+<circle cx="107" cy="307" r="8" fill="#a9c1b7"/>
+<path d="M41 355L66.2 337.72" stroke="#6e6a60" stroke-width="1.6" fill="none" marker-end="url(#arrow)"/>
+<circle cx="41" cy="355" r="8" fill="#a9c1b7"/>
+<path d="M105 362L84.12 339.68" stroke="#6e6a60" stroke-width="1.6" fill="none" marker-end="url(#arrow)"/>
+<circle cx="105" cy="362" r="8" fill="#a9c1b7"/>
+<circle cx="76" cy="331" r="12" fill="#467c78"/>
+<text x="76" y="391" font-family="Arial,sans-serif" font-size="14" fill="#6e6a60" text-anchor="middle" font-weight="normal">Features + graph</text>
+<path d="M128 330H166" stroke="#6e6a60" stroke-width="1.6" fill="none" marker-end="url(#arrow)"/>
+<rect x="180" y="294" width="190" height="72" rx="5" fill="#467c78" fill-opacity=".07" stroke="#467c78" stroke-opacity=".5"/>
+<text x="275.0" y="327.0" font-family="Arial,sans-serif" font-size="18" fill="#467c78" text-anchor="middle" font-weight="bold">3 GCN layers</text>
+<text x="275.0" y="350.0" font-family="Arial,sans-serif" font-size="14" fill="#6e6a60" text-anchor="middle" font-weight="normal">Neighbour aggregation</text>
+<path d="M384 330H419" stroke="#6e6a60" stroke-width="1.6" fill="none" marker-end="url(#arrow)"/>
+<rect x="440" y="298" width="15" height="22" rx="2" fill="#467c78" fill-opacity="0.2"/>
+<rect x="458" y="298" width="15" height="22" rx="2" fill="#467c78" fill-opacity="0.4"/>
+<rect x="476" y="298" width="15" height="22" rx="2" fill="#467c78" fill-opacity="0.6000000000000001"/>
+<rect x="494" y="298" width="15" height="22" rx="2" fill="#467c78" fill-opacity="0.8"/>
+<rect x="512" y="298" width="15" height="22" rx="2" fill="#467c78" fill-opacity="0.30000000000000004"/>
+<rect x="530" y="298" width="15" height="22" rx="2" fill="#467c78" fill-opacity="0.5"/>
+<rect x="440" y="332" width="15" height="22" rx="2" fill="#467c78" fill-opacity="0.5"/>
+<rect x="458" y="332" width="15" height="22" rx="2" fill="#467c78" fill-opacity="0.7"/>
+<rect x="476" y="332" width="15" height="22" rx="2" fill="#467c78" fill-opacity="0.2"/>
+<rect x="494" y="332" width="15" height="22" rx="2" fill="#467c78" fill-opacity="0.4"/>
+<rect x="512" y="332" width="15" height="22" rx="2" fill="#467c78" fill-opacity="0.6000000000000001"/>
+<rect x="530" y="332" width="15" height="22" rx="2" fill="#467c78" fill-opacity="0.8"/>
+<text x="492.0" y="384" font-family="Arial,sans-serif" font-size="14" fill="#6e6a60" text-anchor="middle" font-weight="normal">Two 256D vectors</text>
+<path d="M565 330H601" stroke="#6e6a60" stroke-width="1.6" fill="none" marker-end="url(#arrow)"/>
+<rect x="615" y="294" width="200" height="72" rx="5" fill="#467c78" fill-opacity=".07" stroke="#467c78" stroke-opacity=".5"/>
+<text x="715.0" y="327.0" font-family="Arial,sans-serif" font-size="18" fill="#467c78" text-anchor="middle" font-weight="bold">Pair features</text>
+<text x="715.0" y="350.0" font-family="Arial,sans-serif" font-size="14" fill="#6e6a60" text-anchor="middle" font-weight="normal">1,024 values</text>
+<path d="M830 330H866" stroke="#6e6a60" stroke-width="1.6" fill="none" marker-end="url(#arrow)"/>
+<rect x="880" y="294" width="270" height="72" rx="5" fill="#467c78" fill-opacity=".07" stroke="#467c78" stroke-opacity=".5"/>
+<text x="1015.0" y="327.0" font-family="Arial,sans-serif" font-size="18" fill="#467c78" text-anchor="middle" font-weight="bold">MLP → sigmoid</text>
+<text x="1015.0" y="350.0" font-family="Arial,sans-serif" font-size="14" fill="#6e6a60" text-anchor="middle" font-weight="normal">Score the candidate edge</text>
+<path d="M1015 381V412H275V380" stroke="#6e6a60" stroke-width="1.6" fill="none" marker-end="url(#arrow)" stroke-dasharray="5 4"/>
+<text x="655" y="440" font-family="Arial,sans-serif" font-size="17" fill="#467c78" text-anchor="middle" font-weight="normal">Binary cross-entropy  →  Adam  →  update GCN and MLP weights</text>
+<text x="1150" y="263" font-family="Arial,sans-serif" font-size="15" fill="#6e6a60" text-anchor="end" font-weight="normal">256D embeddings · 20% dropout</text>
+</svg>

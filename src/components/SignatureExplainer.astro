@@ -1,0 +1,585 @@
+---
+const paths = [
+  {
+    name: 'Price, then volume',
+    color: '#386882',
+    points: '44,150 232,150 232,30',
+    arrows: '133,144 141,150 133,156 M226,96 232,88 238,96',
+    area: '+0.5',
+  },
+  {
+    name: 'Volume, then price',
+    color: '#b06646',
+    points: '44,150 44,30 232,30',
+    arrows: '38,96 44,88 50,96 M133,24 141,30 133,36',
+    area: '−0.5',
+  },
+];
+---
+
+<section class="signature-explainer" aria-labelledby="capture-the-chaos">
+  <div class="signature-heading">
+    <div>
+      <p class="eyebrow">The idea behind the project</p>
+      <h2 id="capture-the-chaos">
+        Rough path signatures.
+        <br /> <em>What are they?</em>
+      </h2>
+    </div>
+    <div class="signature-introduction">
+      <p class="signature-definition">
+        A <strong>path signature</strong> turns a sequence of observations into
+        numerical features. Its first levels describe total changes and the
+        order in which variables move; higher levels capture richer
+        interactions. We used these features to give trading agents a structured
+        view of recent market history.
+      </p>
+      <p class="signature-history">
+        <strong>From Brownian motion to data.</strong> The irregular motion of
+        particles studied in physics is a classic example of a rough path.
+        Signatures have mathematical roots in K.-T. Chen’s iterated integrals;
+        Terry Lyons introduced rough path theory in 1998 to work with such
+        irregular signals. Today, signatures also serve as features for machine
+        learning.{' '}
+        <a href="https://arxiv.org/abs/1602.03255">Historical background ↗</a>
+      </p>
+    </div>
+  </div>
+
+  <aside class="signature-story" aria-labelledby="signature-story-heading">
+    <h3 id="signature-story-heading">What sparked my interest</h3>
+    <div class="signature-story-copy">
+      <p>
+        My stochastic processes professor, Xin Guo, told me how she used
+        signatures at Amazon to support supply-chain decisions during the war in
+        Ukraine, helping save several billion dollars in a period of extreme
+        uncertainty.
+      </p>
+      <p>
+        This example made me want to explore their use in finance. Dealing with
+        irregular paths is precisely the problem rough path theory was developed
+        to address; signatures give us a structured way to describe them.
+      </p>
+    </div>
+  </aside>
+
+  <div class="signature-example-grid">
+    <figure class="order-example">
+      <div class="order-heading">
+        <h3>Same start. Same finish. Different sequence.</h3>
+        <p>Did price move first, or did volume arrive first?</p>
+      </div>
+      <div class="path-pair">
+        {paths.map((path, index) => (
+          <div class="path-panel" style={{ '--path-color': path.color }}>
+            <h4>
+              <span>{index === 0 ? 'A' : 'B'}</span> {path.name}
+            </h4>
+            <svg
+              viewBox="0 0 280 200"
+              role="img"
+              aria-label={`${path.name}. Both coordinates start at zero and end at one; signed area ${path.area}.`}
+            >
+              <path
+                d="M44 20 V150 H249"
+                fill="none"
+                stroke="#aaa99f"
+                stroke-width="1"
+              />
+              <polygon points={path.points} fill={path.color} opacity="0.1" />
+              <path
+                d="M44 150 L232 30"
+                stroke="#aaa99f"
+                stroke-dasharray="4 5"
+                fill="none"
+              />
+              <polyline
+                points={path.points}
+                fill="none"
+                stroke={path.color}
+                stroke-width="3.5"
+                stroke-linejoin="round"
+              />
+              <path
+                d={`M${path.arrows}`}
+                fill="none"
+                stroke={path.color}
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <circle cx="44" cy="150" r="4" fill={path.color} />
+              <circle cx="232" cy="30" r="4" fill={path.color} />
+              <g fill="#646c66" font-size="12" font-family="sans-serif">
+                <text x="34" y="168">
+                  0
+                </text>
+                <text x="229" y="168">
+                  1
+                </text>
+                <text x="28" y="34">
+                  1
+                </text>
+                <text x="140" y="192" text-anchor="middle">
+                  Price change
+                </text>
+                <text
+                  x="14"
+                  y="89"
+                  text-anchor="middle"
+                  transform="rotate(-90 14 89)"
+                >
+                  Cumulative volume
+                </text>
+              </g>
+            </svg>
+            <div class="area-label">
+              <span>Signed area</span>
+              <strong>{path.area}</strong>
+            </div>
+          </div>
+        ))}
+      </div>
+      <figcaption>
+        Total changes match. Reversing the order flips the signed area, a
+        second-order signature quantity. Illustrative normalized paths.
+      </figcaption>
+    </figure>
+
+    <section class="signature-math" aria-labelledby="signature-formula-heading">
+      <p class="eyebrow">The mathematics behind the picture</p>
+      <h3 id="signature-formula-heading">A sequence of iterated integrals.</h3>
+      <div class="signature-equations">
+        <math
+          xmlns="http://www.w3.org/1998/Math/MathML"
+          display="block"
+          aria-label="The signature of X on zero to T is the sequence one, S at level one, S at level two, and so on."
+        >
+        <mrow>
+          <msub><mi>S</mi><mrow><mn>0</mn><mo>,</mo><mi>T</mi></mrow></msub>
+          <mo>(</mo><mi>X</mi><mo>)</mo><mo>=</mo>
+          <mo>(</mo><mn>1</mn><mo>,</mo>
+          <msup><mi>S</mi><mrow><mo>(</mo><mn>1</mn><mo>)</mo></mrow></msup><mo>,</mo>
+          <msup><mi>S</mi><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow></msup><mo>,</mo><mo>…</mo><mo>)</mo>
+        </mrow>
+      </math>
+        <math
+          class="iterated-integral"
+          xmlns="http://www.w3.org/1998/Math/MathML"
+          display="block"
+          aria-label="Each level k coordinate is the integral, over ordered times zero less than t one through t k less than T, of the ordered channel increments d X superscript i one at t one through d X superscript i k at t k."
+        >
+        <mrow>
+          <msubsup><mi>S</mi><mrow><msub><mi>i</mi><mn>1</mn></msub><mo>,</mo><mo>…</mo><mo>,</mo><msub><mi>i</mi><mi>k</mi></msub></mrow><mrow><mo>(</mo><mi>k</mi><mo>)</mo></mrow></msubsup>
+          <mo>=</mo>
+          <munder>
+            <mo largeop="true">∫</mo>
+            <mrow><mn>0</mn><mo>&lt;</mo><msub><mi>t</mi><mn>1</mn></msub><mo>&lt;</mo><mo>⋯</mo><mo>&lt;</mo><msub><mi>t</mi><mi>k</mi></msub><mo>&lt;</mo><mi>T</mi></mrow>
+          </munder>
+          <mrow><mi mathvariant="normal">d</mi><msubsup><mi>X</mi><msub><mi>t</mi><mn>1</mn></msub><msub><mi>i</mi><mn>1</mn></msub></msubsup></mrow>
+          <mo>⋯</mo>
+          <mrow><mi mathvariant="normal">d</mi><msubsup><mi>X</mi><msub><mi>t</mi><mi>k</mi></msub><msub><mi>i</mi><mi>k</mi></msub></msubsup></mrow>
+        </mrow>
+      </math>
+      </div>
+      <dl class="signature-symbols">
+        <div>
+          <dt>
+            <i>X</i>
+          </dt>
+          <dd>The market path: here, price change and cumulative volume.</dd>
+        </div>
+        <div>
+          <dt>
+            <i>k</i>
+          </dt>
+          <dd>
+            The signature level: total changes at level 1, ordered interactions
+            at level 2 and beyond.
+          </dd>
+        </div>
+      </dl>
+      <div class="signature-levels">
+        <div>
+          <p class="level-label">Level 1 · total change</p>
+          <math
+            xmlns="http://www.w3.org/1998/Math/MathML"
+            display="block"
+            aria-label="Level one in channel i is X at T minus X at zero."
+          >
+          <mrow><msubsup><mi>S</mi><mi>i</mi><mrow><mo>(</mo><mn>1</mn><mo>)</mo></mrow></msubsup><mo>=</mo><msubsup><mi>X</mi><mi>T</mi><mi>i</mi></msubsup><mo>−</mo><msubsup><mi>X</mi><mn>0</mn><mi>i</mi></msubsup></mrow>
+        </math>
+          <p>Both paths have the same first level: (1, 1).</p>
+        </div>
+        <div>
+          <p class="level-label">Level 2 · order through signed area</p>
+          <math
+            xmlns="http://www.w3.org/1998/Math/MathML"
+            display="block"
+            aria-label="The signed area is one half of the level two price-volume term minus the volume-price term."
+          >
+          <mrow><mi>A</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>(</mo><msubsup><mi>S</mi><mrow><mi>P</mi><mo>,</mo><mi>V</mi></mrow><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow></msubsup><mo>−</mo><msubsup><mi>S</mi><mrow><mi>V</mi><mo>,</mo><mi>P</mi></mrow><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow></msubsup><mo>)</mo></mrow>
+        </math>
+          <p>
+            <i>P</i> = price change; <i>V</i> = cumulative volume. Reversing
+            their order changes <i>A</i> from{' '}
+            <span class="positive-area">+0.5</span> to{' '}
+            <span class="negative-area">−0.5</span>.
+          </p>
+        </div>
+      </div>
+      <p class="signature-truncation">
+        In practice, we truncate the series at depth 2 or 3 and use its{' '}
+        <strong>log-signature</strong> as the compact feature representation.
+      </p>
+    </section>
+  </div>
+
+  <p class="signature-takeaway">
+    <strong>The signature supplies the features.</strong> The RL agent learns
+    how to use them, subject to trading costs and portfolio constraints.
+  </p>
+</section>
+
+<section class="signature-rationale" aria-labelledby="why-use-signatures">
+  <div class="rationale-heading">
+    <p class="eyebrow">Capture the Chaos</p>
+    <h2 id="why-use-signatures">Why use signatures?</h2>
+    <p>
+      The aim was to{' '}
+      <strong>turn recent market history into useful ML inputs</strong>, then
+      compare how D3QN, PPO and SAC learned to trade from them.
+    </p>
+  </div>
+  <div class="rationale-details">
+    <p>
+      <strong>Preserve the order of events.</strong> Averages and volatility
+      summarize a window but discard much of its ordering. Raw windows retain
+      the sequence, leaving the neural network to learn its interactions.
+      Signatures encode those interactions explicitly in a fixed-length vector:
+      a useful inductive bias for learning from financial paths.
+    </p>
+    <p>
+      <strong>Use a compact representation.</strong> We used time-augmented{' '}
+      <strong>log-signatures</strong>: time preserves temporal information,
+      while the log-signature removes algebraic redundancy. A{' '}
+      <strong>lead–lag</strong> construction can additionally expose volatility
+      through areas between a path and its delayed copy, at the cost of extra
+      dimensions; it was disabled in our baseline.
+    </p>
+    <p>
+      <strong>Keep the computation manageable.</strong> Ordinary signatures
+      through depth 3 contain{' '}
+      <strong>84 terms for 4 channels, versus 584 for 8</strong>. Feature counts
+      grow exponentially with depth, so we kept depths at 2–3. This
+      representation structures the history; whether it improves trading still
+      requires evaluation.
+    </p>
+  </div>
+</section>
+
+<style>
+  .signature-explainer {
+    margin-block: 3rem 1rem;
+    padding: clamp(1.25rem, 3.3vw, 3rem);
+    background: #e9ede7;
+    border-top: 2px solid #57735a;
+  }
+  .signature-heading {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: 2rem;
+    align-items: start;
+    margin-bottom: 2rem;
+  }
+  .signature-heading .eyebrow {
+    margin-bottom: 0.8rem;
+  }
+  .signature-heading h2 {
+    margin: 0;
+    font-size: clamp(2.3rem, 3.7vw, 3.6rem);
+    max-width: 16ch;
+    scroll-margin-top: 2rem;
+  }
+  .signature-heading h2 em {
+    color: #47624c;
+  }
+  .signature-definition {
+    font-size: 0.95rem;
+    color: #4d544c;
+    margin: 0;
+    line-height: 1.8;
+  }
+  .signature-history {
+    font-size: 0.78rem;
+    color: #646c66;
+    margin: 1rem 0 0;
+    line-height: 1.7;
+  }
+  .signature-history a {
+    color: #47624c;
+    text-underline-offset: 0.2em;
+  }
+  .signature-story {
+    padding: clamp(1.25rem, 2.5vw, 2rem);
+    margin-bottom: 2rem;
+    background: #f1e8dc;
+    border-left: 3px solid #b06646;
+  }
+  .signature-story h3 {
+    font-size: 1.35rem;
+    line-height: 1.3;
+    margin: 0 0 0.75rem;
+  }
+  .signature-story-copy p {
+    font-size: 0.83rem;
+    line-height: 1.75;
+    color: #565348;
+    margin: 0;
+  }
+  .signature-story-copy p + p {
+    margin-top: 0.8rem;
+  }
+  .signature-rationale {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: 2rem;
+    padding: clamp(1.25rem, 3.3vw, 3rem);
+    margin-block: 1rem 2rem;
+  }
+  .rationale-heading h2 {
+    font-size: clamp(2rem, 3vw, 2.8rem);
+    margin: 0 0 1rem;
+    max-width: 16ch;
+    scroll-margin-top: 2rem;
+  }
+  .signature-rationale p:not(.eyebrow) {
+    font-size: 0.88rem;
+    line-height: 1.8;
+    color: #4d544c;
+    margin: 0;
+  }
+  .rationale-heading > p:last-child {
+    max-width: 35ch;
+  }
+  .rationale-details {
+    display: grid;
+    gap: 1rem;
+    border-left: 1px solid #d6d8cd;
+    padding-left: clamp(1.25rem, 2.5vw, 2rem);
+  }
+  .signature-example-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr);
+    gap: clamp(1.5rem, 3vw, 2.75rem);
+    align-items: center;
+    background: #f3efe6;
+    padding: clamp(1rem, 2.5vw, 2rem);
+  }
+  .order-example {
+    min-width: 0;
+  }
+  .order-heading {
+    text-align: center;
+  }
+  .order-heading h3 {
+    font-size: 1.55rem;
+    margin: 0 0 0.5rem;
+  }
+  .order-heading p {
+    font-size: 0.8rem;
+    color: #646c66;
+    margin: 0;
+  }
+  .path-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    max-width: 42rem;
+    margin: 1.5rem auto 0;
+  }
+  .path-panel {
+    min-width: 0;
+  }
+  .path-panel h4 {
+    color: var(--path-color);
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-align: center;
+    margin: 0 0 0.5rem;
+  }
+  .path-panel h4 span {
+    font: 0.65rem var(--font-label);
+    margin-right: 0.6rem;
+  }
+  .path-panel svg {
+    display: block;
+    width: 100%;
+  }
+  .area-label {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    align-items: baseline;
+    color: var(--path-color);
+    font-size: 0.75rem;
+  }
+  .area-label strong {
+    font-size: 1.2rem;
+    font-weight: 500;
+  }
+  .order-example figcaption {
+    font: 0.64rem/1.7 var(--font-label);
+    color: #646c66;
+    text-align: center;
+    max-width: 75ch;
+    margin: 1.25rem auto 0;
+  }
+  .signature-math {
+    min-width: 0;
+    border-left: 1px solid #d6d8cd;
+    padding-left: clamp(1.25rem, 2.5vw, 2rem);
+  }
+  .signature-math > .eyebrow {
+    font-size: 0.57rem;
+    margin-bottom: 0.65rem;
+  }
+  .signature-math h3 {
+    font-size: 1.55rem;
+    margin: 0 0 1.1rem;
+    line-height: 1.2;
+  }
+  math {
+    font-family: 'STIX Two Math', 'Cambria Math', 'Latin Modern Math', math;
+    font-size: 1.12rem;
+  }
+  math[display='block'] {
+    text-align: left;
+    margin-block: 0.65rem;
+  }
+  .iterated-integral {
+    font-size: 1.03rem;
+    margin-top: 1rem;
+  }
+  .signature-symbols {
+    margin: 1.25rem 0;
+    display: grid;
+    gap: 0.5rem;
+  }
+  .signature-symbols > div {
+    display: grid;
+    grid-template-columns: 5.25rem minmax(0, 1fr);
+    gap: 0.5rem;
+  }
+  .signature-symbols dt {
+    font-family: var(--font-display);
+    font-size: 0.8rem;
+    color: #292d2b;
+  }
+  .signature-symbols dd {
+    margin: 0;
+    color: #646c66;
+    font-size: 0.72rem;
+    line-height: 1.6;
+  }
+  .signature-levels {
+    border-top: 1px solid #d6d8cd;
+    padding-top: 0.8rem;
+    display: grid;
+    gap: 0.85rem;
+  }
+  .level-label {
+    font: 0.57rem/1.6 var(--font-label);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    margin: 0;
+    color: #57735a;
+  }
+  .signature-levels math {
+    font-size: 1.03rem;
+    margin-block: 0.5rem;
+  }
+  .signature-levels p:last-child,
+  .signature-truncation {
+    font-size: 0.72rem;
+    line-height: 1.65;
+    color: #646c66;
+    margin: 0;
+  }
+  .positive-area {
+    color: #386882;
+    font-weight: 600;
+  }
+  .negative-area {
+    color: #b06646;
+    font-weight: 600;
+  }
+  .signature-truncation {
+    margin-top: 1.1rem;
+    padding-top: 0.9rem;
+    border-top: 1px solid #d6d8cd;
+  }
+  .signature-takeaway {
+    margin: 1.75rem 0 0;
+    padding-top: 1rem;
+    border-top: 1px solid #c6d0c3;
+    font-size: 0.83rem;
+    color: #4d544c;
+  }
+  @media (max-width: 1050px) {
+    .signature-example-grid {
+      grid-template-columns: 1fr;
+    }
+    .signature-math {
+      border-left: 0;
+      border-top: 1px solid #d6d8cd;
+      padding: 1.5rem 0 0;
+    }
+    .signature-levels {
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+  }
+  @media (max-width: 700px) {
+    .signature-heading,
+    .signature-rationale {
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
+    .signature-heading h2,
+    .rationale-heading h2,
+    .rationale-heading > p:last-child {
+      max-width: none;
+    }
+    .rationale-details {
+      border-left: 0;
+      border-top: 1px solid #d6d8cd;
+      padding: 1.25rem 0 0;
+    }
+  }
+  @media (max-width: 460px) {
+    .signature-symbols > div {
+      grid-template-columns: 4.5rem minmax(0, 1fr);
+    }
+    .signature-levels {
+      grid-template-columns: 1fr;
+    }
+    .signature-math h3 {
+      font-size: 1.4rem;
+    }
+    math {
+      font-size: 1rem;
+    }
+    .iterated-integral {
+      font-size: 0.9rem;
+    }
+    .path-pair {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      max-width: 17rem;
+    }
+    .order-heading h3 {
+      font-size: 1.4rem;
+    }
+  }
+</style>

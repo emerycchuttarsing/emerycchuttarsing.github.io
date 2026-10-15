@@ -8,6 +8,14 @@ export interface SceneProject {
   featured: boolean;
   poster: { src: string; alt: string };
   video?: string;
+  animation?:
+    | 'bitcoin-price'
+    | 'hedge-rebalancing'
+    | 'music-sorting'
+    | 'embedding-space'
+    | 'link-signal'
+    | 'vision-features'
+    | 'retail-demand';
   accent: string;
 }
 

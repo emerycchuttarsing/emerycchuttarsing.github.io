@@ -1,10 +1,13 @@
 ---
 interface Props {
   headings: { depth: number; slug: string; text: string }[];
+  includeMethod?: boolean;
 }
-const { headings } = Astro.props;
+const { headings, includeMethod = true } = Astro.props;
 const entries = [
-  { slug: 'method-overview', text: 'Method at a glance' },
+  ...(includeMethod
+    ? [{ slug: 'method-overview', text: 'Method at a glance' }]
+    : []),
   ...headings.filter(({ depth }) => depth === 2),
 ];
 ---

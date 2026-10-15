@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 700" role="img" aria-labelledby="title desc"><title id="title">Inside a pre-norm decoder block</title><desc id="desc">Residual width is 256. LayerNorm then masked attention uses eight heads, each with 32-dimensional queries, keys and values. Add the original input. LayerNorm then a feed-forward network expands to 384 and returns to 256; add the second residual.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#766084"/></marker></defs>
+<rect width="420" height="700" fill="#f6f2ea"/>
+<style>text{font-family:Arial,sans-serif} .mono{font-family:monospace}</style>
+<text x="22" y="28" font-size="12" fill="#68616b" text-anchor="start" font-weight="normal" class="mono">ONE PRE-NORM BLOCK</text>
+<text x="200" y="60" font-size="16" fill="#766084" text-anchor="middle" font-weight="normal" class="mono">H · T × 256</text>
+<path d="M200 72V95" fill="none" stroke="#766084" stroke-width="1.7" marker-end="url(#arrow)"/>
+<rect x="110" y="100" width="180" height="39" rx="5" fill="#e4dbe9" stroke="#cfc4d3"/>
+<text x="200.0" y="125.5" font-size="16" fill="#28242c" text-anchor="middle" font-weight="bold" class="">LayerNorm</text>
+<path d="M200 140V167" fill="none" stroke="#766084" stroke-width="1.7" marker-end="url(#arrow)"/>
+<rect x="53" y="183" width="88" height="49" rx="5" fill="#e4dbe9" stroke="#cfc4d3"/>
+<text x="97.0" y="204.5" font-size="16" fill="#28242c" text-anchor="middle" font-weight="bold" class="">Q</text>
+<text x="97.0" y="225.5" font-size="12" fill="#68616b" text-anchor="middle" font-weight="normal" class="">T × 32</text>
+<rect x="166" y="183" width="88" height="49" rx="5" fill="#e4dbe9" stroke="#cfc4d3"/>
+<text x="210.0" y="204.5" font-size="16" fill="#28242c" text-anchor="middle" font-weight="bold" class="">K</text>
+<text x="210.0" y="225.5" font-size="12" fill="#68616b" text-anchor="middle" font-weight="normal" class="">T × 32</text>
+<rect x="279" y="183" width="88" height="49" rx="5" fill="#e4dbe9" stroke="#cfc4d3"/>
+<text x="323.0" y="204.5" font-size="16" fill="#28242c" text-anchor="middle" font-weight="bold" class="">V</text>
+<text x="323.0" y="225.5" font-size="12" fill="#68616b" text-anchor="middle" font-weight="normal" class="">T × 32</text>
+<path d="M200 168H97V181" fill="none" stroke="#766084" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M200 168H210V181" fill="none" stroke="#766084" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M200 168H323V181" fill="none" stroke="#766084" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M97 233V263H200V284" fill="none" stroke="#766084" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M210 233V263" fill="none" stroke="#766084" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M323 233V263H220V284" fill="none" stroke="#766084" stroke-width="1.7" marker-end="url(#arrow)"/>
+<rect x="70" y="296" width="280" height="67" rx="5" fill="#e4dbe9" stroke="#cfc4d3"/>
+<text x="210.0" y="326.5" font-size="16" fill="#28242c" text-anchor="middle" font-weight="bold" class="">softmax(QKᵀ / √32 + M) V</text>
+<text x="210.0" y="347.5" font-size="12" fill="#68616b" text-anchor="middle" font-weight="normal" class="">Future positions are masked</text>
+<path d="M200 365V388" fill="none" stroke="#766084" stroke-width="1.7" marker-end="url(#arrow)"/>
+<rect x="80" y="399" width="260" height="51" rx="5" fill="#e4dbe9" stroke="#cfc4d3"/>
+<text x="210.0" y="421.5" font-size="16" fill="#28242c" text-anchor="middle" font-weight="bold" class="">8 heads → concatenate → Wₒ</text>
+<text x="210.0" y="442.5" font-size="12" fill="#68616b" text-anchor="middle" font-weight="normal" class="">T × 256</text>
+<path d="M200 452V475" fill="none" stroke="#766084" stroke-width="1.7" marker-end="url(#arrow)"/>
+<circle cx="200" cy="491" r="13" fill="#f6f2ea" stroke="#766084" stroke-width="1.5"/>
+<text x="200" y="497" font-size="20" fill="#766084" text-anchor="middle" font-weight="normal" class="">+</text>
+<path d="M200 78H29V491H184" fill="none" stroke="#766084" stroke-width="1.7" marker-end="url(#arrow)"/>
+<text x="38" y="471" font-size="12" fill="#766084" text-anchor="start" font-weight="normal" class="">residual</text>
+<path d="M200 505V524" fill="none" stroke="#766084" stroke-width="1.7" marker-end="url(#arrow)"/>
+<rect x="90" y="535" width="220" height="43" rx="5" fill="#e4dbe9" stroke="#cfc4d3"/>
+<text x="200.0" y="562.5" font-size="16" fill="#28242c" text-anchor="middle" font-weight="bold" class="">LayerNorm</text>
+<path d="M200 578V594" fill="none" stroke="#766084" stroke-width="1.7" marker-end="url(#arrow)"/>
+<rect x="90" y="601" width="220" height="47" rx="5" fill="#e4dbe9" stroke="#cfc4d3"/>
+<text x="200.0" y="630.5" font-size="16" fill="#28242c" text-anchor="middle" font-weight="bold" class="">FFN · 256 → 384 → 256</text>
+<path d="M200 649V669" fill="none" stroke="#766084" stroke-width="1.7" marker-end="url(#arrow)"/>
+<circle cx="200" cy="684" r="13" fill="#f6f2ea" stroke="#766084" stroke-width="1.5"/>
+<text x="200" y="690" font-size="20" fill="#766084" text-anchor="middle" font-weight="normal" class="">+</text>
+<path d="M201 514H379V684H216" fill="none" stroke="#766084" stroke-width="1.7" marker-end="url(#arrow)"/>
+</svg>

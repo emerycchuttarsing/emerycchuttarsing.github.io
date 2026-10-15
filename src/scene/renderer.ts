@@ -6,7 +6,15 @@ import { panelLayout, projectedPanel } from './layout';
 import { mediaLight } from './lighting';
 import { createPostprocessing } from './postprocessing';
 import { createOrbit } from './orbit';
+import { orbitReveal } from './reveal';
 import { createPanelMaterial } from './panel-material';
+import { createBitcoinTextureCanvas } from './bitcoin-texture';
+import { createHedgeTextureCanvas } from './hedging-texture';
+import { createMusicTextureCanvas } from './music-texture';
+import { createEmbeddingTextureCanvas } from './embedding-texture';
+import { createLinkTextureCanvas } from './link-texture';
+import { createVisionTextureCanvas } from './vision-texture';
+import { createRetailTextureCanvas } from './retail-texture';
 import type { SceneController, SceneElements, SceneProject } from './types';
 
 const clamp = THREE.MathUtils.clamp;
@@ -95,6 +103,36 @@ export function createPortfolioScene(
     mesh.visible = false;
     scene.add(mesh);
     materials.push(frame, front, border);
+    const animation =
+      project.animation === 'bitcoin-price'
+        ? createBitcoinTextureCanvas()
+        : project.animation === 'hedge-rebalancing'
+          ? createHedgeTextureCanvas()
+          : project.animation === 'music-sorting'
+            ? createMusicTextureCanvas()
+            : project.animation === 'embedding-space'
+              ? createEmbeddingTextureCanvas()
+              : project.animation === 'link-signal'
+                ? createLinkTextureCanvas()
+                : project.animation === 'vision-features'
+                  ? createVisionTextureCanvas()
+                  : project.animation === 'retail-demand'
+                    ? createRetailTextureCanvas()
+                    : undefined;
+    const animationTexture = animation
+      ? new THREE.CanvasTexture(animation.canvas)
+      : undefined;
+    if (animationTexture) {
+      animationTexture.colorSpace = THREE.SRGBColorSpace;
+      animationTexture.minFilter = THREE.LinearMipmapLinearFilter;
+      animationTexture.anisotropy = Math.min(
+        8,
+        renderer.capabilities.getMaxAnisotropy(),
+      );
+      textures.push(animationTexture);
+      // Raster-based animations keep the poster until their images are loaded.
+      if (!animation || !('ready' in animation)) front.map = animationTexture;
+    }
     return {
       project,
       index,
@@ -106,6 +144,8 @@ export function createPortfolioScene(
       poster: undefined as THREE.Texture | undefined,
       video: undefined as THREE.VideoTexture | undefined,
       element: undefined as HTMLVideoElement | undefined,
+      animation,
+      animationTexture,
       emphasis: 0,
     };
   });
@@ -124,6 +164,69 @@ export function createPortfolioScene(
     focusId: string | undefined,
     activeId: string | undefined;
   const events = new AbortController();
+  let hoveredProject: string | undefined;
+  let previewHovered = false;
+  let visibleProjects = new Set<string>();
+  const animationWanted = (id: string) =>
+    motionEnabled &&
+    !paused &&
+    visibleProjects.has(id) &&
+    (selected ? selected === id && previewHovered : hoveredProject === id);
+  function stopAnimations() {
+    for (const panel of panels) panel.animation?.stop();
+    data(root, 'priceMotion', 'paused');
+    data(root, 'hedgeMotion', 'paused');
+    data(root, 'musicMotion', 'paused');
+    data(root, 'embeddingMotion', 'paused');
+    data(root, 'linkMotion', 'paused');
+    data(root, 'visionMotion', 'paused');
+    data(root, 'retailMotion', 'paused');
+  }
+  const rows = section.querySelector('[data-project-rows]');
+  rows?.addEventListener(
+    'pointerover',
+    (event) => {
+      if ((event as PointerEvent).pointerType === 'touch') return;
+      const next =
+        event.target instanceof Element
+          ? event.target.closest<HTMLElement>('[data-project-id]')?.dataset[
+              'projectId'
+            ]
+          : undefined;
+      if (next === hoveredProject) return;
+      hoveredProject = next;
+      stopAnimations();
+      invalidate();
+    },
+    { signal: events.signal },
+  );
+  rows?.addEventListener(
+    'pointerleave',
+    () => {
+      hoveredProject = undefined;
+      stopAnimations();
+      invalidate();
+    },
+    { signal: events.signal },
+  );
+  preview.addEventListener(
+    'pointerenter',
+    (event) => {
+      if (event.pointerType === 'touch') return;
+      previewHovered = true;
+      invalidate();
+    },
+    { signal: events.signal },
+  );
+  preview.addEventListener(
+    'pointerleave',
+    () => {
+      previewHovered = false;
+      stopAnimations();
+      invalidate();
+    },
+    { signal: events.signal },
+  );
   const html = document.documentElement;
   const direction = new THREE.Vector3(),
     right = new THREE.Vector3(),
@@ -176,6 +279,8 @@ export function createPortfolioScene(
       (rect.top < height && rect.bottom > 0);
     if (root.hidden === visible) root.hidden = !visible;
     if (!visible) {
+      visibleProjects.clear();
+      stopAnimations();
       onVisibility([]);
       lastTime = 0;
       return;
@@ -284,8 +389,9 @@ export function createPortfolioScene(
       smooth((progress - 0.18) / 0.56) * (1 - selectionMix * 0.88);
     ground.mesh.visible = ground.uniforms.opacity.value > 0.001;
     attentionMix = approach(attentionMix, activeId ? 1 : 0, dt, 700);
+    const reveal = orbitReveal(panelProgress);
     const orbitEnabled =
-      motionEnabled && !selected && selectionMix === 0 && progress > 0.96;
+      motionEnabled && !selected && selectionMix === 0 && panelProgress > 0.2;
     const orbitMoving = orbit.update(dt / 1000, orbitEnabled);
     const orbitState = !motionEnabled
       ? 'paused'
@@ -305,6 +411,8 @@ export function createPortfolioScene(
     if (diagnosticsDue) {
       data(root, 'orbitAngle', orbit.angle.toFixed(6));
       data(root, 'orbitVelocity', orbit.velocity.toFixed(6));
+      data(root, 'orbitRadius', reveal.radius.toFixed(3));
+      data(root, 'revealAngle', reveal.angle.toFixed(6));
     }
     const end = selectionMix > 0 ? preview.getBoundingClientRect() : undefined;
     let highlighting = false;
@@ -315,9 +423,11 @@ export function createPortfolioScene(
       const layout = panelLayout(
         project,
         width,
-        orbit.angle,
+        orbit.angle + reveal.angle,
         index,
         projects.length,
+        reveal.radius,
+        reveal.scale,
       );
       const desired = activeId === project.id ? 1 : 0;
       panel.emphasis = approach(
@@ -328,12 +438,12 @@ export function createPortfolioScene(
       );
       if (panel.emphasis !== desired) highlighting = true;
       const amount = focusId === project.id ? smooth(selectionMix) : 0;
-      const background = mix(1, 0.48, attentionMix * (1 - panel.emphasis));
+      const background = mix(1, 0.82, attentionMix * (1 - panel.emphasis));
       const depthOpacity = mix(0.52, 1, layout.frontness);
       const opacity =
         (selected && focusId === project.id
           ? 1
-          : smooth((panelProgress - 0.27 - 0.025 * index) / 0.55)) *
+          : smooth((panelProgress - 0.16 - 0.012 * index) / 0.48)) *
         (focusId === project.id ? 1 : 1 - selectionMix) *
         mix(depthOpacity * background, 1, Math.max(panel.emphasis, amount));
       mesh.visible = showPanels && opacity > 0.001;
@@ -358,6 +468,35 @@ export function createPortfolioScene(
         quaternion.copy(camera.quaternion);
         mesh.quaternion.slerp(quaternion, amount);
       }
+      if (panel.animation && panel.animationTexture) {
+        if (
+          panel.animation.tick(now, mesh.visible && animationWanted(project.id))
+        )
+          panel.animationTexture.needsUpdate = true;
+        if (diagnosticsDue) {
+          const prefix =
+            project.animation === 'bitcoin-price'
+              ? 'price'
+              : project.animation === 'hedge-rebalancing'
+                ? 'hedge'
+                : project.animation === 'music-sorting'
+                  ? 'music'
+                  : project.animation === 'embedding-space'
+                    ? 'embedding'
+                    : project.animation === 'vision-features'
+                      ? 'vision'
+                      : project.animation === 'retail-demand'
+                        ? 'retail'
+                        : 'link';
+          data(
+            root,
+            `${prefix}Motion`,
+            panel.animation.running ? 'running' : 'paused',
+          );
+          data(root, `${prefix}Time`, panel.animation.elapsed.toFixed(3));
+          data(root, `${prefix}Frames`, String(panel.animation.frames));
+        }
+      }
       const map = front.map;
       if (map) {
         const aspect = mesh.scale.x / mesh.scale.y;
@@ -371,16 +510,25 @@ export function createPortfolioScene(
       panel.surface.blur.value =
         restingBlur * (1 - panel.emphasis) * (1 - amount);
       front.opacity = frame.opacity = opacity;
-      border.opacity = opacity * (0.22 + panel.emphasis * 0.4);
-      front.color.setScalar(1.7 + panel.emphasis * 0.45);
+      border.opacity = opacity * (0.22 + panel.emphasis * 0.16);
+      // Preserve photographic detail and keep light artwork below bloom.
+      front.color.setScalar(
+        project.animation === 'music-sorting'
+          ? 0.68 + panel.emphasis * 0.06
+          : project.animation === 'vision-features'
+            ? 0.92 + panel.emphasis * 0.08
+            : project.animation === 'retail-demand'
+              ? 1.1 + panel.emphasis * 0.12
+              : 1.7 + panel.emphasis * 0.22,
+      );
       frame.color
         .set(project.accent)
-        .multiplyScalar(0.5 + panel.emphasis * 0.3);
+        .multiplyScalar(0.5 + panel.emphasis * 0.16);
       ground.uniforms.lights.value[index]!.copy(layout.position).y = 1.35;
       mediaLight(project.id, project.accent, panel.element, color);
       ground.uniforms.colors.value[index]!.copy(color);
       ground.uniforms.strengths.value[index] =
-        mix(1, 1.8, panel.emphasis) *
+        mix(1, 1.3, panel.emphasis) *
         mix(0.65, 1, layout.frontness) *
         background;
     }
@@ -410,6 +558,7 @@ export function createPortfolioScene(
         return p.visible && visibleArea / area >= 0.25;
       });
       onVisibility(visibleBounds.map((p) => p.id));
+      visibleProjects = new Set(visibleBounds.map((p) => p.id));
       if (diagnosticsDue) {
         lastDiagnostics = now;
         data(root, 'gpuResources', JSON.stringify(renderer.info.memory));
@@ -426,6 +575,12 @@ export function createPortfolioScene(
         );
       }
       if (orbitMoving && visibleBounds.length > 0) invalidate();
+      if (
+        panels.some(
+          (panel) => panel.animation && animationWanted(panel.project.id),
+        )
+      )
+        invalidate();
     } catch {
       controller.setState({ kind: 'fallback', reason: 'load-error' });
       return;
@@ -485,6 +640,8 @@ export function createPortfolioScene(
         return;
       }
       selected = state.kind === 'selected' ? state.projectId : undefined;
+      previewHovered = false;
+      stopAnimations();
       if (selected) focusId = selected;
       const parent = selected ? previewScene : root;
       if (renderer.domElement.parentElement !== parent)
@@ -503,12 +660,13 @@ export function createPortfolioScene(
     setMotion(enabled) {
       if (enabled === motionEnabled || disposed) return;
       motionEnabled = enabled;
+      if (!enabled) stopAnimations();
       invalidate();
     },
     setMedia(id, video) {
       if (disposed) return;
       const panel = panels.find((p) => p.project.id === id);
-      if (!panel) return;
+      if (!panel || panel.animation) return;
       panel.element = video ?? undefined;
       if (video && !panel.video) {
         panel.video = new THREE.VideoTexture(video);
@@ -529,6 +687,7 @@ export function createPortfolioScene(
     resize,
     pause() {
       paused = true;
+      stopAnimations();
       cancelAnimationFrame(frameId);
       frameId = 0;
       lastTime = 0;
@@ -551,6 +710,7 @@ export function createPortfolioScene(
       edgeGeometry.dispose();
       materials.forEach((m) => m.dispose());
       textures.forEach((t) => t.dispose());
+      panels.forEach((panel) => panel.animation?.dispose());
       scene.clear();
       renderer.dispose();
       renderer.forceContextLoss();
@@ -601,7 +761,17 @@ export function createPortfolioScene(
       );
       textures.push(texture);
       panel.poster = texture;
-      if (!panel.element) {
+      if (panel.animation && 'ready' in panel.animation) {
+        const ready = await panel.animation.ready;
+        if (disposed) return;
+        if (ready && panel.animationTexture) {
+          panel.animationTexture.needsUpdate = true;
+          panel.front.map = panel.animationTexture;
+        } else {
+          panel.front.map = texture;
+        }
+        panel.front.needsUpdate = true;
+      } else if (!panel.element && !panel.animationTexture) {
         panel.front.map = texture;
         panel.front.needsUpdate = true;
       }

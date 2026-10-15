@@ -17,7 +17,11 @@ const { projects } = Astro.props;
       <span class="row-number" aria-hidden="true">
         {String(project.data.order).padStart(2, '0')}
       </span>
-      <a class="row-title" href={projectPath(project.id)}>
+      <a
+        class="row-title"
+        href={projectPath(project.id)}
+        data-preview={project.id}
+      >
         {project.data.displayTitle ?? project.data.title}
         <span class="row-arrow" aria-hidden="true">
           ↗

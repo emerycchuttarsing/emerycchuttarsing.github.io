@@ -1,0 +1,295 @@
+<section class="tiny-results" aria-labelledby="reading-the-results">
+  <header>
+    <div>
+      <p class="eyebrow">Objective, uncertainty & evidence</p>
+      <h2 id="reading-the-results">What does a lower loss tell us?</h2>
+    </div>
+    <p>
+      The script evaluates held-out loss every 500 steps, on up to 50 batches.
+      Cross-entropy and perplexity assess prediction; entropy describes
+      confidence. All logarithms below are natural.
+    </p>
+  </header>
+  <div class="metric-grid">
+    <article>
+      <h3>Cross-entropy</h3>
+      <div
+        class="metric-formula"
+        aria-label="L equals minus the mean log probability assigned to the actual next token"
+      >
+        ℒ = −mean<sub>t</sub> log p(x<sub>t+1</sub> | x<sub>≤t</sub>)
+      </div>
+      <p>
+        Penalizes low probability on the <strong>actual next token</strong>.
+        This is the training objective, computed from raw logits.
+      </p>
+    </article>
+    <article>
+      <h3>Perplexity</h3>
+      <div class="metric-formula">PPL = exp(ℒ)</div>
+      <p>
+        A different scale for the same loss. Compare runs using the{' '}
+        <strong>same tokenizer and evaluation data</strong>.
+      </p>
+    </article>
+    <article>
+      <h3>Predictive entropy</h3>
+      <div class="metric-formula">
+        H(p) = −∑<sub>v</sub> p(v) log p(v)
+      </div>
+      <p>
+        Measures how spread out the predictions are,{' '}
+        <strong>not whether they are correct</strong>. Not logged in this
+        homework.
+      </p>
+    </article>
+  </div>
+  <div class="experiment-grid">
+    <figure class="loss-figure">
+      <a
+        href="/media/tinystories/training-loss.png"
+        aria-label="Enlarge the original loss curve from the homework"
+      >
+        <img
+          src="/media/tinystories/training-loss.png"
+          width="1000"
+          height="600"
+          loading="lazy"
+          alt="Original training and validation cross-entropy curves fall from above 250 over about 300,000 gradient steps. The raster figure provides no exact final score."
+        />
+      </a>
+      <figcaption>
+        Original homework figure, p. 2. No final score is inferred from the
+        raster image.
+      </figcaption>
+    </figure>
+    <div class="result-findings">
+      <div class="uniform-reference">
+        <span class="eyebrow">Uniform prediction · 3,000 tokens</span>
+        <strong>ℒ = ln(3,000) ≈ 8.01</strong>
+        <span>PPL = 3,000 · H = 8.01 nats</span>
+      </div>
+      <p>
+        <strong>Loss falls, but the starting scale needs checking.</strong> The
+        initial value exceeds 250, far above the uniform reference. Logit scale
+        and initialization need inspection; a decline alone does not validate
+        the model.
+      </p>
+      <p>
+        <strong>Generation remains incoherent.</strong> A recorded continuation
+        of “One day” includes <q>al ummy yal yal yal</q>. Lower loss did not
+        establish grammatical or narrative quality.
+      </p>
+      <p class="evidence-note">
+        The separate perplexity curve uses example values in its plotting
+        script; no measured final perplexity is claimed.
+      </p>
+    </div>
+  </div>
+  <details class="entropy-note">
+    <summary>Why low entropy can still mean a bad prediction</summary>
+    <a
+      href="/media/tinystories/cross-entropy.svg"
+      aria-label="Enlarge the comparison of entropy and cross-entropy"
+    >
+      <picture>
+        <source
+          media="(max-width: 700px)"
+          srcset="/media/tinystories/cross-entropy-mobile.svg"
+        />
+        <img
+          src="/media/tinystories/cross-entropy.svg"
+          width="700"
+          height="230"
+          loading="lazy"
+          alt="Toy four-token example. Entropy is 0.435 nats for both predictions; cross-entropy is 0.105 for a correct confident prediction and 3.401 for a wrong confident prediction."
+        />
+      </picture>
+    </a>
+    <p>
+      Both distributions are equally concentrated. Only cross-entropy checks
+      which token was actually correct.
+    </p>
+  </details>
+</section>
+
+<style>
+  .tiny-results {
+    margin-top: 2.5rem;
+  }
+  header {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 2.5rem;
+    align-items: end;
+    margin-bottom: 1.3rem;
+  }
+  h2 {
+    font-size: clamp(1.85rem, 3vw, 2.7rem);
+    line-height: 1.16;
+    margin: 0.55rem 0 0;
+    scroll-margin-top: 2rem;
+  }
+  header > p {
+    margin: 0;
+    color: #635d68;
+    font-size: 0.8rem;
+    line-height: 1.75;
+  }
+  .metric-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.65rem;
+  }
+  .metric-grid article {
+    padding: 1.1rem;
+    background: #e7e0e9;
+    border-top: 2px solid #96809f;
+    min-width: 0;
+  }
+  .metric-grid h3 {
+    font: 500 1rem/1.3 var(--font-body);
+    margin: 0 0 0.8rem;
+  }
+  .metric-formula {
+    font: 1.05rem/1.8 var(--font-display);
+    color: #523b60;
+    white-space: nowrap;
+  }
+  .metric-grid p {
+    font-size: 0.73rem;
+    color: #685e6e;
+    line-height: 1.7;
+    margin: 0.65rem 0 0;
+  }
+  .metric-grid strong {
+    color: #4f4058;
+    font-weight: 500;
+  }
+  .experiment-grid {
+    display: grid;
+    grid-template-columns: 1.12fr 1fr;
+    gap: 1.8rem;
+    align-items: center;
+    margin-top: 1.7rem;
+  }
+  .loss-figure {
+    margin: 0;
+    min-width: 0;
+  }
+  .loss-figure img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border: 1px solid var(--color-line);
+  }
+  figcaption {
+    font: 0.58rem/1.7 var(--font-label);
+    color: #766e78;
+    margin-top: 0.65rem;
+  }
+  .uniform-reference {
+    padding: 0.85rem 1rem;
+    border-left: 2px solid #7c628b;
+    background: #e9e3eb;
+  }
+  .uniform-reference strong {
+    display: block;
+    font: 1.4rem/1.5 var(--font-display);
+    margin: 0.3rem 0;
+    color: #60496e;
+  }
+  .uniform-reference > span:last-child {
+    font: 0.6rem/1.5 var(--font-label);
+    color: #75687d;
+  }
+  .result-findings > p {
+    font-size: 0.76rem;
+    line-height: 1.75;
+    color: #665f6b;
+    margin: 0.9rem 0 0;
+  }
+  .result-findings strong {
+    color: #3e3546;
+    font-weight: 600;
+  }
+  .result-findings .evidence-note {
+    font-size: 0.66rem;
+    color: #7c6d66;
+    padding-top: 0.6rem;
+    border-top: 1px solid var(--color-line);
+  }
+  .entropy-note {
+    border-block: 1px solid #cfc4d3;
+    margin-top: 1.4rem;
+    padding: 0.85rem 1rem;
+  }
+  .entropy-note summary {
+    font-size: 0.77rem;
+    color: #60496e;
+    cursor: pointer;
+  }
+  .entropy-note img {
+    display: block;
+    width: 100%;
+    max-width: 700px;
+    height: auto;
+    margin: 1rem auto 0;
+  }
+  .entropy-note p {
+    font-size: 0.72rem;
+    line-height: 1.7;
+    color: #655c6b;
+    text-align: center;
+    margin-bottom: 0.2rem;
+  }
+  @media (max-width: 1000px) {
+    .metric-grid {
+      grid-template-columns: 1fr;
+    }
+    .metric-grid article {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      column-gap: 1.4rem;
+      align-items: start;
+    }
+    .metric-grid h3 {
+      margin: 0;
+    }
+    .metric-formula {
+      grid-row: 2;
+      grid-column: 1;
+      font-size: 1rem;
+      margin-top: 0.3rem;
+    }
+    .metric-grid p {
+      grid-row: 1 / span 2;
+      grid-column: 2;
+      margin: 0;
+    }
+  }
+  @media (max-width: 700px) {
+    .entropy-note picture {
+      display: block;
+      max-width: 350px;
+      margin-inline: auto;
+    }
+    header,
+    .experiment-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    .metric-grid article {
+      display: block;
+    }
+    .metric-grid p {
+      margin-top: 0.4rem;
+    }
+    .metric-formula {
+      font-size: 1.1rem;
+    }
+    .experiment-grid {
+      margin-top: 1.2rem;
+    }
+  }
+</style>

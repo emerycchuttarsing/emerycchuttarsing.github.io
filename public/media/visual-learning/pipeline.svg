@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="340" viewBox="0 0 1180 340" role="img"><title>Image features and logistic classification</title><defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10" fill="none" stroke="#3f706e" stroke-width="1.5"/></marker></defs><rect width="100%" height="100%" fill="#f5f3eb"/>
+<text x="27" y="36" fill="#3f706e" text-anchor="start" font-family="Arial,sans-serif" font-size="13" font-weight="600">FIXED REPRESENTATION</text>
+<text x="690" y="36" fill="#3f706e" text-anchor="start" font-family="Arial,sans-serif" font-size="13" font-weight="600">LEARNED CLASSIFIER</text>
+<rect x="43" y="81" width="19" height="19" fill="#55745e"/>
+<rect x="64" y="81" width="19" height="19" fill="#8d9e74"/>
+<rect x="85" y="81" width="19" height="19" fill="#788e6a"/>
+<rect x="43" y="102" width="19" height="19" fill="#a8b58b"/>
+<rect x="64" y="102" width="19" height="19" fill="#536b5a"/>
+<rect x="85" y="102" width="19" height="19" fill="#b9c4a5"/>
+<rect x="43" y="123" width="19" height="19" fill="#6a816c"/>
+<rect x="64" y="123" width="19" height="19" fill="#899d7b"/>
+<rect x="85" y="123" width="19" height="19" fill="#a4b394"/>
+<text x="74" y="178" fill="#292d27" text-anchor="middle" font-family="Arial,sans-serif" font-size="16" font-weight="400">RGB image</text>
+<path d="M122 113H167" fill="none" stroke="#3f706e" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="181" y="77" width="244" height="76" rx="5" fill="#e5e9df" stroke="#aabbb0"/>
+<text x="303.0" y="106" fill="#292d27" text-anchor="middle" font-family="Arial,sans-serif" font-size="18" font-weight="600">Color · edges · texture</text>
+<text x="303.0" y="130" fill="#657166" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">Global + local measurements</text>
+<path d="M437 113H481" fill="none" stroke="#3f706e" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="502" y="100" width="9" height="24" fill="#3f706e" opacity=".75"/>
+<rect x="514" y="100" width="9" height="24" fill="#3f706e" opacity=".75"/>
+<rect x="526" y="100" width="9" height="24" fill="#3f706e" opacity=".75"/>
+<rect x="538" y="100" width="9" height="24" fill="#a57943" opacity=".75"/>
+<rect x="550" y="100" width="9" height="24" fill="#a57943" opacity=".75"/>
+<rect x="562" y="100" width="9" height="24" fill="#a57943" opacity=".75"/>
+<rect x="574" y="100" width="9" height="24" fill="#8e9671" opacity=".75"/>
+<rect x="586" y="100" width="9" height="24" fill="#8e9671" opacity=".75"/>
+<rect x="598" y="100" width="9" height="24" fill="#8e9671" opacity=".75"/>
+<text x="553" y="156" fill="#292d27" text-anchor="middle" font-family="Arial,sans-serif" font-size="16" font-weight="400">Feature vector</text>
+<text x="553" y="178" fill="#657166" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">24 or 25 values</text>
+<path d="M624 113H676" fill="none" stroke="#3f706e" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="690" y="77" width="210" height="76" rx="5" fill="#e5e9df" stroke="#aabbb0"/>
+<text x="795.0" y="106" fill="#292d27" text-anchor="middle" font-family="Arial,sans-serif" font-size="18" font-weight="600">Logistic regression</text>
+<text x="795.0" y="130" fill="#657166" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">Scale features for Task B</text>
+<path d="M912 113H957" fill="none" stroke="#3f706e" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="971" y="77" width="183" height="76" rx="5" fill="#e5e9df" stroke="#aabbb0"/>
+<text x="1062.5" y="106" fill="#292d27" text-anchor="middle" font-family="Arial,sans-serif" font-size="18" font-weight="600">Probabilities</text>
+<text x="1062.5" y="130" fill="#657166" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">Choose a class</text>
+<path d="M1062 166V226H910" fill="none" stroke="#3f706e" stroke-width="1.6" marker-end="url(#arrow)" stroke-dasharray="5 5"/>
+<rect x="690" y="193" width="210" height="73" rx="5" fill="#e5e9df" stroke="#aabbb0"/>
+<text x="795.0" y="222" fill="#292d27" text-anchor="middle" font-family="Arial,sans-serif" font-size="18" font-weight="600">Log loss + L2</text>
+<text x="795.0" y="246" fill="#657166" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="400">Compare with true labels</text>
+<path d="M678 230H655V166H795V159" fill="none" stroke="#3f706e" stroke-width="1.6" marker-end="url(#arrow)" stroke-dasharray="5 5"/>
+<text x="796" y="304" fill="#3f706e" text-anchor="middle" font-family="Arial,sans-serif" font-size="16" font-weight="400">Update classifier weights</text>
+<text x="284" y="257" fill="#657166" text-anchor="middle" font-family="Arial,sans-serif" font-size="17" font-weight="400">The image filters stay fixed.</text>
+<text x="284" y="282" fill="#657166" text-anchor="middle" font-family="Arial,sans-serif" font-size="15" font-weight="400">Only the decision rule is learned.</text>
+</svg>

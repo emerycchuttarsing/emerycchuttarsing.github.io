@@ -1,0 +1,4 @@
+model,recall10,recall100,recall1000,ndcg10
+ALS,0.035,0.151,0.407,0.018
+SASRec full catalog,0.022,0.070,0.188,0.013
+ALS + SASRec,0.082,0.236,0.407,0.046

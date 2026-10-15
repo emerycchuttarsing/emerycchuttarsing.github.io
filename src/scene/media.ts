@@ -19,6 +19,7 @@ export function createMediaManager(
   onChange: (id: string, video: HTMLVideoElement | null) => void,
   onFrame: () => void,
   onMotionChange: (enabled: boolean) => void,
+  proceduralProjects: string[] = [],
 ) {
   const entries: MediaEntry[] = [
     ...elements.section.querySelectorAll<HTMLVideoElement>(
@@ -162,11 +163,12 @@ export function createMediaManager(
     entries.filter((entry) => desired.has(entry.id)).forEach(play);
     for (const button of buttons) {
       button.hidden =
-        entries.length === 0 ||
+        (entries.length === 0 && proceduralProjects.length === 0) ||
         reduce.matches ||
         Boolean(connection?.saveData) ||
         (Boolean(button.closest('dialog')) &&
-          !entries.some((entry) => entry.id === selected));
+          !entries.some((entry) => entry.id === selected) &&
+          !proceduralProjects.includes(selected ?? ''));
       button.textContent = button.closest('dialog')
         ? userPaused
           ? 'Play previews'
@@ -177,13 +179,15 @@ export function createMediaManager(
       button.setAttribute('aria-pressed', String(!userPaused));
     }
     const item = entries.find((entry) => entry.id === selected);
+    const hasMotion =
+      Boolean(item) || proceduralProjects.includes(selected ?? '');
     status.textContent = item?.failed
       ? 'Motion preview unavailable. The still illustration is shown.'
       : autoplayBlocked && item
         ? 'Playback is paused. Choose Play previews to start it.'
-        : reduce.matches && item
+        : reduce.matches && hasMotion
           ? 'Still preview follows your reduced-motion preference.'
-          : connection?.saveData && item
+          : connection?.saveData && hasMotion
             ? 'Still preview follows your data-saving preference.'
             : '';
   }

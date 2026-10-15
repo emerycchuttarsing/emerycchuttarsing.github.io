@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 290" role="img" aria-labelledby="title desc"><title id="title">Inside one pre-norm Transformer block</title><desc id="desc">Input H passes through LayerNorm and masked multi-head self-attention, then the first residual addition. LayerNorm and a position-wise feed-forward network precede the second residual addition. Eight heads of dimension 32 preserve width 256. The triangular matrix shows allowed attention positions, not measured attention weights.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#766084"/></marker></defs>
+<rect width="1180" height="290" fill="#f6f2ea"/>
+<style>text{font-family:Arial,sans-serif} .mono{font-family:monospace}</style>
+<text x="25" y="25" font-size="12" fill="#68616b" text-anchor="start" font-weight="normal" class="mono">INSIDE ONE BLOCK · PRE-NORM</text>
+<text x="29" y="133" font-size="21" fill="#766084" text-anchor="start" font-weight="normal" class="mono">H</text>
+<path d="M52 125H76" fill="none" stroke="#766084" stroke-width="1.7" marker-end="url(#arrow)"/>
+<rect x="84" y="100" width="97" height="50" rx="5" fill="#e4dbe9" stroke="#cfc4d3"/>
+<text x="132.5" y="131.0" font-size="16" fill="#28242c" text-anchor="middle" font-weight="bold" class="">LayerNorm</text>
+<path d="M182 125H208" fill="none" stroke="#766084" stroke-width="1.7" marker-end="url(#arrow)"/>
+<rect x="220" y="56" width="66" height="38" rx="5" fill="#e4dbe9" stroke="#cfc4d3"/>
+<text x="253.0" y="81.0" font-size="16" fill="#28242c" text-anchor="middle" font-weight="bold" class="">Q</text>
+<path d="M210 125V75H218" fill="none" stroke="#766084" stroke-width="1.7" marker-end="url(#arrow)"/>
+<rect x="220" y="108" width="66" height="38" rx="5" fill="#e4dbe9" stroke="#cfc4d3"/>
+<text x="253.0" y="133.0" font-size="16" fill="#28242c" text-anchor="middle" font-weight="bold" class="">K</text>
+<path d="M210 125V127H218" fill="none" stroke="#766084" stroke-width="1.7" marker-end="url(#arrow)"/>
+<rect x="220" y="160" width="66" height="38" rx="5" fill="#e4dbe9" stroke="#cfc4d3"/>
+<text x="253.0" y="185.0" font-size="16" fill="#28242c" text-anchor="middle" font-weight="bold" class="">V</text>
+<path d="M210 125V179H218" fill="none" stroke="#766084" stroke-width="1.7" marker-end="url(#arrow)"/>
+<text x="253" y="225" font-size="12" fill="#766084" text-anchor="middle" font-weight="normal" class="mono">Linear projections · T × 32 / head</text>
+<path d="M288 75H310V104H329" fill="none" stroke="#766084" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M288 127H329" fill="none" stroke="#766084" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M288 179H310V151H329" fill="none" stroke="#766084" stroke-width="1.7" marker-end="url(#arrow)"/>
+<rect x="337" y="56" width="211" height="143" rx="5" fill="#e4dbe9" stroke="#cfc4d3"/>
+<text x="442" y="80" font-size="16" fill="#28242c" text-anchor="middle" font-weight="bold" class="">Masked attention</text>
+<rect x="353" y="97" width="17" height="17" rx="1.5" fill="#766084" fill-opacity="0.75" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="373" y="97" width="17" height="17" rx="1.5" fill="#ede8df" fill-opacity="1" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="393" y="97" width="17" height="17" rx="1.5" fill="#ede8df" fill-opacity="1" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="413" y="97" width="17" height="17" rx="1.5" fill="#ede8df" fill-opacity="1" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="353" y="117" width="17" height="17" rx="1.5" fill="#766084" fill-opacity="0.75" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="373" y="117" width="17" height="17" rx="1.5" fill="#766084" fill-opacity="0.75" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="393" y="117" width="17" height="17" rx="1.5" fill="#ede8df" fill-opacity="1" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="413" y="117" width="17" height="17" rx="1.5" fill="#ede8df" fill-opacity="1" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="353" y="137" width="17" height="17" rx="1.5" fill="#766084" fill-opacity="0.75" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="373" y="137" width="17" height="17" rx="1.5" fill="#766084" fill-opacity="0.75" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="393" y="137" width="17" height="17" rx="1.5" fill="#766084" fill-opacity="0.75" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="413" y="137" width="17" height="17" rx="1.5" fill="#ede8df" fill-opacity="1" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="353" y="157" width="17" height="17" rx="1.5" fill="#766084" fill-opacity="0.75" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="373" y="157" width="17" height="17" rx="1.5" fill="#766084" fill-opacity="0.75" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="393" y="157" width="17" height="17" rx="1.5" fill="#766084" fill-opacity="0.75" stroke="#cfc4d3" stroke-width=".4"/>
+<rect x="413" y="157" width="17" height="17" rx="1.5" fill="#766084" fill-opacity="0.75" stroke="#cfc4d3" stroke-width=".4"/>
+<text x="495" y="118" font-size="12" fill="#766084" text-anchor="middle" font-weight="normal" class="mono">QKᵀ / √32</text>
+<text x="495" y="139" font-size="12" fill="#766084" text-anchor="middle" font-weight="normal" class="mono">+ mask M</text>
+<text x="495" y="160" font-size="13" fill="#766084" text-anchor="middle" font-weight="normal" class="">softmax</text>
+<text x="442" y="186" font-size="12" fill="#68616b" text-anchor="middle" font-weight="normal" class="mono">A · V → T × 32</text>
+<path d="M550 125H573" fill="none" stroke="#766084" stroke-width="1.7" marker-end="url(#arrow)"/>
+<rect x="583" y="83" width="128" height="83" rx="5" fill="#e4dbe9" stroke="#cfc4d3"/>
+<text x="647.0" y="121.5" font-size="16" fill="#28242c" text-anchor="middle" font-weight="bold" class="">8 heads</text>
+<text x="647.0" y="142.5" font-size="12" fill="#68616b" text-anchor="middle" font-weight="normal" class="">Concat + Wₒ</text>
+<path d="M713 125H739" fill="none" stroke="#766084" stroke-width="1.7" marker-end="url(#arrow)"/>
+<circle cx="756" cy="125" r="13" fill="#f6f2ea" stroke="#766084" stroke-width="1.5"/>
+<text x="756" y="131" font-size="20" fill="#766084" text-anchor="middle" font-weight="normal" class="">+</text>
+<path d="M63 125V42H756V110" fill="none" stroke="#766084" stroke-width="1.7" marker-end="url(#arrow)"/>
+<text x="618" y="35" font-size="12" fill="#766084" text-anchor="middle" font-weight="normal" class="">Residual connection</text>
+<path d="M770 125H794" fill="none" stroke="#766084" stroke-width="1.7" marker-end="url(#arrow)"/>
+<rect x="804" y="100" width="96" height="50" rx="5" fill="#e4dbe9" stroke="#cfc4d3"/>
+<text x="852.0" y="131.0" font-size="16" fill="#28242c" text-anchor="middle" font-weight="bold" class="">LayerNorm</text>
+<path d="M902 125H924" fill="none" stroke="#766084" stroke-width="1.7" marker-end="url(#arrow)"/>
+<rect x="934" y="83" width="168" height="83" rx="5" fill="#e4dbe9" stroke="#cfc4d3"/>
+<text x="1018.0" y="121.5" font-size="16" fill="#28242c" text-anchor="middle" font-weight="bold" class="">Feed-forward</text>
+<text x="1018.0" y="142.5" font-size="12" fill="#68616b" text-anchor="middle" font-weight="normal" class="">256 → 384 → 256</text>
+<path d="M1105 125H1127" fill="none" stroke="#766084" stroke-width="1.7" marker-end="url(#arrow)"/>
+<circle cx="1144" cy="125" r="13" fill="#f6f2ea" stroke="#766084" stroke-width="1.5"/>
+<text x="1144" y="131" font-size="20" fill="#766084" text-anchor="middle" font-weight="normal" class="">+</text>
+<path d="M781 125V210H1144V141" fill="none" stroke="#766084" stroke-width="1.7" marker-end="url(#arrow)"/>
+<text x="969" y="232" font-size="12" fill="#766084" text-anchor="middle" font-weight="normal" class="">Residual connection</text>
+<path d="M1158 125H1177" fill="none" stroke="#766084" stroke-width="1.7" marker-end="url(#arrow)"/>
+<text x="25" y="274" font-size="14" fill="#68616b" text-anchor="start" font-weight="normal" class="">Q / K compare tokens; V carries their content. Mask: Mᵢⱼ = −∞ for j &gt; i. Each residual stream stays T × 256.</text>
+</svg>

@@ -17,6 +17,9 @@ import xml.etree.ElementTree as ET
 ET.register_namespace('', 'http://www.w3.org/2000/svg')
 (p/'public/media/scene').mkdir(exist_ok=True)
 for file in (p/'src/content/projects').glob('*.md'):
+    # Procedural posters have their own generator and must not be overwritten.
+    if 'sceneAnimation:' in file.read_text():
+        continue
     root=ET.fromstring((p/f'public/media/{file.stem}.svg').read_text())
     # Rasterize vector faces at Retina resolution when Three uploads them.
     root.set('width', '1920')

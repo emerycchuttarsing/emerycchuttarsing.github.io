@@ -65,8 +65,12 @@ export function toSceneProject(project: Project): SceneProject {
     poster: {
       ...project.data.poster,
       src: project.data.scenePoster ?? project.data.poster.src,
+      alt: project.data.scenePosterAlt ?? project.data.poster.alt,
     },
     accent: project.data.accent,
     ...(project.data.video ? { video: project.data.video } : {}),
+    ...(project.data.sceneAnimation
+      ? { animation: project.data.sceneAnimation }
+      : {}),
   };
 }

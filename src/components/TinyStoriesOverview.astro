@@ -1,0 +1,240 @@
+<section class="tiny-architecture" aria-labelledby="transformer-architecture">
+  <header>
+    <div>
+      <p class="eyebrow">Decoder-only Transformer · report design</p>
+      <h2 id="transformer-architecture">The architecture, tensor by tensor.</h2>
+    </div>
+    <p>
+      BPE converts text into token IDs. Each position becomes a vector, gathers
+      information from earlier tokens, and predicts the next token.
+    </p>
+  </header>
+  <div
+    class="architecture-settings"
+    aria-label="Configuration specified by the training script"
+  >
+    <span>
+      <strong>3,000</strong> vocabulary entries
+    </span>
+    <span>
+      <strong>256</strong> context / embedding width
+    </span>
+    <span>
+      <strong>5</strong> decoder blocks
+    </span>
+    <span>
+      <strong>8 × 32</strong> attention heads × dimensions
+    </span>
+  </div>
+  <figure>
+    <a
+      href="/media/tinystories/architecture.svg"
+      aria-label="Enlarge the Transformer tensor flow"
+    >
+      <picture>
+        <source
+          media="(max-width: 700px)"
+          srcset="/media/tinystories/architecture-mobile.svg"
+        />
+        <img
+          src="/media/tinystories/architecture.svg"
+          width="1180"
+          height="300"
+          alt="Token IDs select rows of the learned embedding table E. Position vectors are added; five decoder blocks preserve T by 256 shape. Final LayerNorm and the tied E transpose projection produce T by 3000 logits."
+        />
+      </picture>
+    </a>
+    <figcaption>
+      One sequence; T is its length. Each colored row is a token vector. Colors
+      are schematic, not saved weights. The output reuses the embedding matrix
+      E.
+    </figcaption>
+  </figure>
+  <figure class="block-figure">
+    <div class="block-heading">
+      <h3>Inside a decoder block</h3>
+      <span>Same structure repeated 5 times</span>
+    </div>
+    <a
+      href="/media/tinystories/decoder-block.svg"
+      aria-label="Enlarge the pre-norm attention and feed-forward block"
+    >
+      <picture>
+        <source
+          media="(max-width: 700px)"
+          srcset="/media/tinystories/decoder-block-mobile.svg"
+        />
+        <img
+          src="/media/tinystories/decoder-block.svg"
+          width="1180"
+          height="290"
+          alt="LayerNorm precedes attention. Q and K determine causal attention scores; V supplies content. Eight heads are concatenated and projected before a residual addition. A second LayerNorm and feed-forward network, 256 to 384 to 256, precede another residual addition."
+        />
+      </picture>
+    </a>
+    <figcaption>
+      The causal mask blocks future positions; residual paths preserve
+      information and gradient flow. Pre-norm follows the homework description;
+      dimensions follow the configured design.
+    </figcaption>
+  </figure>
+  <div class="training-objective">
+    <span class="loop" aria-hidden="true">
+      ↺
+    </span>
+    <p>
+      <strong>Learning:</strong> logits + targets shifted by one token →
+      cross-entropy → backpropagation → AdamW.{' '}
+      <span>
+        Batch 8 · learning rate 5 × 10<sup>−5</sup> · gradient norm capped at 1.
+      </span>
+    </p>
+  </div>
+  <p class="architecture-status">
+    The local model file overrides this design with an embedding-only prototype.
+    The diagrams describe the intended Transformer; they do not establish the
+    architecture used for the reported run.{' '}
+    <a href="#implementation-evidence">Source notes ↓</a>
+  </p>
+</section>
+
+<style>
+  .tiny-architecture {
+    margin-top: 2.5rem;
+  }
+  header {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 2.5rem;
+    align-items: end;
+    margin-bottom: 1.3rem;
+  }
+  h2 {
+    font-size: clamp(1.85rem, 3vw, 2.7rem);
+    line-height: 1.16;
+    margin: 0.55rem 0 0;
+    scroll-margin-top: 2rem;
+  }
+  header > p {
+    font-size: 0.83rem;
+    line-height: 1.75;
+    color: #625b68;
+    margin: 0;
+  }
+  .architecture-settings {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.6rem 1rem;
+    padding: 0.85rem 1rem;
+    border-top: 1px solid #b6a6c0;
+    background: #e7e0e9;
+  }
+  .architecture-settings span {
+    font-size: 0.67rem;
+    color: #64596a;
+  }
+  .architecture-settings strong {
+    color: #584264;
+    font-size: 0.85rem;
+    margin-right: 0.2rem;
+  }
+  figure {
+    margin: 0;
+    background: #f6f2ea;
+  }
+  figure a {
+    display: block;
+  }
+  figure img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  figcaption {
+    font: 0.6rem/1.7 var(--font-label);
+    color: #736b77;
+    padding: 0.55rem 1rem 0.85rem;
+  }
+  .block-figure {
+    margin-top: 1rem;
+    border: 1px solid #d3c9d7;
+  }
+  .block-heading {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.5rem;
+    padding: 1rem 1.2rem 0.2rem;
+  }
+  .block-heading h3 {
+    font: 1.3rem/1.2 var(--font-display);
+    margin: 0;
+  }
+  .block-heading > span {
+    font: 0.58rem/1.5 var(--font-label);
+    color: #776c7e;
+  }
+  .training-objective {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: #e4e7dd;
+    padding: 0.9rem 1.1rem;
+    margin-top: 1rem;
+  }
+  .loop {
+    font-size: 1.8rem;
+    color: #60745d;
+  }
+  .training-objective p {
+    font-size: 0.77rem;
+    line-height: 1.7;
+    margin: 0;
+    color: #52634f;
+  }
+  .training-objective p span {
+    display: block;
+    font: 0.58rem/1.8 var(--font-label);
+    margin-top: 0.2rem;
+  }
+  .architecture-status {
+    font-size: 0.67rem;
+    line-height: 1.7;
+    color: #756c79;
+    margin: 0.8rem 0 0;
+  }
+  .architecture-status a {
+    color: #60496e;
+    text-underline-offset: 3px;
+  }
+  @media (max-width: 700px) {
+    figure picture {
+      display: block;
+      max-width: 420px;
+      margin-inline: auto;
+    }
+    header {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    .architecture-settings {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.7rem;
+    }
+    .architecture-settings span {
+      line-height: 1.6;
+    }
+    .architecture-settings strong {
+      display: block;
+    }
+    figcaption {
+      font-size: 0.62rem;
+    }
+    .block-heading {
+      padding-inline: 1rem;
+    }
+  }
+</style>

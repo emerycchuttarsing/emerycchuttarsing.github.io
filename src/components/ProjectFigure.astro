@@ -3,14 +3,22 @@ interface Props {
   src: string;
   alt: string;
   caption: string;
+  background?: string | undefined;
   width?: number;
   height?: number;
 }
-const { src, alt, caption, width = 960, height = 600 } = Astro.props;
+const {
+  src,
+  alt,
+  caption,
+  background,
+  width = 960,
+  height = 600,
+} = Astro.props;
 ---
 
 <figure class="project-figure">
-  <div>
+  <div style={background ? { background } : undefined}>
     <img src={src} alt={alt} width={width} height={height} />
   </div>
   <figcaption>{caption}</figcaption>

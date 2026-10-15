@@ -6,6 +6,15 @@ import ProjectHeader from '../../components/ProjectHeader.astro';
 import ProjectFigure from '../../components/ProjectFigure.astro';
 import TableOfContents from '../../components/TableOfContents.astro';
 import MethodDiagram from '../../components/MethodDiagram.astro';
+import SignatureExplainer from '../../components/SignatureExplainer.astro';
+import CapstoneArchitecture from '../../components/CapstoneArchitecture.astro';
+import DeepHedgingOverview from '../../components/DeepHedgingOverview.astro';
+import MusicRecommendationOverview from '../../components/MusicRecommendationOverview.astro';
+import TinyStoriesOverview from '../../components/TinyStoriesOverview.astro';
+import TinyStoriesResults from '../../components/TinyStoriesResults.astro';
+import LinkPredictionOverview from '../../components/LinkPredictionOverview.astro';
+import VisualLearningOverview from '../../components/VisualLearningOverview.astro';
+import RetailForecastingOverview from '../../components/RetailForecastingOverview.astro';
 import Prose from '../../components/Prose.astro';
 import ProjectResources from '../../components/ProjectResources.astro';
 import ProjectNavigation from '../../components/ProjectNavigation.astro';
@@ -24,18 +33,181 @@ export const getStaticPaths = (async () => {
 type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 const { project, previous, next } = Astro.props;
 const { Content, headings } = await render(project);
+const hasSignatureExplainer = project.id === 'rl-path-signatures';
+const hasHedgingOverview = project.id === 'signature-deep-hedging';
+const hasMusicOverview = project.id === 'music-recommendation';
+const hasTinyOverview = project.id === 'tinystories-transformer';
+const hasLinkOverview = project.id === 'link-prediction';
+const hasVisualOverview = project.id === 'visual-learning';
+const hasRetailOverview = project.id === 'retail-forecasting';
+const hasCustomOverview =
+  hasSignatureExplainer ||
+  hasHedgingOverview ||
+  hasMusicOverview ||
+  hasTinyOverview ||
+  hasLinkOverview ||
+  hasVisualOverview ||
+  hasRetailOverview;
+const navigationHeadings = hasSignatureExplainer
+  ? [
+      {
+        depth: 2,
+        slug: 'capture-the-chaos',
+        text: 'What are path signatures?',
+      },
+      { depth: 2, slug: 'why-use-signatures', text: 'Why use signatures?' },
+      { depth: 2, slug: 'ml-architecture', text: 'ML architecture' },
+      ...headings,
+    ]
+  : hasHedgingOverview
+    ? [
+        { depth: 2, slug: 'hedging-the-path', text: 'Why the path matters' },
+        { depth: 2, slug: 'two-hedging-models', text: 'Two hedging models' },
+        ...headings,
+      ]
+    : hasMusicOverview
+      ? [
+          {
+            depth: 2,
+            slug: 'playlist-continuation',
+            text: 'The recommendation task',
+          },
+          {
+            depth: 2,
+            slug: 'recommendation-models',
+            text: 'Three models, three roles',
+          },
+          ...headings,
+        ]
+      : hasTinyOverview
+        ? [
+            {
+              depth: 2,
+              slug: 'transformer-architecture',
+              text: 'Transformer architecture',
+            },
+            {
+              depth: 2,
+              slug: 'reading-the-results',
+              text: 'Loss, entropy & results',
+            },
+            ...headings,
+          ]
+        : hasLinkOverview
+          ? [
+              {
+                depth: 2,
+                slug: 'predicting-a-link',
+                text: 'The missing-link task',
+              },
+              {
+                depth: 2,
+                slug: 'link-prediction-models',
+                text: 'Two model architectures',
+              },
+              {
+                depth: 2,
+                slug: 'link-prediction-results',
+                text: 'Results & convergence',
+              },
+              ...headings,
+            ]
+          : hasVisualOverview
+            ? [
+                {
+                  depth: 2,
+                  slug: 'reading-disaster-images',
+                  text: 'The two prediction tasks',
+                },
+                {
+                  depth: 2,
+                  slug: 'image-features',
+                  text: 'Color, edges & texture',
+                },
+                {
+                  depth: 2,
+                  slug: 'visual-learning-pipeline',
+                  text: 'The modeling pipeline',
+                },
+                {
+                  depth: 2,
+                  slug: 'visual-learning-results',
+                  text: 'Validation & results',
+                },
+                ...headings,
+              ]
+            : hasRetailOverview
+              ? [
+                  {
+                    depth: 2,
+                    slug: 'forecasting-for-ako',
+                    text: 'The AKO case study',
+                  },
+                  {
+                    depth: 2,
+                    slug: 'retail-demand-signals',
+                    text: 'Demand patterns & EDA',
+                  },
+                  {
+                    depth: 2,
+                    slug: 'retail-forecasting-model',
+                    text: 'The CatBoost pipeline',
+                  },
+                  {
+                    depth: 2,
+                    slug: 'retail-forecasting-results',
+                    text: 'Evaluation & forecasts',
+                  },
+                  ...headings,
+                ]
+              : headings;
 ---
 
 <BaseLayout title={project.data.title} description={project.data.summary}>
-  <article class="case-study editorial-page wrap">
+  <article
+    class:list={[
+      'case-study editorial-page wrap',
+      { 'hedging-study': hasHedgingOverview },
+      { 'music-study': hasMusicOverview },
+      { 'tiny-study': hasTinyOverview },
+      { 'link-study': hasLinkOverview },
+      { 'visual-study': hasVisualOverview },
+      { 'retail-study': hasRetailOverview },
+    ]}
+  >
     <a class="back-link" href="/projects/">
       ← All projects
     </a>
     <ProjectHeader project={project} />
-    <ProjectFigure {...project.data.poster} />
+    {hasSignatureExplainer ? (
+      <>
+        <SignatureExplainer />
+        <CapstoneArchitecture />
+      </>
+    ) : hasHedgingOverview ? (
+      <DeepHedgingOverview />
+    ) : hasMusicOverview ? (
+      <MusicRecommendationOverview />
+    ) : hasTinyOverview ? (
+      <>
+        <TinyStoriesOverview />
+        <TinyStoriesResults />
+      </>
+    ) : hasLinkOverview ? (
+      <LinkPredictionOverview />
+    ) : hasVisualOverview ? (
+      <VisualLearningOverview />
+    ) : hasRetailOverview ? (
+      <RetailForecastingOverview />
+    ) : (
+      <ProjectFigure {...project.data.poster} />
+    )}
     <div class="case-reading-layout">
       <aside>
-        <TableOfContents headings={headings} />
+        <TableOfContents
+          headings={navigationHeadings}
+          includeMethod={!hasCustomOverview}
+        />
       </aside>
       <div class="case-content">
         {project.data.editorialStatus === 'draft' && (
@@ -45,7 +217,7 @@ const { Content, headings } = await render(project);
             later review.
           </p>
         )}
-        <MethodDiagram steps={project.data.workflow} />
+        {!hasCustomOverview && <MethodDiagram steps={project.data.workflow} />}
         <Prose>
           <Content />
         </Prose>
@@ -56,6 +228,144 @@ const { Content, headings } = await render(project);
   </article>
 </BaseLayout>
 <style>
+  .retail-study :global(.project-header h1) {
+    font-size: clamp(2.5rem, 4.7vw, 4.6rem);
+  }
+  .retail-study :global(.project-header .project-details) {
+    margin-top: 1.8rem;
+    gap: 2rem;
+  }
+  .retail-study :global(.retail-evidence) {
+    margin-block: 1.5rem;
+    padding: 1rem 1.3rem;
+    border-block: 1px solid #c9b7a9;
+    background: #eae0d7;
+  }
+  .retail-study :global(.retail-evidence summary) {
+    cursor: pointer;
+    font-size: 0.82rem;
+    color: #8b5949;
+  }
+  .retail-study :global(.retail-evidence p) {
+    font-size: 0.77rem;
+    line-height: 1.8;
+  }
+  .retail-study :global(.retail-sources) {
+    font-size: 0.7rem;
+    line-height: 2;
+  }
+  .retail-study .case-reading-layout {
+    margin-top: 1.8rem;
+    padding-top: 1.8rem;
+  }
+
+  .visual-study :global(.project-header h1) {
+    font-size: clamp(2.5rem, 4.7vw, 4.6rem);
+  }
+  .visual-study :global(.project-header .project-details) {
+    margin-top: 1.8rem;
+    gap: 2rem;
+  }
+  .visual-study :global(.visual-evidence) {
+    margin-block: 1.5rem;
+    padding: 1rem 1.3rem;
+    border-block: 1px solid #bdcbbf;
+    background: #e5e9df;
+  }
+  .visual-study :global(.visual-evidence summary) {
+    cursor: pointer;
+    font-size: 0.82rem;
+    color: #3f706e;
+  }
+  .visual-study :global(.visual-evidence p) {
+    font-size: 0.77rem;
+    line-height: 1.8;
+  }
+  .visual-study :global(.visual-sources) {
+    font-size: 0.7rem;
+    line-height: 2;
+  }
+  .visual-study .case-reading-layout {
+    margin-top: 1.8rem;
+    padding-top: 1.8rem;
+  }
+  .link-study :global(.project-header h1) {
+    font-size: clamp(2.5rem, 4.7vw, 4.6rem);
+  }
+  .link-study :global(.project-header .project-details) {
+    margin-top: 1.8rem;
+    gap: 2rem;
+  }
+  .link-study :global(.link-evidence) {
+    margin-block: 1.8rem;
+    padding: 1.1rem 1.3rem;
+    background: #e9e3d7;
+    border-block: 1px solid #cbbda4;
+  }
+  .link-study :global(.link-evidence summary) {
+    cursor: pointer;
+    font-size: 0.85rem;
+    color: #876331;
+  }
+  .link-study :global(.link-evidence p) {
+    font-size: 0.8rem;
+    line-height: 1.8;
+  }
+  .link-study :global(.link-evidence img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin-block: 1.2rem;
+  }
+  .link-study :global(.link-sources) {
+    font-size: 0.72rem;
+    line-height: 2;
+  }
+
+  .tiny-study :global(.project-header h1) {
+    font-size: clamp(2.5rem, 4.7vw, 4.6rem);
+  }
+  .tiny-study :global(.project-header .project-details) {
+    margin-top: 1.8rem;
+    gap: 2rem;
+  }
+  .tiny-study :global(.tiny-sources) {
+    font-size: 0.73rem;
+    line-height: 1.8;
+  }
+  .tiny-study .case-reading-layout {
+    margin-top: 1.7rem;
+    padding-top: 1.7rem;
+  }
+
+  .tiny-study :global(.tiny-evidence) {
+    margin-block: 1.75rem;
+    padding: 1.2rem 1.4rem;
+    border-block: 1px solid #c5b9cd;
+    background: #e9e2e9;
+    scroll-margin-top: 2rem;
+  }
+  .tiny-study :global(.tiny-evidence summary) {
+    cursor: pointer;
+    color: #60496e;
+    font-size: 0.84rem;
+  }
+  .tiny-study :global(.tiny-evidence p) {
+    font-size: 0.78rem;
+    line-height: 1.8;
+  }
+  .tiny-study :global(.tiny-report-link) {
+    display: inline-block;
+    padding: 0.75rem 1rem;
+    border: 1px solid #a897b1;
+    color: #60496e;
+    text-decoration: none;
+    font-size: 0.8rem;
+  }
+  .tiny-study :global(.tiny-report-link:hover) {
+    background: #e9e2e9;
+  }
+
   .case-reading-layout {
     display: grid;
     grid-template-columns: 13.5rem minmax(0, 1fr);
@@ -73,6 +383,93 @@ const { Content, headings } = await render(project);
   .case-content > .editorial-note {
     margin: 0 0 2.5rem;
     max-width: 78ch;
+  }
+  .hedging-study :global(details) {
+    margin-top: 1.75rem;
+    padding: 1.1rem 1.25rem;
+    background: #e9e3d680;
+    border-block: 1px solid var(--color-line);
+  }
+  .hedging-study :global(summary) {
+    cursor: pointer;
+    color: var(--color-accent);
+    font-size: 0.85rem;
+    line-height: 1.7;
+  }
+  .music-study :global(.music-split) {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3px;
+    margin: 2rem 0;
+  }
+  .music-study :global(.music-split > div) {
+    padding: 1.15rem;
+    background: #dce6db;
+    border-top: 3px solid #416d62;
+  }
+  .music-study :global(.music-split > div:nth-child(2)) {
+    background: #e0e7e9;
+    border-color: #3e6982;
+  }
+  .music-study :global(.music-split > div:nth-child(3)) {
+    background: #ebe3d5;
+    border-color: #a06c36;
+  }
+  .music-study :global(.music-split strong) {
+    display: block;
+    font: 1.8rem var(--font-display);
+  }
+  .music-study :global(.music-split span) {
+    font-size: 0.7rem;
+  }
+  .music-study :global(.music-formula) {
+    margin: 1.7rem 0;
+    padding: 1.3rem 1.5rem;
+    border-left: 2px solid #416d62;
+    background: #e4eadf;
+  }
+  .music-study :global(.music-formula > span) {
+    display: block;
+    font: 0.62rem var(--font-label);
+    color: #416d62;
+    margin-bottom: 0.7rem;
+    text-transform: uppercase;
+  }
+  .music-study :global(.music-formula strong) {
+    font-size: 1rem;
+    font-weight: 500;
+  }
+  .music-study :global(.music-formula p) {
+    font-size: 0.78rem;
+    margin: 0.8rem 0 0;
+  }
+  .music-study :global(.music-qualifications) {
+    padding: 1.2rem;
+    border-block: 1px solid var(--color-line);
+    background: #e9e6dc;
+    margin: 1.5rem 0;
+  }
+  .music-study :global(.music-qualifications summary) {
+    cursor: pointer;
+    color: #416d62;
+    font-size: 0.85rem;
+  }
+  .music-study :global(.music-qualifications p) {
+    font-size: 0.82rem;
+  }
+  @media (max-width: 500px) {
+    .music-study :global(.music-split) {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+    .music-study :global(.music-split > div) {
+      padding: 0.8rem 0.55rem;
+    }
+    .music-study :global(.music-split strong) {
+      font-size: 1.5rem;
+    }
+    .music-study :global(.music-split span) {
+      font-size: 0.6rem;
+    }
   }
   @media (max-width: 900px) {
     .case-reading-layout {

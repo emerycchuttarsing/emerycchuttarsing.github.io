@@ -1,0 +1,398 @@
+<div class="link-overview">
+  <section class="link-problem" aria-labelledby="predicting-a-link">
+    <div class="problem-copy">
+      <p class="eyebrow">Last.fm Asia · Social graph</p>
+      <h2 id="predicting-a-link">
+        Who is missing
+        <br />a <em>connection?</em>
+      </h2>
+      <p>
+        Users are nodes; friendships are edges. Hide some known friendships,
+        then ask the model to rank those pairs above sampled unconnected pairs.
+        This is the idea behind <strong>“people you may know.”</strong>
+      </p>
+      <dl class="graph-facts">
+        <div>
+          <dt>Users</dt>
+          <dd>7,624</dd>
+        </div>
+        <div>
+          <dt>Friendships</dt>
+          <dd>27,806</dd>
+        </div>
+        <div>
+          <dt>Graph density</dt>
+          <dd>0.096%</dd>
+        </div>
+      </dl>
+      <p class="small-note">
+        Very few of all possible user pairs are connected.
+      </p>
+    </div>
+    <figure>
+      <img
+        src="/media/link-prediction/neighbourhood.svg"
+        width="720"
+        height="490"
+        alt="A real 13-user Last.fm subgraph. Two users, u and v, are highlighted; their friendship is dashed to illustrate a link hidden for prediction."
+      />
+      <figcaption>
+        Real network excerpt; hiding the dashed edge is an illustration, not a
+        model prediction.
+      </figcaption>
+    </figure>
+  </section>
+
+  <section class="link-models" aria-labelledby="link-prediction-models">
+    <header class="section-heading">
+      <div>
+        <p class="eyebrow">The modeling comparison</p>
+        <h2 id="link-prediction-models">
+          Learn a vector.
+          <br />
+          Or learn from neighbours.
+        </h2>
+      </div>
+      <p>
+        <strong>Matrix factorization</strong> learns a vector for each user
+        directly. The <strong>graph convolutional network (GCN)</strong> builds
+        representations by combining node features with information from
+        connected users.
+      </p>
+    </header>
+    <figure class="architecture-figure">
+      <picture>
+        <source
+          media="(max-width: 700px)"
+          srcset="/media/link-prediction/architecture-mobile.svg"
+        />
+        <img
+          src="/media/link-prediction/architecture.svg"
+          width="1180"
+          height="460"
+          loading="lazy"
+          alt="Two model architectures. Matrix factorization maps user IDs to 10-dimensional vectors and scores a dot product; batch gradient descent updates the vectors from squared error and L2 regularization. The GCN aggregates neighbours through three layers into 256-dimensional vectors; an MLP scores pair features. Binary cross-entropy and Adam update both networks."
+        />
+      </picture>
+    </figure>
+    <div class="objective-pair">
+      <div>
+        <h3>The optimization baseline</h3>
+        <div
+          class="formula"
+          aria-label="Minimize over U the sum of squared errors between labels and vector dot products, plus lambda times the squared Frobenius norm of U."
+        >
+          <math display="block"><munder><mo>min</mo><mi>U</mi></munder><mrow><munder><mo>∑</mo><mrow><mo>(</mo><mi>i</mi><mo>,</mo><mi>j</mi><mo>)</mo><mo>∈</mo><mi>Ω</mi></mrow></munder><msup><mrow><mo>(</mo><msub><mi>y</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>−</mo><msubsup><mi>u</mi><mi>i</mi><mi>T</mi></msubsup><msub><mi>u</mi><mi>j</mi></msub><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><mi>λ</mi><msubsup><mrow><mo>‖</mo><mi>U</mi><mo>‖</mo></mrow><mi>F</mi><mn>2</mn></msubsup></mrow></math>
+        </div>
+        <p>
+          <strong>U</strong> holds the user vectors. Training pairs have labels
+          1 or 0; <strong>λ</strong> limits vector magnitude. NumPy accumulates
+          each pair’s gradient into both users’ vectors.
+        </p>
+        <span class="config">Learning rate 0.01 · λ = 0.01</span>
+      </div>
+      <div>
+        <h3>The neural edge scorer</h3>
+        <div class="pair-features">
+          <span>zᵢ</span>
+          <span>zⱼ</span>
+          <span>zᵢ ⊙ zⱼ</span>
+          <span>|zᵢ − zⱼ|</span>
+          <b aria-hidden="true">→</b>
+          <strong>MLP</strong>
+        </div>
+        <p>
+          The decoder combines both vectors, their elementwise product and their
+          absolute difference. It can learn interactions beyond a single dot
+          product.
+        </p>
+        <span class="config">
+          Adam · learning rate 0.001 · weight decay 0.00005
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <section class="link-results" aria-labelledby="link-prediction-results">
+    <header class="section-heading">
+      <div>
+        <p class="eyebrow">Evidence from the project</p>
+        <h2 id="link-prediction-results">
+          Fit the graph.
+          <br />
+          Then test the ranking.
+        </h2>
+      </div>
+      <p>
+        <strong>ROC-AUC</strong> measures how often a positive pair ranks above
+        a sampled negative. It evaluates ranking, without choosing a
+        classification threshold.
+      </p>
+    </header>
+    <div class="result-grid">
+      <figure>
+        <h3>Held-out link ranking</h3>
+        <picture>
+          <source
+            media="(max-width: 700px)"
+            srcset="/media/link-prediction/auc-mobile.svg"
+          />
+          <img
+            src="/media/link-prediction/auc.svg"
+            width="640"
+            height="360"
+            loading="lazy"
+            alt="Reported test ROC-AUC: matrix factorization 0.8435 and GCN plus MLP 0.9579. Random ranking is 0.5. The two experiments used different test sets."
+          />
+        </picture>
+        <figcaption>
+          Report Tables 1–2. Baseline: 11,124 test pairs; GCN: 5,560. Both use
+          1:1 positive/negative sampling.
+        </figcaption>
+      </figure>
+      <figure>
+        <h3>Baseline training objective</h3>
+        <picture>
+          <source
+            media="(max-width: 700px)"
+            srcset="/media/link-prediction/convergence-mobile.svg"
+          />
+          <img
+            src="/media/link-prediction/convergence.svg"
+            width="640"
+            height="360"
+            loading="lazy"
+            alt="Ten saved loss values decrease from 22,288.6142 at epoch zero to 2,111.2992 at epoch 45. Points are connected without smoothing."
+          />
+        </picture>
+        <figcaption>
+          Redrawn from ten logged checkpoints. The original full curve has a
+          small rebound; a falling loss does not prove global optimality.
+        </figcaption>
+      </figure>
+    </div>
+    <div class="result-takeaway">
+      <p>
+        <strong>GCN + MLP achieved the higher reported ranking score</strong>,
+        with average precision 0.9655. The baseline recovered many positives
+        (recall 0.9087), with lower precision (0.6061).
+      </p>
+      <p>
+        These are separate reported runs: different splits and embedding sizes
+        mean the AUC gap is{' '}
+        <strong>not a controlled measure of the architecture alone</strong>.
+      </p>
+    </div>
+  </section>
+</div>
+
+<style>
+  .link-overview {
+    margin-block: 2.5rem;
+  }
+  h2 {
+    font-size: clamp(1.9rem, 3.1vw, 3rem);
+    line-height: 1.13;
+    margin: 0.65rem 0 1.2rem;
+    scroll-margin-top: 2rem;
+  }
+  h3 {
+    font: 600 1rem/1.5 var(--font-body);
+    margin: 0 0 0.8rem;
+  }
+  p {
+    color: #656155;
+    font-size: 0.88rem;
+    line-height: 1.8;
+  }
+  strong {
+    color: var(--color-ink);
+  }
+  figure {
+    margin: 0;
+    min-width: 0;
+  }
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  figcaption {
+    font: 0.61rem/1.75 var(--font-label);
+    color: var(--color-muted);
+    margin-top: 0.7rem;
+  }
+  .link-problem {
+    display: grid;
+    grid-template-columns: 0.95fr 1.1fr;
+    gap: clamp(1.5rem, 3vw, 3rem);
+    align-items: center;
+    background: #e9e3d7;
+    border-top: 1px solid #b39a79;
+    padding: clamp(1.3rem, 3vw, 2.7rem);
+  }
+  .link-problem em {
+    color: #876331;
+    font-weight: 400;
+  }
+  .graph-facts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.8rem;
+    margin: 1.6rem 0 0.65rem;
+    border-top: 1px solid #cfc4b2;
+    padding-top: 1.2rem;
+  }
+  .graph-facts dt {
+    font: 0.61rem/1.7 var(--font-label);
+    color: var(--color-muted);
+  }
+  .graph-facts dd {
+    margin: 0.25rem 0 0;
+    font: 1.65rem/1.2 var(--font-display);
+  }
+  .small-note {
+    font-size: 0.7rem;
+    margin: 0;
+  }
+  .link-models,
+  .link-results {
+    margin-top: 3rem;
+  }
+  .section-heading {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: end;
+    gap: 3rem;
+    margin-bottom: 1.5rem;
+  }
+  .section-heading h2 {
+    margin-bottom: 0;
+  }
+  .section-heading > p {
+    margin: 0;
+  }
+  .architecture-figure {
+    border: 1px solid var(--color-line);
+    padding: 0.5rem;
+    background: #f6f2e9;
+  }
+  .objective-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+    margin-top: 1.5rem;
+  }
+  .objective-pair > div {
+    border-top: 2px solid #997039;
+    padding-top: 1rem;
+    min-width: 0;
+  }
+  .objective-pair > div:nth-child(2) {
+    border-color: #467c78;
+  }
+  .objective-pair p {
+    font-size: 0.79rem;
+    margin: 0.8rem 0;
+  }
+  .formula {
+    display: grid;
+    place-items: center;
+    min-height: 4.2rem;
+    font-size: 1.12rem;
+  }
+  .pair-features {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 4.2rem;
+  }
+  .pair-features span {
+    padding: 0.4rem 0.5rem;
+    background: #e0e8df;
+    font: 1rem var(--font-display);
+    white-space: nowrap;
+  }
+  .pair-features b {
+    color: #467c78;
+  }
+  .pair-features strong {
+    font-size: 0.9rem;
+  }
+  .config {
+    color: var(--color-muted);
+    font: 0.61rem/1.7 var(--font-label);
+  }
+  .result-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.4rem;
+  }
+  .result-grid figure {
+    padding: 1.2rem;
+    background: #f6f2e9;
+    border: 1px solid var(--color-line);
+  }
+  .result-grid h3 {
+    font-size: 0.85rem;
+    margin-bottom: 0.1rem;
+  }
+  .result-takeaway {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+    margin-top: 1.2rem;
+  }
+  .result-takeaway p {
+    font-size: 0.8rem;
+    margin: 0;
+  }
+  @media (max-width: 950px) {
+    .link-problem {
+      grid-template-columns: 1fr;
+    }
+    .link-problem figure {
+      max-width: 650px;
+      margin-inline: auto;
+    }
+    .section-heading {
+      gap: 1.5rem;
+    }
+  }
+  @media (max-width: 700px) {
+    .section-heading,
+    .objective-pair,
+    .result-grid,
+    .result-takeaway {
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
+    .graph-facts dd {
+      font-size: 1.4rem;
+    }
+    .graph-facts dt {
+      font-size: 0.55rem;
+    }
+    .pair-features {
+      gap: 0.35rem;
+    }
+    .pair-features span {
+      padding: 0.35rem;
+      font-size: 0.95rem;
+    }
+    .formula {
+      font-size: 1rem;
+    }
+    .link-models,
+    .link-results {
+      margin-top: 2.2rem;
+    }
+    .result-grid figure {
+      padding: 0.85rem;
+    }
+    .result-grid img {
+      margin-block: 0.6rem;
+    }
+  }
+</style>

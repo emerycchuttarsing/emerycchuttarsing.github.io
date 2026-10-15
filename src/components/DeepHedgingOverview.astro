@@ -1,0 +1,437 @@
+---
+const models = [
+  {
+    name: 'Raw-FFNN',
+    label: 'Raw price history',
+    input: '60 price slots',
+    detail: 'Observed prices; future slots stay at zero.',
+    parameters: '12,353',
+    color: '#386882',
+  },
+  {
+    name: 'Sig-FFNN',
+    label: 'Time + price signatures',
+    input: '14 signature features',
+    detail: 'Depth 3: a compact summary of the observed path.',
+    parameters: '9,409',
+    color: '#a16f30',
+  },
+];
+---
+
+<div class="hedging-overview">
+  <section class="hedging-problem" aria-labelledby="hedging-the-path">
+    <div class="problem-copy">
+      <p class="eyebrow">The financial problem</p>
+      <h2 id="hedging-the-path">
+        Same final price.
+        <br />
+        <em>Different payoff.</em>
+      </h2>
+      <p>
+        An <strong>Asian call</strong> pays according to the average price over
+        its life. Two paths can finish at the same price and leave the option
+        seller with different amounts to pay.
+      </p>
+      <p>
+        The task: learn how many shares to hold at each date to cover that
+        liability, while paying a cost every time the position changes.
+      </p>
+      <div class="payoff-rule">
+        <span class="eyebrow">In this example · strike = 100</span>
+        <p>Payoff = max(average price − 100, 0)</p>
+      </div>
+    </div>
+    <figure class="payoff-figure">
+      <a
+        href="/media/deep-hedging/asian-paths.svg"
+        aria-label="Enlarge the Asian option payoff illustration"
+      >
+        <picture>
+          <source
+            media="(max-width: 600px)"
+            srcset="/media/deep-hedging/asian-paths-mobile.svg"
+          />
+          <img
+            src="/media/deep-hedging/asian-paths.svg"
+            width="780"
+            height="520"
+            alt="Two constructed paths start at 100 and end at 106. The early-rise path averages 107.51 and pays 7.51; the late-recovery path averages 98.59 and pays zero. Dashed lines mark their averages."
+          />
+        </picture>
+      </a>
+      <figcaption>
+        Constructed example to explain the payoff; not experimental results.
+        Dashed lines show the 60-day averages.
+      </figcaption>
+    </figure>
+  </section>
+
+  <section class="hedging-models" aria-labelledby="two-hedging-models">
+    <div class="model-heading">
+      <div>
+        <p class="eyebrow">The experiment</p>
+        <h2 id="two-hedging-models">Two inputs. One hedging task.</h2>
+      </div>
+      <p>
+        A signature turns the path into ordered numerical features. Here,
+        <strong>time is included alongside price</strong> so the features can
+        describe when movements occur. Each model is trained separately.
+      </p>
+    </div>
+    <div class="model-pair">
+      {models.map((model) => (
+        <article class="hedge-model" style={{ '--model-color': model.color }}>
+          <header>
+            <h3>{model.name}</h3>
+            <span>{model.parameters} parameters</span>
+          </header>
+          <div class="model-route">
+            <div class="model-input">
+              <span class="step-label">{model.label}</span>
+              <strong>{model.input}</strong>
+              <p>{model.detail}</p>
+              <span class="previous-hedge">+ previous hedge position</span>
+            </div>
+            <span class="flow-arrow" aria-hidden="true">
+              →
+            </span>
+            <div class="network-step">
+              <svg viewBox="0 0 120 66" aria-hidden="true">
+                <g stroke="currentColor" stroke-opacity=".2">
+                  {[15, 33, 51].flatMap((y) =>
+                    [15, 33, 51].map((z) => (
+                      <>
+                        <line x1="15" y1={y} x2="60" y2={z} />
+                        <line x1="60" y1={y} x2="105" y2={z} />
+                      </>
+                    )),
+                  )}
+                </g>
+                <g fill="currentColor">
+                  {[15, 60, 105].flatMap((x) =>
+                    [15, 33, 51].map((y) => <circle cx={x} cy={y} r="4" />),
+                  )}
+                </g>
+              </svg>
+              <strong>Neural hedge</strong>
+              <span>3 × 64 · ReLU</span>
+            </div>
+          </div>
+          <div class="hedge-output">
+            <span class="flow-arrow" aria-hidden="true">
+              ↓
+            </span>
+            <p>
+              <strong>Hold 0–1 shares</strong>
+              <span>Sigmoid output · rebalance at the current price</span>
+            </p>
+          </div>
+        </article>
+      ))}
+    </div>
+    <div class="learning-loop">
+      <span class="return-arrow" aria-hidden="true">
+        ↺
+      </span>
+      <div>
+        <p class="step-label">How both models learn</p>
+        <p>
+          Trade through the path, deduct costs, then measure{' '}
+          <strong>payoff − hedge wealth</strong>. Average the worst 1% of
+          shortfalls and backpropagate this loss:
+          <strong>Adam updates the network weights.</strong>
+        </p>
+      </div>
+    </div>
+    <p class="model-footnote">
+      Each policy reuses its weights across all 60 dates. On test paths, those
+      weights are frozen.
+    </p>
+    <dl class="benchmark-settings">
+      <div>
+        <dt>Simulated market</dt>
+        <dd>GBM · 20% volatility</dd>
+      </div>
+      <div>
+        <dt>Trading horizon</dt>
+        <dd>60 daily rebalances</dd>
+      </div>
+      <div>
+        <dt>Transaction costs</dt>
+        <dd>0.10% of traded value</dd>
+      </div>
+      <div>
+        <dt>Reported training run</dt>
+        <dd>20,000 paths · 100 epochs</dd>
+      </div>
+    </dl>
+  </section>
+</div>
+
+<style>
+  .hedging-overview {
+    margin-block: 3rem;
+  }
+  .hedging-overview h2 {
+    scroll-margin-top: 2rem;
+  }
+  .hedging-overview p {
+    color: #5f5d52;
+  }
+  .hedging-overview strong {
+    color: var(--color-ink);
+  }
+  .hedging-problem {
+    display: grid;
+    grid-template-columns: 0.9fr 1.25fr;
+    gap: clamp(1.5rem, 3vw, 3rem);
+    align-items: center;
+    padding: clamp(1.4rem, 3vw, 2.75rem);
+    background: #e9e3d6;
+    border-top: 1px solid #b8a480;
+  }
+  .problem-copy h2 {
+    font-size: clamp(2rem, 3.4vw, 3.1rem);
+    line-height: 1.12;
+    margin: 0.75rem 0 1.5rem;
+  }
+  .problem-copy h2 em {
+    color: #876332;
+    font-weight: 400;
+  }
+  .problem-copy > p:not(.eyebrow) {
+    font-size: 0.92rem;
+    line-height: 1.8;
+  }
+  .payoff-rule {
+    border-top: 1px solid #cfc5b3;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+  }
+  .payoff-rule p {
+    font: 0.85rem/1.6 var(--font-display);
+    color: var(--color-ink);
+    margin: 0.45rem 0 0;
+  }
+  .payoff-figure {
+    min-width: 0;
+    margin: 0;
+  }
+  .payoff-figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .payoff-figure figcaption {
+    font: 0.61rem/1.7 var(--font-label);
+    color: var(--color-muted);
+    margin-top: 0.8rem;
+  }
+  .hedging-models {
+    padding-top: 3.25rem;
+  }
+  .model-heading {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: end;
+    margin-bottom: 1.75rem;
+  }
+  .model-heading h2 {
+    font-size: clamp(1.8rem, 2.7vw, 2.6rem);
+    line-height: 1.15;
+    margin: 0.65rem 0 0;
+  }
+  .model-heading > p {
+    font-size: 0.88rem;
+    line-height: 1.8;
+    margin: 0;
+  }
+  .model-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+  }
+  .hedge-model {
+    border: 1px solid var(--color-line);
+    border-top: 3px solid var(--model-color);
+    background: #f6f2e9;
+    padding: 1.5rem;
+    min-width: 0;
+  }
+  .hedge-model header {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.7rem;
+    align-items: baseline;
+  }
+  .hedge-model h3 {
+    color: var(--model-color);
+    font: 600 1.2rem var(--font-body);
+    margin: 0;
+  }
+  .hedge-model header > span {
+    font: 0.6rem/1.6 var(--font-label);
+    color: var(--color-muted);
+  }
+  .model-route {
+    display: grid;
+    grid-template-columns: 1.4fr auto 1fr;
+    gap: 0.7rem;
+    align-items: center;
+    margin-block: 1.75rem;
+  }
+  .step-label {
+    font: 0.6rem/1.6 var(--font-label);
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+    color: var(--color-muted);
+  }
+  .model-input > strong {
+    display: block;
+    font-size: 1rem;
+    margin: 0.3rem 0;
+  }
+  .model-input p {
+    font-size: 0.76rem;
+    line-height: 1.6;
+    margin: 0.4rem 0 0.75rem;
+  }
+  .previous-hedge {
+    display: inline-block;
+    font-size: 0.65rem;
+    color: var(--model-color);
+    border-top: 1px solid var(--color-line);
+    padding-top: 0.5rem;
+  }
+  .flow-arrow {
+    color: var(--model-color);
+    font-size: 1.5rem;
+  }
+  .network-step {
+    text-align: center;
+    color: var(--model-color);
+  }
+  .network-step svg {
+    width: 100%;
+    max-width: 120px;
+    height: auto;
+    display: block;
+    margin: 0 auto 0.4rem;
+  }
+  .network-step strong {
+    display: block;
+    font-size: 0.82rem;
+  }
+  .network-step > span {
+    font: 0.6rem/1.7 var(--font-label);
+  }
+  .hedge-output {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    border-top: 1px solid var(--color-line);
+    padding-top: 1rem;
+  }
+  .hedge-output p {
+    margin: 0;
+    font-size: 0.84rem;
+  }
+  .hedge-output p span {
+    display: block;
+    font-size: 0.68rem;
+    margin-top: 0.3rem;
+  }
+  .learning-loop {
+    display: flex;
+    align-items: center;
+    gap: 1.4rem;
+    padding: 1.2rem 1.5rem;
+    margin-top: 1rem;
+    border: 1px dashed #9caa93;
+    background: #e6e9df;
+  }
+  .return-arrow {
+    font-size: 2.4rem;
+    color: #58705a;
+  }
+  .learning-loop .step-label {
+    color: #58705a;
+    margin: 0 0 0.3rem;
+  }
+  .learning-loop p:last-child {
+    margin: 0;
+    font-size: 0.82rem;
+    line-height: 1.8;
+  }
+  .model-footnote {
+    font: 0.62rem/1.8 var(--font-label);
+    margin-block: 0.8rem 1.5rem;
+  }
+  .benchmark-settings {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.2rem;
+    border-top: 1px solid var(--color-line);
+    padding-top: 1.1rem;
+    margin: 0;
+  }
+  .benchmark-settings dt {
+    font: 0.58rem/1.7 var(--font-label);
+    color: var(--color-muted);
+    margin-bottom: 0.3rem;
+  }
+  .benchmark-settings dd {
+    font-size: 0.76rem;
+    margin: 0;
+  }
+  @media (max-width: 1050px) {
+    .hedging-problem {
+      grid-template-columns: 1fr;
+    }
+    .problem-copy {
+      max-width: 65ch;
+    }
+    .payoff-figure {
+      width: 100%;
+      max-width: 700px;
+      margin-inline: auto;
+    }
+    .model-heading {
+      grid-template-columns: 1fr;
+      gap: 1.2rem;
+    }
+    .model-pair {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 600px) {
+    .benchmark-settings {
+      grid-template-columns: 1fr 1fr;
+    }
+    .hedge-model {
+      padding: 1rem;
+    }
+    .hedge-model header {
+      flex-wrap: wrap;
+    }
+    .model-route {
+      gap: 0.5rem;
+    }
+    .model-input > strong {
+      font-size: 0.9rem;
+    }
+    .learning-loop {
+      padding: 1rem;
+      gap: 0.8rem;
+      align-items: start;
+    }
+    .return-arrow {
+      font-size: 1.8rem;
+    }
+    .problem-copy > p:not(.eyebrow) {
+      font-size: 0.86rem;
+    }
+  }
+</style>

@@ -1,7 +1,8 @@
 # Shared portfolio scene — Works correction
 
 Both `/` and `/projects/` progressively enhance the same `ProjectsShowcase` and
-`ProjectRows`. Seven native title links remain available before any JavaScript.
+`ProjectRows`. Seven native title links remain available before any JavaScript. Once enhanced,
+the entire project row opens its preview, including its title and category.
 Case studies and About load neither Three.js nor video players.
 
 ## Ownership and modes
@@ -22,6 +23,9 @@ priority, and hover never opens the modal or changes history.
   continuous ground mesh. This is a decorative landscape, not research data.
 - `terrain.ts`: original point-cloud hero. Position, scale and opacity approach
   the ground coordinate system during the reversible reveal.
+- `reveal.ts`: a reversible scroll-driven turn, expanding from 28% to 100% of
+  the orbital radius while cards grow from 55% to full size. Ambient rotation
+  starts during the reveal, before the project section fills the viewport.
 - `layout.ts`: deterministic world positions by project ID, own orientations,
   depths and scales on an elliptical orbit. Three featured panels are larger.
   Panels have grown by about 50% and can overlap in depth. The seven native HTML
@@ -56,8 +60,11 @@ Scene posters rasterize at 1920 × 1200; video sources are 1536 × 960.
 ## HTML, selection and media
 
 `highlight.ts` binds pointer/focus to IDs and the separator glow. `selection.ts`
-retains native title links, an explicit Preview button, Escape, focus trapping,
-scroll preservation and Back/Forward history including reload and study return.
+enhances title links into accessible dialog triggers and opens the preview from
+any click on a row. The explicit Preview button, Enter/Space activation, Escape,
+focus restoration, scroll preservation and Back/Forward history remain supported.
+The case-study link stays inside the dialog; native title hrefs are retained for
+no-JS access.
 
 `media.ts` schedules at most two videos, one in constrained/mobile/Safari profiles.
 Overview eligibility combines section visibility with projected panel visibility;
@@ -67,7 +74,11 @@ Selection separately reparents the chosen source video into the dialog.
 
 The gallery’s Pause motion control freezes rotation and videos, showing sharp
 stills. Leaving a row resumes the slow orbit; keyboard focus has priority over
-pointer hover. Active panels sharpen and brighten, while other panels dim smoothly.
+pointer hover. Active rows receive a faint accent wash and 10% brighter content;
+other rows retain 76% content opacity. These changes fade over 300 ms, without
+changing layout, and CSS transitions are disabled for reduced motion. Active
+panels sharpen and brighten slightly; others retain 82% of their normal opacity.
+Frame edges and the matching ground light use the same restrained emphasis.
 The orbit stops in the explicit preview and when its panels leave the viewport.
 
 Videos have no src initially. Muted autoplay refusal offers manual retry; errors
@@ -111,3 +122,37 @@ l’orbite continuent d’être mises à jour à chaque frame.
 
 Mesures et commande reproductible :
 [validation de performance](../../docs/validation/orbit-performance/README.md).
+
+## Procedural project panels
+
+`SceneProject.animation` selects a `bitcoin-price`, `hedge-rebalancing` or `music-sorting` CanvasTexture instead of a
+video. `bitcoin-path.ts` contains the pure stochastic path and `bitcoin-texture.ts`
+its drawing and 60 Hz pacing. `renderer.ts` advances it from the existing scene
+loop, only for the pointer-hovered project row or preview visual and while the
+panel is visible and motion is enabled. Focus and touch retain a still image.
+The current texture freezes on pointer leave; no independent timer keeps running.
+Canvas pixels, the texture and listeners are disposed with the scene.
+
+The media manager receives procedural project IDs solely to retain the shared
+pause controls and preference messages. Other projects' video scheduling is
+unchanged. The generated SVG supplies the initial and no-WebGL project preview.
+DOM diagnostics `data-price-motion`, `data-price-time` and `data-price-frames`
+allow checking hover gating and update rate without an exposed mutable API.
+
+The hedging panel uses `hedging-path.ts` and `hedging-texture.ts`: a smooth grey
+illustrative price and green piecewise-constant holdings, with irregular
+rebalancing events and a brief pulse on each adjustment. The simple reactive
+holding rule is decorative, not the trained policy or a live market feed.
+`generate-hedging-poster.mjs` shares its initial geometry for the static fallback.
+Both panels use the same hover, pause and visibility gates. Hedging diagnostics
+use `data-hedge-motion`, `data-hedge-time` and `data-hedge-frames`; the existing
+Bitcoin diagnostic attributes remain independent.
+
+The music panel uses `music-flow.ts` and `music-texture.ts`. Sixteen notes
+follow visible connections through a large three-layer decorative network, then
+arrive at black playlist and grey alternative output nodes. A sage background keeps
+the notes legible; its material exposure stays below the gallery bloom threshold.
+The 12-second flow targets 60 Hz through the same hover and visibility gates.
+`generate-music-poster.mjs` uses the same initial note positions for the SVG.
+`data-music-motion`, `data-music-time` and `data-music-frames` report its state.
+The illustration represents matching a playlist, not observed model predictions.

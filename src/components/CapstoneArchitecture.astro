@@ -1,0 +1,893 @@
+---
+const agents = [
+  {
+    id: 'd3qn',
+    name: 'D3QN',
+    idea: 'Score each possible trade.',
+    batch: 'Replay batch',
+    update: 'Update Q-network',
+    updateLines: [
+      'Correct action-value predictions',
+      'using reward + future value',
+    ],
+    learning: 'The policy follows the Q-values',
+    note: 'Changing the scores changes which trade is selected. There is no separate actor to update.',
+    description:
+      'D3QN scores discrete actions with a Q-network. The action is executed in Gymnasium, which returns a reward and next observation. A replay batch is used to correct value predictions toward reward plus estimated future value. The dashed return arrow updates the Q-network weights; the policy changes through these new scores.',
+  },
+  {
+    id: 'ppo',
+    name: 'PPO',
+    idea: 'Learn an allocation policy.',
+    batch: 'Latest rollout',
+    update: 'Update actor + critic',
+    updateLines: ['Actor: favour better actions', 'Critic: fit return targets'],
+    learning: 'Improve the policy in small steps',
+    note: 'Judge actions against the critic’s baseline. Clipping discourages large policy changes.',
+    description:
+      'PPO uses an actor to choose continuous exposure and a critic to estimate state value. Gymnasium returns trading feedback. The latest rollout trains the critic against return targets and the actor using advantages relative to the critic baseline, with a clipped policy objective. Dashed return arrows update both networks before fresh experience is collected.',
+  },
+  {
+    id: 'sac',
+    name: 'SAC',
+    idea: 'Learn a policy that explores.',
+    batch: 'Replay batch',
+    update: 'Update actor + critics',
+    updateLines: [
+      'Critics: refine action values',
+      'Actor: value + exploration',
+    ],
+    learning: 'Improve value, keep exploring',
+    note: 'The actor uses the critics’ estimates and an exploration objective. Past experience is reused.',
+    description:
+      'SAC uses an actor and two action-value critics. The action is executed in Gymnasium and the resulting experience is stored. Replay batches train both critics against reward and future-value targets. The actor improves estimated value while preserving exploration through its entropy objective. Dashed return arrows update the actor and both critics.',
+  },
+];
+const stages = [
+  {
+    id: 'observation',
+    title: 'Observation',
+    text: 'Signature features + portfolio state',
+  },
+  {
+    id: 'model',
+    title: 'ML model',
+    text: 'D3QN, PPO or SAC — trained separately',
+  },
+  {
+    id: 'action',
+    title: 'Trading action',
+    text: 'A discrete trade or a target allocation',
+  },
+  {
+    id: 'environment',
+    title: 'Gymnasium',
+    text: 'Simulate the trade, costs and portfolio',
+  },
+];
+---
+
+<section class="ml-architecture" aria-labelledby="ml-architecture">
+  <header class="architecture-heading">
+    <div>
+      <p class="eyebrow">Inside the learning system</p>
+      <h2 id="ml-architecture">
+        One trading loop.
+        <br />
+        Three ways to learn.
+      </h2>
+    </div>
+    <p>
+      The model turns market features into a trading decision. Gymnasium returns
+      a new observation and a reward, which help the agent learn.
+    </p>
+  </header>
+
+  <figure class="architecture-figure" aria-describedby="architecture-caption">
+    <div
+      class="shared-loop"
+      aria-label="The common reinforcement learning loop"
+    >
+      <p class="diagram-label">The shared loop</p>
+      <ol class="loop-stages">
+        {stages.map((stage, index) => (
+          <li class={`loop-stage stage-${stage.id}`} data-node={stage.id}>
+            <span class="stage-number">0{index + 1}</span>
+            <strong>{stage.title}</strong>
+            <span class="stage-description">{stage.text}</span>
+            {index < stages.length - 1 && (
+              <span class="stage-arrow" aria-hidden="true">
+                →
+              </span>
+            )}
+          </li>
+        ))}
+      </ol>
+      <div class="loop-feedback">
+        <svg
+          viewBox="0 0 1000 88"
+          preserveAspectRatio="none"
+          aria-hidden="true"
+        >
+          <path
+            class="next-state-line"
+            data-edge="environment-to-observation"
+            d="M889 0 V69 H111 V3 M106 11 L111 3 L116 11"
+          />
+          <path
+            class="learning-line"
+            data-edge="environment-to-model"
+            d="M889 0 V27 H370 V3 M365 11 L370 3 L375 11"
+          />
+        </svg>
+        <p class="reward-label">
+          <span aria-hidden="true">↶</span> Reward → update the model
+        </p>
+        <p class="next-state-label">
+          <span aria-hidden="true">↶</span> Next observation → make the next
+          decision
+        </p>
+      </div>
+    </div>
+
+    <div class="comparison-heading">
+      <p class="diagram-label">What changes inside the model?</p>
+      <div class="diagram-legend" aria-label="Arrow legend">
+        <span>
+          <i class="legend-line" aria-hidden="true"></i> Data & decisions
+        </span>
+        <span>
+          <i class="legend-line dashed" aria-hidden="true"></i> Weight updates
+        </span>
+      </div>
+    </div>
+
+    <div class="agent-comparison">
+      {agents.map((agent) => (
+        <article
+          class={`agent-panel agent-${agent.id}`}
+          data-node={`agent-${agent.id}`}
+        >
+          <header class="agent-heading">
+            <h3>{agent.name}</h3>
+            <p>{agent.idea}</p>
+          </header>
+          <svg
+            class="agent-diagram"
+            viewBox="0 0 340 516"
+            role="img"
+            aria-labelledby={`${agent.id}-diagram-title ${agent.id}-diagram-description`}
+          >
+            <title
+              id={`${agent.id}-diagram-title`}
+            >{agent.name}: decisions and learning updates</title>
+            <desc id={`${agent.id}-diagram-description`}>
+              {agent.description}
+            </desc>
+            <defs>
+              <marker
+                id={`${agent.id}-forward`}
+                viewBox="0 0 8 8"
+                refX="7"
+                refY="4"
+                markerWidth="6"
+                markerHeight="6"
+                orient="auto-start-reverse"
+              >
+                <path d="M0 0 L8 4 L0 8 Z" class="arrow-tip" />
+              </marker>
+              <marker
+                id={`${agent.id}-feedback`}
+                viewBox="0 0 8 8"
+                refX="7"
+                refY="4"
+                markerWidth="6"
+                markerHeight="6"
+                orient="auto-start-reverse"
+              >
+                <path d="M0 0 L8 4 L0 8 Z" class="feedback-tip" />
+              </marker>
+            </defs>
+            <g class="diagram-input" data-node={`${agent.id}-input`}>
+              <rect x="92" y="14" width="156" height="38" rx="5" />
+              <text x="170" y="38">
+                Observation
+              </text>
+            </g>
+            {agent.id === 'd3qn' ? (
+              <>
+                <path
+                  class="decision-line"
+                  data-edge="d3qn-input-network"
+                  d="M170 52 V96"
+                  marker-end={`url(#${agent.id}-forward)`}
+                />
+                <g class="network-box" data-node="d3qn-network">
+                  <rect x="74" y="100" width="192" height="64" rx="5" />
+                  <text class="box-title" x="170" y="127">
+                    Q-network
+                  </text>
+                  <text class="box-note" x="170" y="148">
+                    Scores each trade
+                  </text>
+                </g>
+                <path
+                  class="decision-line"
+                  data-edge="d3qn-network-action"
+                  d="M170 164 V216"
+                  marker-end={`url(#${agent.id}-forward)`}
+                />
+                <g class="action-box" data-node="d3qn-action">
+                  <rect x="34" y="220" width="272" height="64" rx="5" />
+                  <text class="box-note" x="170" y="241">
+                    Discrete action
+                  </text>
+                  {['Buy', 'Hold', 'Sell'].map((action, index) => (
+                    <g class="trade-chip">
+                      <rect
+                        x={54 + index * 80}
+                        y="251"
+                        width="72"
+                        height="24"
+                        rx="3"
+                      />
+                      <text x={90 + index * 80} y="268">
+                        {action}
+                      </text>
+                    </g>
+                  ))}
+                </g>
+              </>
+            ) : (
+              <>
+                <path
+                  class="decision-line"
+                  data-edge={`${agent.id}-input-actor`}
+                  d="M170 52 V74 H85 V96"
+                  marker-end={`url(#${agent.id}-forward)`}
+                />
+                <path
+                  class="decision-line"
+                  data-edge={`${agent.id}-input-critic`}
+                  d="M170 74 H256 V96"
+                  marker-end={`url(#${agent.id}-forward)`}
+                />
+                <g class="network-box" data-node={`${agent.id}-actor`}>
+                  <rect x="16" y="100" width="138" height="64" rx="5" />
+                  <text class="box-title" x="85" y="127">
+                    Actor
+                  </text>
+                  <text class="box-note" x="85" y="148">
+                    Chooses exposure
+                  </text>
+                </g>
+                {agent.id === 'ppo' ? (
+                  <g class="critic-box" data-node="ppo-critic">
+                    <rect x="188" y="100" width="136" height="64" rx="5" />
+                    <text class="box-title" x="256" y="127">
+                      Critic
+                    </text>
+                    <text class="box-note" x="256" y="148">
+                      State value
+                    </text>
+                  </g>
+                ) : (
+                  <>
+                    <g class="critic-box" data-node="sac-critics">
+                      <rect x="188" y="100" width="136" height="84" rx="5" />
+                      <text class="box-title" x="256" y="123">
+                        Two critics
+                      </text>
+                      <rect
+                        class="critic-chip"
+                        x="204"
+                        y="135"
+                        width="44"
+                        height="32"
+                        rx="3"
+                      />
+                      <rect
+                        class="critic-chip"
+                        x="264"
+                        y="135"
+                        width="44"
+                        height="32"
+                        rx="3"
+                      />
+                      <text class="critic-value" x="226" y="157">
+                        Q₁
+                      </text>
+                      <text class="critic-value" x="286" y="157">
+                        Q₂
+                      </text>
+                    </g>
+                    <path
+                      class="decision-line"
+                      data-edge="sac-action-critics"
+                      d="M85 199 H256 V188"
+                      marker-end={`url(#${agent.id}-forward)`}
+                    />
+                    <text class="edge-note" x="209" y="215">
+                      action
+                    </text>
+                  </>
+                )}
+                <path
+                  class="decision-line"
+                  data-edge={`${agent.id}-actor-action`}
+                  d="M85 164 V216"
+                  marker-end={`url(#${agent.id}-forward)`}
+                />
+                <g class="action-box" data-node={`${agent.id}-action`}>
+                  <rect x="16" y="220" width="138" height="64" rx="5" />
+                  <text class="box-note" x="85" y="242">
+                    BTC exposure
+                  </text>
+                  <path class="allocation-range" d="M32 257 H138" />
+                  <circle class="allocation-point" cx="85" cy="257" r="4" />
+                  <text class="range-end" x="32" y="276">
+                    0%
+                  </text>
+                  <text class="range-end" x="138" y="276">
+                    100%
+                  </text>
+                </g>
+              </>
+            )}
+            <path
+              class="decision-line"
+              data-edge={`${agent.id}-action-feedback`}
+              d={
+                agent.id === 'd3qn' ? 'M170 284 V312' : 'M85 284 V300 H170 V312'
+              }
+              marker-end={`url(#${agent.id}-forward)`}
+            />
+            <g
+              class="trading-feedback"
+              data-node={`${agent.id}-trading-feedback`}
+            >
+              <rect x="34" y="316" width="272" height="48" rx="5" />
+              <text class="feedback-title" x="170" y="336">
+                Gymnasium feedback
+              </text>
+              <text class="box-note" x="170" y="354">
+                Reward + next observation
+              </text>
+            </g>
+            <path
+              class="decision-line"
+              data-edge={`${agent.id}-feedback-experience`}
+              d="M170 364 V394"
+              marker-end={`url(#${agent.id}-forward)`}
+            />
+            <g class="training-step" data-node={`${agent.id}-weight-update`}>
+              <rect x="34" y="398" width="272" height="100" rx="5" />
+              <text class="batch-label" x="170" y="419">
+                {agent.batch}
+              </text>
+              <text class="update-title" x="170" y="444">
+                {agent.update}
+              </text>
+              <text class="update-note" x="170" y="466">
+                {agent.updateLines[0]}
+              </text>
+              <text class="update-note" x="170" y="484">
+                {agent.updateLines[1]}
+              </text>
+            </g>
+            <path
+              class="guide-line weight-return"
+              data-edge={`${agent.id}-update-${agent.id === 'd3qn' ? 'network' : 'actor'}`}
+              d={
+                agent.id === 'd3qn'
+                  ? 'M34 448 H4 V132 H70'
+                  : 'M34 448 H4 V132 H12'
+              }
+              marker-end={`url(#${agent.id}-feedback)`}
+            />
+            {agent.id !== 'd3qn' && (
+              <path
+                class="guide-line weight-return"
+                data-edge={`${agent.id}-update-critics`}
+                d="M306 448 H336 V132 H328"
+                marker-end={`url(#${agent.id}-feedback)`}
+              />
+            )}
+          </svg>
+          <div class="learning-note" data-node={`learning-${agent.id}`}>
+            <strong>{agent.learning}</strong>
+            <p>{agent.note}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <figcaption id="architecture-caption">
+      <span>
+        <strong>Actor:</strong> chooses the action. <strong>Critic:</strong>{' '}
+        estimates value to guide learning. Dashed loops update the networks for
+        subsequent decisions.
+      </span>
+      <span class="evaluation-note" data-node="evaluation">
+        After training, freeze the model and evaluate it on later market
+        periods.
+      </span>
+    </figcaption>
+  </figure>
+</section>
+
+<style>
+  .ml-architecture {
+    --flow-blue: #386882;
+    --flow-green: #57735a;
+    --flow-rust: #a75a3c;
+    margin-block: 3.5rem 1rem;
+  }
+  .architecture-heading {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 3rem;
+    align-items: end;
+    margin-bottom: 2rem;
+  }
+  .architecture-heading h2 {
+    font-size: clamp(2.1rem, 3.8vw, 3.6rem);
+    margin: 0;
+    line-height: 1.08;
+    scroll-margin-top: 2rem;
+  }
+  .architecture-heading .eyebrow {
+    margin-bottom: 0.8rem;
+  }
+  .architecture-heading > p {
+    color: var(--color-muted);
+    font-size: 0.9rem;
+    margin: 0;
+    max-width: 46ch;
+  }
+  .architecture-figure {
+    border-top: 2px solid var(--flow-blue);
+    margin: 0;
+  }
+  .shared-loop {
+    background: #e8e9e5;
+    padding: 1.5rem clamp(1rem, 2.5vw, 2rem) 0.25rem;
+  }
+  .diagram-label {
+    margin: 0;
+    font: 0.65rem/1.6 var(--font-label);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #59625b;
+  }
+  .loop-stages {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.75rem;
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0 0;
+  }
+  .loop-stage {
+    position: relative;
+    padding: 1rem;
+    background: #f7f4ed;
+    border: 1px solid #ccd0c7;
+    display: grid;
+    align-content: start;
+    gap: 0.4rem;
+  }
+  .stage-number {
+    font: 0.6rem var(--font-label);
+    color: var(--flow-blue);
+  }
+  .loop-stage strong {
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
+  .stage-description {
+    color: #62665e;
+    font-size: 0.74rem;
+    line-height: 1.6;
+    max-width: 25ch;
+  }
+  .stage-model {
+    border-color: #8fa2a3;
+  }
+  .stage-environment {
+    border-color: #8da58d;
+  }
+  .stage-arrow {
+    position: absolute;
+    left: calc(100% + 0.35rem);
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.25rem;
+    color: var(--flow-blue);
+  }
+  .loop-feedback {
+    height: 5.5rem;
+    position: relative;
+  }
+  .loop-feedback svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+    overflow: visible;
+  }
+  .loop-feedback path {
+    fill: none;
+    stroke-width: 1.4;
+    vector-effect: non-scaling-stroke;
+    stroke: var(--flow-blue);
+  }
+  .loop-feedback .learning-line {
+    stroke: var(--flow-green);
+    stroke-dasharray: 4 4;
+  }
+  .loop-feedback p {
+    position: absolute;
+    margin: 0;
+    padding: 0.12rem 0.6rem;
+    background: #e8e9e5;
+    font: 0.63rem/1.6 var(--font-label);
+    text-align: center;
+  }
+  .loop-feedback p > span {
+    display: none;
+  }
+  .reward-label {
+    top: 0.9rem;
+    left: 49%;
+    color: var(--flow-green);
+  }
+  .next-state-label {
+    top: 3.55rem;
+    left: 25%;
+    color: var(--flow-blue);
+  }
+  .comparison-heading {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.6rem 1rem;
+    margin-block: 1.75rem 1rem;
+  }
+  .diagram-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    font-size: 0.65rem;
+    color: #666b63;
+  }
+  .diagram-legend > span {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .legend-line {
+    width: 1.4rem;
+    border-top: 1.5px solid #657c81;
+  }
+  .legend-line.dashed {
+    border-top-style: dashed;
+    border-color: var(--flow-green);
+  }
+  .agent-comparison {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+  }
+  .agent-panel {
+    --agent-color: var(--flow-blue);
+    --agent-tint: #e6eef0;
+    background: #f7f4ed;
+    border: 1px solid #d6d4ca;
+    border-top: 3px solid var(--agent-color);
+    padding: 1.2rem clamp(0.65rem, 1.4vw, 1.25rem) 1rem;
+    min-width: 0;
+  }
+  .agent-d3qn {
+    --agent-color: var(--flow-rust);
+    --agent-tint: #f2e6dc;
+  }
+  .agent-sac {
+    --agent-color: var(--flow-green);
+    --agent-tint: #e7ece1;
+  }
+  .agent-heading h3 {
+    font-family: var(--font-body);
+    font-size: 1.25rem;
+    color: var(--agent-color);
+    margin: 0;
+  }
+  .agent-heading p {
+    font-size: 0.8rem;
+    margin: 0.3rem 0 0;
+    color: #66685e;
+  }
+  .agent-diagram {
+    display: block;
+    width: 100%;
+    max-width: 24rem;
+    margin: 1rem auto 0.5rem;
+    overflow: visible;
+  }
+  .agent-diagram text {
+    font-family: var(--font-body);
+    font-size: 14px;
+    text-anchor: middle;
+    fill: #3a453e;
+  }
+  .diagram-input rect {
+    fill: #eeeee7;
+    stroke: #cdd1c6;
+  }
+  .diagram-input text {
+    font-size: 13px;
+  }
+  .network-box rect {
+    fill: var(--agent-tint);
+    stroke: var(--agent-color);
+    stroke-width: 1.2;
+  }
+  .agent-diagram .box-title {
+    font-size: 17px;
+    font-weight: 500;
+  }
+  .agent-diagram .box-note {
+    font-size: 12px;
+  }
+  .critic-box rect {
+    fill: #edf0e9;
+    stroke: #97aa92;
+  }
+  .critic-box .critic-chip {
+    fill: #dce6d6;
+    stroke: none;
+  }
+  .agent-diagram .critic-value {
+    font-family: var(--font-display);
+    font-size: 18px;
+    fill: #47604a;
+  }
+  .action-box > rect {
+    fill: #fbf9f3;
+    stroke: #c9cec3;
+  }
+  .trading-feedback rect {
+    fill: #eeeee7;
+    stroke: #cdd1c6;
+  }
+  .agent-diagram .feedback-title {
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .training-step rect {
+    fill: #e8eee2;
+    stroke: #7f9776;
+    stroke-width: 1.2;
+  }
+  .agent-diagram .batch-label {
+    font: 10px var(--font-label);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    fill: #57704f;
+  }
+  .agent-diagram .update-title {
+    font-size: 16px;
+    font-weight: 600;
+    fill: #3f5b42;
+  }
+  .agent-diagram .update-note {
+    font-size: 12px;
+    fill: #56654f;
+  }
+  .trade-chip rect {
+    fill: var(--agent-tint);
+    stroke: none;
+  }
+  .agent-diagram .trade-chip text {
+    fill: var(--agent-color);
+    font-size: 12px;
+  }
+  .decision-line,
+  .guide-line {
+    fill: none;
+    stroke: var(--agent-color);
+    stroke-width: 1.5;
+    stroke-linejoin: round;
+  }
+  .guide-line {
+    stroke: var(--flow-green);
+    stroke-dasharray: 4 3;
+  }
+  .weight-return {
+    stroke-width: 1.8;
+    stroke-dasharray: 5 4;
+  }
+  .arrow-tip {
+    fill: var(--agent-color);
+  }
+  .feedback-tip {
+    fill: var(--flow-green);
+  }
+  .allocation-range {
+    stroke: var(--agent-color);
+    stroke-width: 2;
+  }
+  .allocation-point {
+    fill: var(--agent-color);
+  }
+  .agent-diagram .range-end,
+  .agent-diagram .edge-note {
+    font-size: 11px;
+    fill: #657163;
+  }
+  .learning-note {
+    border-top: 1px solid #deddd3;
+    padding-top: 0.75rem;
+  }
+  .learning-note strong {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--agent-color);
+  }
+  .learning-note p {
+    font-size: 0.74rem;
+    line-height: 1.65;
+    color: #65695f;
+    margin: 0.25rem 0 0;
+  }
+  figcaption {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem 2rem;
+    padding-top: 1rem;
+    font-size: 0.71rem;
+    line-height: 1.65;
+    color: #646a61;
+  }
+  figcaption > span {
+    max-width: 54ch;
+  }
+  .evaluation-note {
+    text-align: right;
+  }
+  @media (max-width: 1000px) {
+    .agent-comparison {
+      grid-template-columns: 1fr;
+    }
+    .agent-panel {
+      display: grid;
+      grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+      column-gap: 1.5rem;
+      align-items: center;
+      padding: 1.25rem;
+    }
+    .agent-heading {
+      grid-column: 1;
+      align-self: end;
+    }
+    .agent-diagram {
+      grid-column: 2;
+      grid-row: 1 / 3;
+      margin: 0;
+    }
+    .learning-note {
+      grid-column: 1;
+      margin-top: 1rem;
+      align-self: start;
+    }
+    .loop-stages {
+      gap: 1.2rem;
+    }
+    .loop-stage {
+      padding: 0.8rem;
+    }
+    .stage-arrow {
+      left: calc(100% + 0.15rem);
+      font-size: 1rem;
+    }
+  }
+  @media (max-width: 700px) {
+    .architecture-heading {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .loop-stages {
+      grid-template-columns: 1fr;
+      gap: 1.4rem;
+      margin-left: 1rem;
+    }
+    .loop-stage {
+      grid-template-columns: 1.7rem minmax(0, 1fr);
+      column-gap: 0.4rem;
+      padding: 0.8rem 1rem;
+    }
+    .stage-number {
+      grid-row: 1 / 3;
+      padding-top: 0.35rem;
+    }
+    .stage-description {
+      grid-column: 2;
+      max-width: none;
+    }
+    .stage-arrow {
+      left: 50%;
+      top: calc(100% + 0.2rem);
+      transform: rotate(90deg);
+    }
+    .shared-loop {
+      position: relative;
+    }
+    .loop-feedback {
+      height: auto;
+      margin-left: 1rem;
+      padding-block: 1rem;
+      display: grid;
+      gap: 0.4rem;
+    }
+    .loop-feedback svg {
+      display: none;
+    }
+    .loop-feedback p {
+      position: static;
+      text-align: left;
+      padding: 0;
+    }
+    .loop-feedback p > span {
+      display: inline-block;
+      margin-right: 0.4rem;
+      font-size: 0.9rem;
+    }
+    .loop-stages::before {
+      content: '';
+      position: absolute;
+      left: 1.1rem;
+      top: 5.3rem;
+      bottom: 1.9rem;
+      width: 0.8rem;
+      border-left: 1px solid var(--flow-blue);
+      border-bottom: 1px solid var(--flow-blue);
+      border-top: 1px solid var(--flow-blue);
+    }
+    .loop-stages::after {
+      content: '→';
+      position: absolute;
+      left: 1.5rem;
+      top: 4.7rem;
+      color: var(--flow-blue);
+      font-size: 0.8rem;
+    }
+    figcaption {
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .evaluation-note {
+      text-align: left;
+    }
+  }
+  @media (max-width: 480px) {
+    .agent-panel {
+      display: block;
+      padding: 1.2rem 0.85rem 1rem;
+    }
+    .agent-heading {
+      padding-inline: 0.3rem;
+    }
+    .agent-diagram {
+      margin: 1rem auto 0.4rem;
+    }
+    .learning-note {
+      margin-top: 0;
+      padding-inline: 0.3rem;
+    }
+    .diagram-legend {
+      gap: 0.8rem;
+      font-size: 0.6rem;
+    }
+  }
+</style>

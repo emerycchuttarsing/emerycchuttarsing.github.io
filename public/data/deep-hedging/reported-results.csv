@@ -1,0 +1,3 @@
+model,input_features,parameters,epochs,test_paths,mean_pnl,cvar_99
+Raw-FFNN,61,12353,100,5000,-2.4822,4.9669
+Sig-FFNN,15,9409,100,5000,-2.4904,3.6061
