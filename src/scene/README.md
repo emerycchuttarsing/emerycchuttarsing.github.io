@@ -128,9 +128,12 @@ Mesures et commande reproductible :
 `SceneProject.animation` selects a `bitcoin-price`, `hedge-rebalancing` or `music-sorting` CanvasTexture instead of a
 video. `bitcoin-path.ts` contains the pure stochastic path and `bitcoin-texture.ts`
 its drawing and 60 Hz pacing. `renderer.ts` advances it from the existing scene
-loop, only for the pointer-hovered project row or preview visual and while the
-panel is visible and motion is enabled. Focus and touch retain a still image.
-The current texture freezes on pointer leave; no independent timer keeps running.
+loop while the panel is visible and motion is enabled. In the gallery, only the
+pointer-hovered project row animates; keyboard focus and touch retain a still.
+An open preview animates automatically, regardless of pointer position or input
+method. Gallery pointer leave and preview close stop playback; the shared pause,
+page visibility and reduced-motion preferences still apply. No independent timer
+keeps running.
 Canvas pixels, the texture and listeners are disposed with the scene.
 
 The media manager receives procedural project IDs solely to retain the shared

@@ -165,13 +165,12 @@ export function createPortfolioScene(
     activeId: string | undefined;
   const events = new AbortController();
   let hoveredProject: string | undefined;
-  let previewHovered = false;
   let visibleProjects = new Set<string>();
   const animationWanted = (id: string) =>
     motionEnabled &&
     !paused &&
     visibleProjects.has(id) &&
-    (selected ? selected === id && previewHovered : hoveredProject === id);
+    (selected ? selected === id : hoveredProject === id);
   function stopAnimations() {
     for (const panel of panels) panel.animation?.stop();
     data(root, 'priceMotion', 'paused');
@@ -204,24 +203,6 @@ export function createPortfolioScene(
     'pointerleave',
     () => {
       hoveredProject = undefined;
-      stopAnimations();
-      invalidate();
-    },
-    { signal: events.signal },
-  );
-  preview.addEventListener(
-    'pointerenter',
-    (event) => {
-      if (event.pointerType === 'touch') return;
-      previewHovered = true;
-      invalidate();
-    },
-    { signal: events.signal },
-  );
-  preview.addEventListener(
-    'pointerleave',
-    () => {
-      previewHovered = false;
       stopAnimations();
       invalidate();
     },
@@ -640,7 +621,6 @@ export function createPortfolioScene(
         return;
       }
       selected = state.kind === 'selected' ? state.projectId : undefined;
-      previewHovered = false;
       stopAnimations();
       if (selected) focusId = selected;
       const parent = selected ? previewScene : root;
