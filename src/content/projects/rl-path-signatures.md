@@ -1,6 +1,6 @@
 ---
 title: 'Bitcoin Trading with RL & Path Signatures'
-displayTitle: 'Reinforcement Learning & Path Signatures'
+displayTitle: 'Bitcoin Trading with RL & Path Signatures'
 summary: 'Can path signatures help reinforcement learning agents generalize on Bitcoin data? We tested compact market representations and trading policies under costs and risk constraints. Volume timing was captured well; trading results remained sensitive to market regimes.'
 order: 1
 featured: true
